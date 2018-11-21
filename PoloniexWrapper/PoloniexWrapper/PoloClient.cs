@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using PoloniexWrapper.Data;
 using PoloniexWrapper.Data.Requests;
 using PoloniexWrapper.Data.Responses;
 using System;
@@ -39,10 +40,17 @@ namespace PoloniexWrapper
             return await Task.Run(() => JsonConvert.DeserializeObject<T>(json));
         }
 
+    #region Public Methods
 
         public async Task<Dictionary<string, Ticker>> GetTickerAsync() => await JsonGETAsync<Dictionary<string, Ticker>>(new TickerRequest());
 
+        public async Task<List<DalyVolume>> GetDalyVolumesAsync() => await JsonGETAsync<List<DalyVolume>>(new DalyVolumeRequest());
 
+    #endregion
+
+    #region Private Methods
+        //TODO
+    #endregion
 
         public void Dispose() => httpClient.Dispose();
     }
