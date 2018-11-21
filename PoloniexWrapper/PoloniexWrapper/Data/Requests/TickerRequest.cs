@@ -14,18 +14,5 @@ namespace PoloniexWrapper.Data.Requests
                 ["command"] = "returnTicker"
             };
         }
-
-        public override async Task<string> Make()
-        {
-            return await Task.Run(() => new StringBuilder(urlSegment).AppendFormat("{0}", BuildRequestData(requestArgs)).ToString());
-        }
-
-        //public override string ToString()
-        //{
-        //    //var reqestStr = new StringBuilder(urlSegment);
-        //    //reqestStr.AppendFormat("{0}", BuildRequestData(requestArgs));
-        //    //return reqestStr.ToString();
-        //    return new StringBuilder(urlSegment).AppendFormat("{0}", BuildRequestData(requestArgs)).ToString();
-        //}
     }
 }
