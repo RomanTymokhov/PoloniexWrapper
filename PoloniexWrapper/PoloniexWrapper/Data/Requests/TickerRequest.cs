@@ -6,7 +6,7 @@ namespace PoloniexWrapper.Data.Requests
 {
     public class TickerRequest: BaseRequest
     {
-        public TickerRequest(string apiKey) :base(apiKey)
+        public TickerRequest() :base()
         {
             RequestArgs = new Dictionary<string, string>
             {
@@ -16,9 +16,9 @@ namespace PoloniexWrapper.Data.Requests
 
         public override string ToString()
         {
-            var url = new StringBuilder("?");
-            url.AppendFormat("{0}", BuildRequestData(RequestArgs));
-            return url.ToString();
+            var reqestStr = new StringBuilder(urlSegment);
+            reqestStr.AppendFormat("{0}", BuildRequestData(RequestArgs));
+            return reqestStr.ToString();
         }
     }
 }
