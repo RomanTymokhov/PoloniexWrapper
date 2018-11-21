@@ -8,7 +8,7 @@ namespace PoloniexWrapper.Data.Requests
     {
         public TickerRequest() :base()
         {
-            RequestArgs = new Dictionary<string, string>
+            requestArgs = new Dictionary<string, string>
             {
                 ["command"] = "returnTicker"
             };
@@ -16,9 +16,10 @@ namespace PoloniexWrapper.Data.Requests
 
         public override string ToString()
         {
-            var reqestStr = new StringBuilder(urlSegment);
-            reqestStr.AppendFormat("{0}", BuildRequestData(RequestArgs));
-            return reqestStr.ToString();
+            //var reqestStr = new StringBuilder(urlSegment);
+            //reqestStr.AppendFormat("{0}", BuildRequestData(requestArgs));
+            //return reqestStr.ToString();
+            return new StringBuilder(urlSegment).AppendFormat("{0}", BuildRequestData(requestArgs)).ToString();
         }
     }
 }
