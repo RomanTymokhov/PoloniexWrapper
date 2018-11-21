@@ -12,7 +12,8 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            var poloClientPub = new PoloClient();
+            var poloClientPub  = new PoloClient();
+            var poloClientPriv = new PoloClient("apiKey");
 
             GetTickerData(poloClientPub, "USDC_USDT");
         }
