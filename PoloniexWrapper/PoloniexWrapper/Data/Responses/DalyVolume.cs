@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace PoloniexWrapper.Data
+namespace PoloniexWrapper.Data.Responses
 {
     public class DalyVolume
     {
