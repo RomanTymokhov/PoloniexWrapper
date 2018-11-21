@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace PoloniexWrapper.Data.Requests
 {
@@ -14,12 +15,17 @@ namespace PoloniexWrapper.Data.Requests
             };
         }
 
-        public override string ToString()
+        public override async Task<string> Make()
         {
-            //var reqestStr = new StringBuilder(urlSegment);
-            //reqestStr.AppendFormat("{0}", BuildRequestData(requestArgs));
-            //return reqestStr.ToString();
-            return new StringBuilder(urlSegment).AppendFormat("{0}", BuildRequestData(requestArgs)).ToString();
+            return await Task.Run(() => new StringBuilder(urlSegment).AppendFormat("{0}", BuildRequestData(requestArgs)).ToString());
         }
+
+        //public override string ToString()
+        //{
+        //    //var reqestStr = new StringBuilder(urlSegment);
+        //    //reqestStr.AppendFormat("{0}", BuildRequestData(requestArgs));
+        //    //return reqestStr.ToString();
+        //    return new StringBuilder(urlSegment).AppendFormat("{0}", BuildRequestData(requestArgs)).ToString();
+        //}
     }
 }
