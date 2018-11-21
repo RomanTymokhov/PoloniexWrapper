@@ -2,6 +2,7 @@
 using PoloniexWrapper.Data.Requests;
 using PoloniexWrapper.Data.Responses;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -15,6 +16,10 @@ namespace PoloniexWrapper
 
         private const string baseAddress = "https://poloniex.com";
 
+        public PoloClient()
+        {
+            httpClient = new HttpClient { BaseAddress = new Uri(baseAddress) };
+        }
 
         public PoloClient(string apiKey)
         {
@@ -24,6 +29,7 @@ namespace PoloniexWrapper
 
         protected async Task<T> JsonGETAsync<T>(BaseRequest request)
         {
+            var str = request.ToString();
             var response = await httpClient.GetAsync(request.ToString()).ConfigureAwait(false);
 
             response.EnsureSuccessStatusCode();         // throw if web request failed
@@ -35,7 +41,7 @@ namespace PoloniexWrapper
         }
 
 
-        public async Task<Ticker> GetTickerAsync() => await JsonGETAsync<Ticker>(new TickerRequest(ApiKey));
+        public async Task<Dictionary<string, Ticker>> GetTickerAsync() => await JsonGETAsync<Dictionary<string, Ticker>>(new TickerRequest());
 
 
 
