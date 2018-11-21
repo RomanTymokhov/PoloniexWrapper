@@ -10,9 +10,11 @@ namespace PoloniexWrapper.Data.Requests
     {
         private readonly string apiKey;
 
-        private const string url = "/public?";
+        internal const string urlSegment = "/public?";
         
         internal Dictionary<string, string> RequestArgs { get; set; }
+
+        public BaseRequest() { }
 
         public BaseRequest(string apiKey)
         {
