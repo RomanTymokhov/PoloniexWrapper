@@ -30,6 +30,11 @@ namespace PoloniexWrapper.Data.Requests
         public async Task<string> Make() => await Task.Run(() =>
                new StringBuilder(urlSegment).AppendFormat("{0}", BuildRequestData(requestArgs)).ToString());
 
+        //var reqestStr = new StringBuilder(urlSegment);
+        //reqestStr.AppendFormat("{0}", BuildRequestData(requestArgs));
+        //return reqestStr.ToString();
+        //return new StringBuilder(urlSegment).AppendFormat("{0}", BuildRequestData(requestArgs)).ToString();
+
         internal static string BuildRequestData(IDictionary<string, string> dict, bool escape = true) => 
                         string.Join("&", dict.Select(kvp =>
                         string.Format("{0}={1}", kvp.Key, escape ? HttpUtility.UrlEncode(kvp.Value) : kvp.Value)));
