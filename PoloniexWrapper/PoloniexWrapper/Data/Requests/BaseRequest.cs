@@ -27,7 +27,7 @@ namespace PoloniexWrapper.Data.Requests
             //todo
         }
 
-        public abstract Task<string> Build();
+        public abstract Task<string> Make();
 
         internal static string BuildRequestData(IDictionary<string, string> dict, bool escape = true) => 
                         string.Join("&", dict.Select(kvp =>
