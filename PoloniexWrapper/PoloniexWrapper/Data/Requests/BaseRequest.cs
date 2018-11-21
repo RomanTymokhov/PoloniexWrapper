@@ -27,7 +27,8 @@ namespace PoloniexWrapper.Data.Requests
             //todo
         }
 
-        public abstract Task<string> Make();
+        public async Task<string> Make() => await Task.Run(() =>
+               new StringBuilder(urlSegment).AppendFormat("{0}", BuildRequestData(requestArgs)).ToString());
 
         internal static string BuildRequestData(IDictionary<string, string> dict, bool escape = true) => 
                         string.Join("&", dict.Select(kvp =>
