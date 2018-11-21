@@ -49,7 +49,7 @@ namespace PoloniexWrapper
     #endregion
 
     #region Private Methods
-        //TODO
+        //TODO 
     #endregion
 
         public void Dispose() => httpClient.Dispose();
