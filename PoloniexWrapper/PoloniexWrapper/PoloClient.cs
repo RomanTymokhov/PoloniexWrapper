@@ -21,16 +21,15 @@ namespace PoloniexWrapper
             httpClient = new HttpClient { BaseAddress = new Uri(baseAddress) };
         }
 
-        public PoloClient(string apiKey)
+        public PoloClient(string apiKey):base()
         {
             ApiKey = apiKey;
-            httpClient = new HttpClient { BaseAddress = new Uri(baseAddress) };
         }
 
         protected async Task<T> JsonGETAsync<T>(BaseRequest request)
         {
             var str = request.ToString();
-            var response = await httpClient.GetAsync(request.ToString()).ConfigureAwait(false);
+            var response = await httpClient.GetAsync(request.Make().Result).ConfigureAwait(false);
 
             response.EnsureSuccessStatusCode();         // throw if web request failed
             //todo: creae Exception handler
