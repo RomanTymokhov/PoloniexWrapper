@@ -13,8 +13,20 @@ namespace Test
         static void Main(string[] args)
         {
             var poloClientPub = new PoloClient();
-            
-            WriteLine("--> " + poloClientPub.GetTickerAsync().Result.FirstOrDefault((ticker => ticker.Key == "USDC_USDT")).Value.LastPrice);
+
+            GetTickerData(poloClientPub, "USDC_USDT");
+        }
+
+        private static void GetTickerData(PoloClient client, string tickerID)
+        {
+            var ticker = client.GetTickerAsync().Result.FirstOrDefault((tckr => tckr.Key == tickerID)).Value;
+
+            WriteLine("LastPrice --> " + ticker.LastPrice);
+            WriteLine("LowestAsk --> " + ticker.LowestAsk);
+            WriteLine("HighestBid --> " + ticker.HighestBid);
+            WriteLine("PercentChange --> " + ticker.PercentChange);
+            WriteLine("BaseVolume --> " + ticker.BaseVolume);
+            WriteLine("QuoteVolume --> " + ticker.QuoteVolume);
         }
     }
 }
