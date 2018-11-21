@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace PoloniexWrapper.Data.Requests
@@ -25,6 +26,8 @@ namespace PoloniexWrapper.Data.Requests
         {
             //todo
         }
+
+        public abstract Task<string> Build();
 
         internal static string BuildRequestData(IDictionary<string, string> dict, bool escape = true) => 
                         string.Join("&", dict.Select(kvp =>
