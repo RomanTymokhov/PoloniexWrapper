@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
+using PoloniexWrapper.Data;
 using PoloniexWrapper.Data.Requests;
 using PoloniexWrapper.Data.Responses;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PoloniexWrapper
@@ -21,16 +23,15 @@ namespace PoloniexWrapper
             httpClient = new HttpClient { BaseAddress = new Uri(baseAddress) };
         }
 
-        public PoloClient(string apiKey)
+        public PoloClient(string apiKey):base()
         {
             ApiKey = apiKey;
-            httpClient = new HttpClient { BaseAddress = new Uri(baseAddress) };
         }
 
         protected async Task<T> JsonGETAsync<T>(BaseRequest request)
         {
             var str = request.ToString();
-            var response = await httpClient.GetAsync(request.ToString()).ConfigureAwait(false);
+            var response = await httpClient.GetAsync(request.Make().Result).ConfigureAwait(false);
 
             response.EnsureSuccessStatusCode();         // throw if web request failed
             //todo: creae Exception handler
@@ -40,10 +41,17 @@ namespace PoloniexWrapper
             return await Task.Run(() => JsonConvert.DeserializeObject<T>(json));
         }
 
+    #region Public Methods
 
         public async Task<Dictionary<string, Ticker>> GetTickerAsync() => await JsonGETAsync<Dictionary<string, Ticker>>(new TickerRequest());
 
+        public async Task<DalyVolumes> GetDalyVolumeAsync() =>  await JsonGETAsync<DalyVolumes> (new DalyVolumeRequest());
 
+    #endregion
+
+    #region Private Methods
+        //TODO 
+    #endregion
 
         public void Dispose() => httpClient.Dispose();
     }

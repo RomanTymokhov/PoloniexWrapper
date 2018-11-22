@@ -1,4 +1,6 @@
 ﻿using PoloniexWrapper;
+using PoloniexWrapper.Data;
+using PoloniexWrapper.Data.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +14,11 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            var poloClientPub = new PoloClient();
+            var poloClientPub  = new PoloClient();
+            var poloClientPriv = new PoloClient("apiKey");
 
-            GetTickerData(poloClientPub, "USDC_USDT");
+            //GetTickerData(poloClientPub, PairID.usdc_str);
+            //GetDalyVolume(poloClientPub, PairID.btc_eth);
         }
 
         private static void GetTickerData(PoloClient client, string tickerID)
@@ -27,6 +31,16 @@ namespace Test
             WriteLine("PercentChange --> " + ticker.PercentChange);
             WriteLine("BaseVolume --> " + ticker.BaseVolume);
             WriteLine("QuoteVolume --> " + ticker.QuoteVolume);
+            WriteLine("--------------------------------------------");
+        }
+        private static void GetDalyVolume(PoloClient client, string tickerID)
+        {
+            var dv = client.GetDalyVolumeAsync().Result.VolumeList.FirstOrDefault(i => i.pairID == tickerID);
+
+            WriteLine("VolumePair --> " + dv.pairID);
+            WriteLine(dv.baseName + " -- " + dv.based);
+            WriteLine(dv.quotedName + " -- " + dv.quoted);
+            WriteLine("--------------------------------------------");
         }
     }
 }

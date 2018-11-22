@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace PoloniexWrapper.Data.Requests
@@ -11,8 +12,8 @@ namespace PoloniexWrapper.Data.Requests
         private readonly string apiKey;
 
         internal const string urlSegment = "/public?";
-        
-        internal Dictionary<string, string> RequestArgs { get; set; }
+
+        internal Dictionary<string, string> requestArgs;
 
         public BaseRequest() { }
 
@@ -26,7 +27,16 @@ namespace PoloniexWrapper.Data.Requests
             //todo
         }
 
-        internal static string BuildRequestData(IDictionary<string, string> dict, bool escape = true) => string.Join("&", dict.Select(kvp =>
-                 string.Format("{0}={1}", kvp.Key, escape ? HttpUtility.UrlEncode(kvp.Value) : kvp.Value)));
+        public async Task<string> Make() => await Task.Run(() =>
+               new StringBuilder(urlSegment).AppendFormat("{0}", BuildRequestData(requestArgs)).ToString());
+
+        //var reqestStr = new StringBuilder(urlSegment);
+        //reqestStr.AppendFormat("{0}", BuildRequestData(requestArgs));
+        //return reqestStr.ToString();
+        //return new StringBuilder(urlSegment).AppendFormat("{0}", BuildRequestData(requestArgs)).ToString();
+
+        internal static string BuildRequestData(IDictionary<string, string> dict, bool escape = true) => 
+                        string.Join("&", dict.Select(kvp =>
+                        string.Format("{0}={1}", kvp.Key, escape ? HttpUtility.UrlEncode(kvp.Value) : kvp.Value)));
     }
 }

@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 
 namespace PoloniexWrapper.Data.Requests
 {
-    public class TickerRequest: BaseRequest
+    public class DalyVolumeRequest: BaseRequest
     {
-        public TickerRequest() :base()
+        public DalyVolumeRequest():base()
         {
             requestArgs = new Dictionary<string, string>
             {
-                ["command"] = "returnTicker"
+                ["command"] = "return24hVolume"
             };
         }
     }
