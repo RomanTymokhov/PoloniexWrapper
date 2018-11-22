@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text;
 
 namespace PoloniexWrapper
 {
@@ -41,7 +42,20 @@ namespace PoloniexWrapper
             return await Task.Run(() => JsonConvert.DeserializeObject<T>(json));
         }
 
-    #region Public Methods
+        protected async Task<T> JsonPOSTAsyc<T>(BaseRequest request)
+        {
+            var response = await httpClient.PostAsync(request.Url,
+                new StringContent(request.Make().Result, Encoding.UTF8, "application/x-www-form-urlencoded")).ConfigureAwait(false);
+
+            response.EnsureSuccessStatusCode();         // throw if web request failed
+            //todo: creae Exception handler
+
+            var json = await response.Content.ReadAsStringAsync();
+
+            return await Task.Run(() => JsonConvert.DeserializeObject<T>(json));
+        }
+
+        #region Public Methods
 
         public async Task<Dictionary<string, Ticker>> GetTickerAsync() => await JsonGETAsync<Dictionary<string, Ticker>>(new TickerRequest());
 
