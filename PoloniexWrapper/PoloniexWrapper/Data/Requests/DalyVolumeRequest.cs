@@ -9,10 +9,12 @@ namespace PoloniexWrapper.Data.Requests
     {
         public DalyVolumeRequest():base()
         {
-            requestArgs = new Dictionary<string, string>
+            urlArgs = new Dictionary<string, string>
             {
                 ["command"] = "return24hVolume"
             };
+
+            Url = Make(true).Result;
         }
     }
 }
