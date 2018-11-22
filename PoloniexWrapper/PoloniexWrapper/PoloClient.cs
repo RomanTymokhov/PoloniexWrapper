@@ -5,6 +5,7 @@ using PoloniexWrapper.Data.Responses;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PoloniexWrapper
@@ -44,7 +45,7 @@ namespace PoloniexWrapper
 
         public async Task<Dictionary<string, Ticker>> GetTickerAsync() => await JsonGETAsync<Dictionary<string, Ticker>>(new TickerRequest());
 
-        public async Task<List<DalyVolume>> GetDalyVolumesAsync() => await JsonGETAsync<List<DalyVolume>>(new DalyVolumeRequest());
+        public async Task<DalyVolumes> GetDalyVolumeAsync() =>  await JsonGETAsync<DalyVolumes> (new DalyVolumeRequest());
 
     #endregion
 
