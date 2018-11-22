@@ -17,15 +17,20 @@ namespace PoloniexWrapper.Data
         public string quotedName;
         public decimal? quoted;
 
-        public DalyVolume(KeyValuePair<string, Dictionary<string, string>> volume)
+        public DalyVolume(Dictionary<string, string> volume, string id)
         {
-            pairID = volume.Key;
+            pairID = id;
 
-            baseName = volume.Value.First().Key;
-            based = Convert.ToDecimal(volume.Value.First().Value, CultureInfo.InvariantCulture);
+            baseName = volume.First().Key;
+            based = Convert.ToDecimal(volume.First().Value, CultureInfo.InvariantCulture);
 
-            quotedName = volume.Value.Last().Key;
-            quoted = Convert.ToDecimal(volume.Value.Last().Value, CultureInfo.InvariantCulture);
+            quotedName = volume.Last().Key;
+            quoted = Convert.ToDecimal(volume.Last().Value, CultureInfo.InvariantCulture);
         }
+
+        //private void SetPairId()
+        //{
+        //    pairID = new StringBuilder(baseName).AppendFormat("_{0}", quotedName).ToString();
+        //}
     }
 }
