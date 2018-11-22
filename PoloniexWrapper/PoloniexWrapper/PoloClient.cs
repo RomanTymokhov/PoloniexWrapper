@@ -32,7 +32,7 @@ namespace PoloniexWrapper
         protected async Task<T> JsonGETAsync<T>(BaseRequest request)
         {
             var str = request.ToString();
-            var response = await httpClient.GetAsync(request.Make().Result).ConfigureAwait(false);
+            var response = await httpClient.GetAsync(request.Url).ConfigureAwait(false);
 
             response.EnsureSuccessStatusCode();         // throw if web request failed
             //todo: creae Exception handler
@@ -42,10 +42,10 @@ namespace PoloniexWrapper
             return await Task.Run(() => JsonConvert.DeserializeObject<T>(json));
         }
 
-        protected async Task<T> JsonPOSTAsyc<T>(BaseRequest request)
+        protected async Task<T> JsonPOSTAsync<T>(BaseRequest request)
         {
             var response = await httpClient.PostAsync(request.Url,
-                new StringContent(request.Make().Result, Encoding.UTF8, "application/x-www-form-urlencoded")).ConfigureAwait(false);
+                new StringContent("? todo", Encoding.UTF8, "application/x-www-form-urlencoded")).ConfigureAwait(false);
 
             response.EnsureSuccessStatusCode();         // throw if web request failed
             //todo: creae Exception handler
@@ -55,16 +55,18 @@ namespace PoloniexWrapper
             return await Task.Run(() => JsonConvert.DeserializeObject<T>(json));
         }
 
-        #region Public Methods
+    #region Public Methods
 
-        public async Task<Dictionary<string, Ticker>> GetTickerAsync() => await JsonGETAsync<Dictionary<string, Ticker>>(new TickerRequest());
+        public async Task<Dictionary<string, Ticker>> ReturnTickerAsync() => await JsonGETAsync<Dictionary<string, Ticker>>(new TickerRequest());
 
-        public async Task<DalyVolumes> GetDalyVolumeAsync() =>  await JsonGETAsync<DalyVolumes> (new DalyVolumeRequest());
+        public async Task<DalyVolumes> ReturnDalyVolumesAsync() =>  await JsonGETAsync<DalyVolumes> (new DalyVolumeRequest());
 
     #endregion
 
     #region Private Methods
-        //TODO 
+
+        public async Task<Dictionary<string, string>> ReturnBalances() => await JsonPOSTAsync <Dictionary<string, string>> (new BalanceRequest());
+
     #endregion
 
         public void Dispose() => httpClient.Dispose();
