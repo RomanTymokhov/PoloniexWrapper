@@ -1,7 +1,13 @@
+<<<<<<< HEAD
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+=======
+﻿using System.Collections.Generic;
+
+using static PoloniexWrapper.Data.Requests.ReqType;
+>>>>>>> dev/tohoff82
 
 namespace PoloniexWrapper.Data.Requests
 {
@@ -9,10 +15,19 @@ namespace PoloniexWrapper.Data.Requests
     {
         public DalyVolumeRequest():base()
         {
+<<<<<<< HEAD
             requestArgs = new Dictionary<string, string>
             {
                 ["command"] = "return24hVolume"
             };
+=======
+            getArgs = new Dictionary<string, string>
+            {
+                ["command"] = "return24hVolume"
+            };
+
+            Url = Build(get).Result;
+>>>>>>> dev/tohoff82
         }
     }
 }
