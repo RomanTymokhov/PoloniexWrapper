@@ -1,12 +1,9 @@
 ﻿using PoloniexWrapper;
 using PoloniexWrapper.Data;
-using PoloniexWrapper.Data.Responses;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using static System.Console;
+using static PoloniexWrapper.Data.Responses.Ticker;
 
 namespace Test
 {
@@ -17,8 +14,8 @@ namespace Test
             var poloClientPub  = new PoloClient();
             var poloClientPriv = new PoloClient("apiKey");
 
-            //GetTickerData(poloClientPub, PairID.usdc_str);
-            //GetDalyVolume(poloClientPub, PairID.btc_eth);
+            GetTickerData(poloClientPub, PairID.usdc_str);
+            GetDalyVolume(poloClientPub, PairID.btc_eth);
         }
 
         private static void GetTickerData(PoloClient client, string tickerID)
