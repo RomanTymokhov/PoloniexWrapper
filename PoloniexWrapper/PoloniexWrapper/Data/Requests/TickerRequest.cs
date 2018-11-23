@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+
+using static PoloniexWrapper.Data.Requests.ReqType;
 
 namespace PoloniexWrapper.Data.Requests
 {
@@ -14,7 +13,7 @@ namespace PoloniexWrapper.Data.Requests
                 ["command"] = "returnTicker"
             };
 
-            Url = Make(true).Result;
+            Url = Build(get).Result;
         }
     }
 }
