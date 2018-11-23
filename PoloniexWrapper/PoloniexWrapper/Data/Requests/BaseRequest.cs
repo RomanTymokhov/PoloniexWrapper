@@ -37,11 +37,8 @@ namespace PoloniexWrapper.Data.Requests
             //todo
         }
 
-        public async Task<string> Build(ReqType type)
-        {
-            return await Task.Run(() =>
-new StringBuilder(type == get ? urlSegmentPub : urlSegmentTrdApi).AppendFormat("{0}", BuildKVPairs(getArgs)).ToString());
-        }
+        public async Task<string> Build(ReqType type) =>
+                await Task.Run(() => new StringBuilder(type == get ? urlSegmentPub : urlSegmentTrdApi).AppendFormat("{0}", BuildKVPairs(getArgs)).ToString());
 
         //var reqestStr = new StringBuilder(urlSegment);
         //reqestStr.AppendFormat("{0}", BuildRequestData(requestArgs));
