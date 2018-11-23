@@ -37,7 +37,7 @@ namespace PoloniexWrapper.Data.Requests
             //todo
         }
 
-        public async Task<string> Make(ReqType type)
+        public async Task<string> Build(ReqType type)
         {
             return await Task.Run(() =>
 new StringBuilder(type == get ? urlSegmentPub : urlSegmentTrdApi).AppendFormat("{0}", BuildKVPairs(getArgs)).ToString());
