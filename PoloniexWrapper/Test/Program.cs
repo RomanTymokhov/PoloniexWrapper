@@ -23,7 +23,7 @@ namespace Test
 
         private static void GetTickerData(PoloClient client, string tickerID)
         {
-            var ticker = client.GetTickerAsync().Result.FirstOrDefault((tckr => tckr.Key == tickerID)).Value;
+            var ticker = client.ReturnTickerAsync().Result.FirstOrDefault((tckr => tckr.Key == tickerID)).Value;
 
             WriteLine("LastPrice --> " + ticker.LastPrice);
             WriteLine("LowestAsk --> " + ticker.LowestAsk);
@@ -35,7 +35,7 @@ namespace Test
         }
         private static void GetDalyVolume(PoloClient client, string tickerID)
         {
-            var dv = client.GetDalyVolumeAsync().Result.VolumeList.FirstOrDefault(i => i.pairID == tickerID);
+            var dv = client.ReturnDalyVolumesAsync().Result.VolumeList.FirstOrDefault(i => i.pairID == tickerID);
 
             WriteLine("VolumePair --> " + dv.pairID);
             WriteLine(dv.baseName + " -- " + dv.based);
