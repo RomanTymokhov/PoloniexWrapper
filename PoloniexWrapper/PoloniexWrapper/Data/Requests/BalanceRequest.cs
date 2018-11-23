@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
+using static PoloniexWrapper.Data.Requests.ReqType;
+
 namespace PoloniexWrapper.Data.Requests
 {
     public class BalanceRequest: BaseRequest
@@ -13,14 +15,14 @@ namespace PoloniexWrapper.Data.Requests
                 ["command"] = "returnBalances"
             };
 
-            Url = Make(false).Result;
+            Url = Build(get).Result;
 
             postArgs = new Dictionary<string, string>
             {
                 ["tonce"] = GetTonce()
             };
 
-            POSTdata = 
+            //POSTdata = 
         }
     }
 }
