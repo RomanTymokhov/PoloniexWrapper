@@ -32,8 +32,6 @@ namespace PoloniexWrapper
 
         protected async Task<T> JsonGETAsync<T>(BaseRequest request)
         {
-            var str = request.ToString();
-
             var response = await httpClient.GetAsync(request.Url).ConfigureAwait(false);
 
             response.EnsureSuccessStatusCode();         // throw if web request failed
