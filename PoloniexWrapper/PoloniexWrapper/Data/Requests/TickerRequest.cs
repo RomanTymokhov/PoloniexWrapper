@@ -8,7 +8,7 @@ namespace PoloniexWrapper.Data.Requests
     {
         public TickerRequest() :base()
         {
-            requestArgs = new Dictionary<string, string>
+            arguments = new Dictionary<string, string>
             {
                 ["command"] = "returnTicker"
             };
