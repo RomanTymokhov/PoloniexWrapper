@@ -5,9 +5,9 @@ namespace PoloniexWrapper.Data.Responses
     public class NewAdress
     {
         [JsonProperty("success")]
-        public string Success { get; private set; }
+        public string Success { get; set; }
 
         [JsonProperty("response")]
-        public string Response { get; private set; }
+        public string Response { get; set; }
     }
 }
