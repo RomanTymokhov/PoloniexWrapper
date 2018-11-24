@@ -12,7 +12,7 @@ namespace PoloniexWrapper.Data.Requests
 
     public abstract class BaseRequest
     {
-        private readonly string apiKey;
+        private readonly string apiSec;
 
         internal const string urlSegmentPublic  = "/public?";
         internal const string urlSegmentTrading = "/tradingApi";
@@ -25,12 +25,12 @@ namespace PoloniexWrapper.Data.Requests
 
         public BaseRequest() { }
 
-        public BaseRequest(string apiKey)
+        public BaseRequest(string apiSec)
         {
-            this.apiKey = apiKey;
+            this.apiSec = apiSec;
         }
 
-        internal string GetTonce() => DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString();
+        internal string GetNonce() => DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString();
 
         internal void GenerateRequest(ReqType type)
         {
@@ -39,13 +39,15 @@ namespace PoloniexWrapper.Data.Requests
             {
                 Url = new StringBuilder(urlSegmentTrading).ToString();
                 CreateSignature();
-            }
-                
+            }                
         }
 
         private void CreateSignature() 
         {
-            
+            var encryptor = new HMACSHA512(Encoding.ASCII.GetBytes(apiSec));
+            var postBytes = Encoding.ASCII.GetBytes(arguments.ToKeyValueString());
+
+            Sign = BitConverter.ToString(encryptor.ComputeHash(postBytes)).Replace("-", "").ToLower();
         }
     }
 }
