@@ -6,6 +6,8 @@ using static System.Console;
 using static PoloniexWrapper.Data.PairID;
 using static PoloniexWrapper.Data.CurrID;
 using System;
+using static PoloniexWrapper.Helper.Enums;
+using static PoloniexWrapper.Helper.Enums.PoloAccount;
 
 namespace Test
 {
@@ -22,6 +24,7 @@ namespace Test
             //GetDepositAdresses(poloClientPriv, btc);
             //GetNewAdress(poloClientPriv, etc);
             //GetDepositsWithdravals(poloClientPriv, new DateTime(2017, 10, 1), DateTime.Now);
+            GetAvailableAccountBalances(poloClientPriv, exchange, eth);
         }
 
         private static void GetTickerData(PoloClient client, string tickerID)
@@ -105,6 +108,18 @@ namespace Test
                 WriteLine("WithdrawalID --> " + witdrawal.WithdrawalID);
                 WriteLine("******************");
             }
+        }
+        private static void GetAvailableAccountBalances(PoloClient client, PoloAccount acc, string currId)
+        {
+            var aab = client.ReturnAvailableAccountBalancesAsync().Result;
+
+            foreach (var aacc in aab.Exchange)
+            {
+                WriteLine(aacc.Key + " -- " + aacc.Value);
+            }
+            WriteLine("--------------------------------------------");
+
+            WriteLine(currId + " -- " + aab.Exchange.FirstOrDefault(p => p.Key == currId).Value);
         }
     }
 }
