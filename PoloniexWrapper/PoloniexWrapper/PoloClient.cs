@@ -69,8 +69,9 @@ namespace PoloniexWrapper
 
     #region Private Methods
 
-        public async Task<Dictionary<string, string>> ReturnBalances() => await JsonPOSTAsync<Dictionary<string, string>>(new BalanceRequest(apiSec));
-        //returnCompleteBalances
+        public async Task<Dictionary<string, string>> ReturnBalancesAsync() => await JsonPOSTAsync<Dictionary<string, string>>(new BalancesRequest(apiSec));
+
+        public async Task<Dictionary<string, CompleteBalance>> ReturComleteBalancesAsync() => await JsonPOSTAsync<Dictionary<string, CompleteBalance>>(new CompleteBalancesRequest(apiSec));
 
         #endregion
 
