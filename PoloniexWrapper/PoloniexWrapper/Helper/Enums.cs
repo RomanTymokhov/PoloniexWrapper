@@ -6,6 +6,6 @@ namespace PoloniexWrapper.Helper
 {
     public class Enums
     {
-        public enum Account { all, exchange, margin, lending }
+        public enum PoloAccount { all, exchange, margin, lending }
     }
 }
