@@ -1,13 +1,13 @@
-﻿using PoloniexWrapper.Data.Requests;
+﻿using PoloniexWrapper.Extensions;
+using PoloniexWrapper.Data.Requests;
 using PoloniexWrapper.Data.Responses;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.Text;
 using System.Linq;
-using PoloniexWrapper.Extensions;
+using System;
+using Newtonsoft.Json;
 
 namespace PoloniexWrapper
 {
@@ -70,8 +70,9 @@ namespace PoloniexWrapper
     #region Private Methods
 
         public async Task<Dictionary<string, string>> ReturnBalances() => await JsonPOSTAsync<Dictionary<string, string>>(new BalanceRequest(apiSec));
+        //returnCompleteBalances
 
-    #endregion
+        #endregion
 
         public void Dispose() => httpClient.Dispose();
     }
