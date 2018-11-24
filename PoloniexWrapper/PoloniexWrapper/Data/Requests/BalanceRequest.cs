@@ -8,21 +8,15 @@ namespace PoloniexWrapper.Data.Requests
 {
     public class BalanceRequest: BaseRequest
     {
-        public BalanceRequest():base()
+        public BalanceRequest(string apiKey) : base(apiKey)
         {
-            getArgs = new Dictionary<string, string>
+            arguments = new Dictionary<string, string>
             {
-                ["command"] = "returnBalances"
+                ["command"] = "returnBalances",
+                ["nonce"] = GetNonce()
             };
 
-            Url = Build(get).Result;
-
-            postArgs = new Dictionary<string, string>
-            {
-                ["tonce"] = GetTonce()
-            };
-
-            //POSTdata = 
+            GenerateRequest(trade);
         }
     }
 }

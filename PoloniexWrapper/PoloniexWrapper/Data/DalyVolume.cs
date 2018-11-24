@@ -27,10 +27,5 @@ namespace PoloniexWrapper.Data
             quotedName = volume.Last().Key;
             quoted = Convert.ToDecimal(volume.Last().Value, CultureInfo.InvariantCulture);
         }
-
-        //private void SetPairId()
-        //{
-        //    pairID = new StringBuilder(baseName).AppendFormat("_{0}", quotedName).ToString();
-        //}
     }
 }

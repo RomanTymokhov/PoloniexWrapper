@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PoloniexWrapper.Data
+﻿namespace PoloniexWrapper.Data
 {
     public static class PairID
     {

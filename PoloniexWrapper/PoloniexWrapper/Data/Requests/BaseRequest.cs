@@ -14,25 +14,13 @@ namespace PoloniexWrapper.Data.Requests
     {
         private readonly string apiSec;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-        internal const string urlSegment = "/public?";
-
-        internal Dictionary<string, string> requestArgs;
-=======
-        internal string Url { get; set; }
-        internal string POSTdata { get; set; }
-=======
         internal const string urlSegmentPublic  = "/public?";
         internal const string urlSegmentTrading = "/tradingApi";
->>>>>>> dev/tohoff82
 
         internal Dictionary<string, string> arguments;
 
         internal string Url { get; private set; }
         internal string Sign { get; private set; }
-
->>>>>>> dev/tohoff82
 
         public BaseRequest() { }
 
@@ -52,33 +40,6 @@ namespace PoloniexWrapper.Data.Requests
                 CreateSignature();
             }                
         }
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-        public async Task<string> Make() => await Task.Run(() =>
-               new StringBuilder(urlSegment).AppendFormat("{0}", BuildRequestData(requestArgs)).ToString());
-=======
-        public async Task<string> Build(ReqType type) =>
-                await Task.Run(() => new StringBuilder(type == get ? urlSegmentPub : urlSegmentTrdApi).AppendFormat("{0}", BuildKVPairs(getArgs)).ToString());
->>>>>>> dev/tohoff82
-
-        //var reqestStr = new StringBuilder(urlSegment);
-        //reqestStr.AppendFormat("{0}", BuildRequestData(requestArgs));
-        //return reqestStr.ToString();
-        //return new StringBuilder(urlSegment).AppendFormat("{0}", BuildRequestData(requestArgs)).ToString();
-
-<<<<<<< HEAD
-        internal static string BuildRequestData(IDictionary<string, string> dict, bool escape = true) => 
-                        string.Join("&", dict.Select(kvp =>
-                        string.Format("{0}={1}", kvp.Key, escape ? HttpUtility.UrlEncode(kvp.Value) : kvp.Value)));
-=======
-        internal static string BuildKVPairs(IDictionary<string, string> dict, bool escape = true) => 
-                        string.Join("&", dict.Select(kvp =>
-                        string.Format("{0}={1}", kvp.Key, escape ? HttpUtility.UrlEncode(kvp.Value) : kvp.Value)));
-
-        internal string GetTonce() => DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString();
->>>>>>> dev/tohoff82
-=======
         private void CreateSignature() 
         {
             var encryptor = new HMACSHA512(Encoding.ASCII.GetBytes(apiSec));
@@ -86,6 +47,5 @@ namespace PoloniexWrapper.Data.Requests
 
             Sign = BitConverter.ToString(encryptor.ComputeHash(postBytes)).Replace("-", "").ToLower();
         }
->>>>>>> dev/tohoff82
     }
 }
