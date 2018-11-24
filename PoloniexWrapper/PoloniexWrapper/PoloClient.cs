@@ -1,11 +1,12 @@
-﻿using PoloniexWrapper.Extensions;
+﻿using static PoloniexWrapper.Helper.Enums.Account;
+using static PoloniexWrapper.Helper.Enums;
+using PoloniexWrapper.Helper;
 using PoloniexWrapper.Data.Requests;
 using PoloniexWrapper.Data.Responses;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.Text;
-using System.Linq;
 using System;
 using Newtonsoft.Json;
 
@@ -53,7 +54,7 @@ namespace PoloniexWrapper
             var json = await response.Content.ReadAsStringAsync();
 
             response.EnsureSuccessStatusCode();         // throw if web request failed
-            //todo: creae Exception handler
+            //todo: create Exception handler
 
             return await Task.Run(() => JsonConvert.DeserializeObject<T>(json));
         }
@@ -85,6 +86,9 @@ namespace PoloniexWrapper
 
         public async Task<DepositsWithdrawals> ReturnDepositsWithdrawalsAsync(DateTime start, DateTime end) =>
                 await JsonPOSTAsync<DepositsWithdrawals>(new DepositsWithdrawalsRequest(apiSec, start, end));
+
+        public async Task<AvailableAccountBalances> ReturnAvailableAccountBalancesAsync(Account account = all) =>
+                await JsonPOSTAsync<AvailableAccountBalances>(new AvailableAccountBalancesRequest(apiSec, account));
 
     #endregion
 
