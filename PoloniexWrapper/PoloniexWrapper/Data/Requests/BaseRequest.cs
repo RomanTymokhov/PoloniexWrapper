@@ -14,13 +14,13 @@ namespace PoloniexWrapper.Data.Requests
     {
         private readonly string apiKey;
 
-        internal const string urlSegmentPub  = "/public?";
-        internal const string urlSegmentTrdApi = "/tradingApi";
+        internal const string urlSegmentPublic  = "/public?";
+        internal const string urlSegmentTrading = "/tradingApi";
 
-        internal Dictionary<string, string> requestArgs;
+        internal Dictionary<string, string> arguments;
 
-        internal string Url { get; set; }
-        internal string Sign { get; set; }
+        internal string Url { get; private set; }
+        internal string Sign { get; private set; }
 
 
         public BaseRequest() { }
@@ -34,10 +34,10 @@ namespace PoloniexWrapper.Data.Requests
 
         internal void GenerateRequest(ReqType type)
         {
-            if (type == pub) Url = new StringBuilder(urlSegmentPub).AppendFormat("{0}", requestArgs.ToKeyValueString()).ToString();
+            if (type == pub) Url = new StringBuilder(urlSegmentPublic).AppendFormat("{0}", arguments.ToKeyValueString()).ToString();
             else
             {
-                Url = new StringBuilder(urlSegmentTrdApi).ToString();
+                Url = new StringBuilder(urlSegmentTrading).ToString();
                 CreateSignature();
             }
                 
