@@ -6,6 +6,10 @@ namespace PoloniexWrapper.Data
 {
     public static class CurrID
     {
+        /// <summary>
+        /// New currency ID will be added here to use.
+        /// </summary>
+        
         public const string btc = "BTC";
         public const string ltc = "LTC";
         public const string eth = "ETH";
