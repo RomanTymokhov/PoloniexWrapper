@@ -13,7 +13,7 @@ namespace PoloniexWrapper.Data.Requests
             arguments = new Dictionary<string, string>
             {
                 ["command"] = "returnBalances",
-                ["tonce"] = GetTonce()
+                ["nonce"] = GetNonce()
             };
 
             GenerateRequest(trade);
