@@ -16,17 +16,25 @@ namespace PoloniexWrapper.Data.Requests
         public TickerRequest() :base()
         {
 <<<<<<< HEAD
+<<<<<<< HEAD
             requestArgs = new Dictionary<string, string>
             {
                 ["command"] = "returnTicker"
             };
 =======
             getArgs = new Dictionary<string, string>
+=======
+            arguments = new Dictionary<string, string>
+>>>>>>> dev/tohoff82
             {
                 ["command"] = "returnTicker"
             };
 
+<<<<<<< HEAD
             Url = Build(get).Result;
+>>>>>>> dev/tohoff82
+=======
+            GenerateRequest(pub);
 >>>>>>> dev/tohoff82
         }
     }

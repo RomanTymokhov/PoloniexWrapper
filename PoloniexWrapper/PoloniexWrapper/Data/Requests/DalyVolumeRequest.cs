@@ -16,17 +16,25 @@ namespace PoloniexWrapper.Data.Requests
         public DalyVolumeRequest():base()
         {
 <<<<<<< HEAD
+<<<<<<< HEAD
             requestArgs = new Dictionary<string, string>
             {
                 ["command"] = "return24hVolume"
             };
 =======
             getArgs = new Dictionary<string, string>
+=======
+            arguments = new Dictionary<string, string>
+>>>>>>> dev/tohoff82
             {
                 ["command"] = "return24hVolume"
             };
 
+<<<<<<< HEAD
             Url = Build(get).Result;
+>>>>>>> dev/tohoff82
+=======
+            GenerateRequest(pub);
 >>>>>>> dev/tohoff82
         }
     }
