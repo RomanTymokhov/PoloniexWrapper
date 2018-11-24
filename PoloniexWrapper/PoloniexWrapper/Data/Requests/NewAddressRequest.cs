@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+
+using static PoloniexWrapper.Data.Requests.ReqType;
 
 namespace PoloniexWrapper.Data.Requests
 {
@@ -14,6 +14,8 @@ namespace PoloniexWrapper.Data.Requests
                 ["currency"] = curr,
                 ["nonce"] = GetNonce()
             };
+
+            GenerateRequest(trade);
         }
     }
 }
