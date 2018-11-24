@@ -15,7 +15,8 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            //var poloClientPub = new PoloClient();
+            //var poloClientPub = new PoloClient();ZZ3B-ABPGX2ID-LRW9CZDC-17P6C9P1", "cd31a4eb377b666c47d30b31a740417dc46d54e5966643991c297997d54e60f69bc2cdcfd06efa578993628b887225e61eac5b59327b033bd480757221b04668");
+
 
             //GetTickerData(poloClientPub, usdc_str);
             //GetDalyVolume(poloClientPub, btc_eth);
@@ -24,7 +25,8 @@ namespace Test
             //GetDepositAdresses(poloClientPriv, btc);
             //GetNewAdress(poloClientPriv, etc);
             //GetDepositsWithdravals(poloClientPriv, new DateTime(2017, 10, 1), DateTime.Now);
-            GetAvailableAccountBalances(poloClientPriv, exchange, eth);
+            //GetAvailableAccountBalances(poloClientPriv, exchange, eth);
+            //GetFeeInfo(poloClientPriv);
         }
 
         private static void GetTickerData(PoloClient client, string tickerID)
@@ -111,7 +113,7 @@ namespace Test
         }
         private static void GetAvailableAccountBalances(PoloClient client, PoloAccount acc, string currId)
         {
-            var aab = client.ReturnAvailableAccountBalancesAsync().Result;
+            var aab = client.ReturnAvailableAccountBalancesAsync(acc).Result;
 
             foreach (var aacc in aab.Exchange)
             {
@@ -120,6 +122,15 @@ namespace Test
             WriteLine("--------------------------------------------");
 
             WriteLine(currId + " -- " + aab.Exchange.FirstOrDefault(p => p.Key == currId).Value);
+        }
+        private static void GetFeeInfo(PoloClient client)
+        {
+            var fi = client.ReturnFeeInfoAsync().Result;
+
+            WriteLine("MakerFee --> " + fi.MakerFee);
+            WriteLine("TakerFee --> " + fi.TakerFee);
+            WriteLine("ThirtyDayVolume --> " + fi.ThirtyDayVolume);
+            WriteLine("NextTier --> " + fi.NextTier);
         }
     }
 }
