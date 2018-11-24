@@ -90,6 +90,8 @@ namespace PoloniexWrapper
         public async Task<AvailableAccountBalances> ReturnAvailableAccountBalancesAsync(PoloAccount account = all) =>
                 await JsonPOSTAsync<AvailableAccountBalances>(new AvailableAccountBalancesRequest(apiSec, account));
 
+        public async Task<FeeInfo> ReturnFeeInfoAsync() => await JsonPOSTAsync<FeeInfo>(new FeeInfoRequest(apiSec));
+
     #endregion
 
         public void Dispose() => httpClient.Dispose();
