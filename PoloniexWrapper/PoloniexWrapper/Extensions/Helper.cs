@@ -12,16 +12,5 @@ namespace PoloniexWrapper.Extensions
             return string.Join("&", dict.Select(kvp =>
                    string.Format("{0}={1}", kvp.Key, escape ? HttpUtility.UrlEncode(kvp.Value) : kvp.Value)));
         }
-
-        //public static string ToStringHex(this byte[] value)
-        //{
-        //    var output = string.Empty;
-        //    for (var i = 0; i < value.Length; i++)
-        //    {
-        //        output += value[i].ToString("x2", InvariantCulture);
-        //    }
-
-        //    return output;
-        //}
     }
 }
