@@ -10,7 +10,7 @@ namespace PoloniexWrapper.Data.Requests
     {
         public BalanceRequest():base()
         {
-            requestArgs = new Dictionary<string, string>
+            arguments = new Dictionary<string, string>
             {
                 ["command"] = "returnBalances",
                 ["tonce"] = GetTonce()
