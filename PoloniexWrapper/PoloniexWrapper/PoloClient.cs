@@ -69,12 +69,6 @@ namespace PoloniexWrapper
 
     #region Private Methods
 
-        public async Task<DalyVolumes> GetDalyVolumeAsync() =>  await JsonGETAsync<DalyVolumes> (new DalyVolumeRequest());
-
-    #endregion
-
-    #region Private Methods
-
         public async Task<Dictionary<string, string>> ReturnBalances() => await JsonPOSTAsync<Dictionary<string, string>>(new BalanceRequest(apiSec));
 
     #endregion
