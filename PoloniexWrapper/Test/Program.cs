@@ -19,6 +19,7 @@ namespace Test
             //GetBalances(poloClientPriv, sc);
             //GetCompleteBalances(poloClientPriv, xem);
             //GetDepositAdresses(poloClientPriv, btc);
+            //GetNewAdress(poloClientPriv, etc);
         }
 
         private static void GetTickerData(PoloClient client, string tickerID)
@@ -64,6 +65,13 @@ namespace Test
             var a = client.ReturnDepositAdressesAsync().Result.FirstOrDefault(k => k.Key == currId);
 
             WriteLine(a.Key + " -- " + a.Value);
+            WriteLine("--------------------------------------------");
+        }
+        private static void GetNewAdress(PoloClient client, string currId)
+        {
+            var na = client.GenerateNewAddress(currId).Result;
+
+            WriteLine("new " + currId + " adress --> " + na.Response);
             WriteLine("--------------------------------------------");
         }
     }
