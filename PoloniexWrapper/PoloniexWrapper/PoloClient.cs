@@ -60,24 +60,33 @@ namespace PoloniexWrapper
 
     #region Public Methods
 
-        public async Task<Dictionary<string, Ticker>> ReturnTickerAsync() => await JsonGETAsync<Dictionary<string, Ticker>>(new TickerRequest());
+        public async Task<Dictionary<string, Ticker>> ReturnTickerAsync() => 
+                await JsonGETAsync<Dictionary<string, Ticker>>(new TickerRequest());
 
-        public async Task<DalyVolumes> ReturnDalyVolumesAsync() =>  await JsonGETAsync<DalyVolumes> (new DalyVolumeRequest());
+        public async Task<DalyVolumes> ReturnDalyVolumesAsync() => 
+                await JsonGETAsync<DalyVolumes> (new DalyVolumeRequest());
 
     #endregion
 
 
     #region Private Methods
 
-        public async Task<Dictionary<string, string>> ReturnBalancesAsync() => await JsonPOSTAsync<Dictionary<string, string>>(new BalancesRequest(apiSec));
+        public async Task<Dictionary<string, string>> ReturnBalancesAsync() => 
+                await JsonPOSTAsync<Dictionary<string, string>>(new BalancesRequest(apiSec));
 
-        public async Task<Dictionary<string, CompleteBalance>> ReturComleteBalancesAsync() => await JsonPOSTAsync<Dictionary<string, CompleteBalance>>(new CompleteBalancesRequest(apiSec));
+        public async Task<Dictionary<string, CompleteBalance>> ReturComleteBalancesAsync() =>
+                await JsonPOSTAsync<Dictionary<string, CompleteBalance>>(new CompleteBalancesRequest(apiSec));
 
-        public async Task<Dictionary<string, string>> ReturnDepositAdressesAsync() => await JsonPOSTAsync<Dictionary<string, string>>(new DepositAdressesRequest(apiSec));
+        public async Task<Dictionary<string, string>> ReturnDepositAdressesAsync() =>
+                await JsonPOSTAsync<Dictionary<string, string>>(new DepositAdressesRequest(apiSec));
 
-        public async Task<NewAdress> GenerateNewAddress(string currID) => await JsonPOSTAsync<NewAdress>(new NewAddressRequest(apiSec, currID));
+        public async Task<NewAdress> GenerateNewAddressAsync(string currID) => 
+                await JsonPOSTAsync<NewAdress>(new NewAddressRequest(apiSec, currID));
 
-        #endregion
+        public async Task<DepositsWithdrawals> ReturnDepositsWithdrawalsAsync(DateTime start, DateTime end) =>
+                await JsonPOSTAsync<DepositsWithdrawals>(new DepositsWithdrawalsRequest(apiSec, start, end));
+
+    #endregion
 
         public void Dispose() => httpClient.Dispose();
     }
