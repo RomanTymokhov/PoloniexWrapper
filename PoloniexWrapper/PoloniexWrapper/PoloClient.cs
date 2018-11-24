@@ -73,6 +73,8 @@ namespace PoloniexWrapper
 
         public async Task<Dictionary<string, CompleteBalance>> ReturComleteBalancesAsync() => await JsonPOSTAsync<Dictionary<string, CompleteBalance>>(new CompleteBalancesRequest(apiSec));
 
+        public async Task<Dictionary<string, string>> ReturnDepositAdressesAsync() => await JsonPOSTAsync<Dictionary<string, string>>(new DepositAdressesRequest(apiSec));
+
         #endregion
 
         public void Dispose() => httpClient.Dispose();
