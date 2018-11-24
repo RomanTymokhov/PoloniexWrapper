@@ -4,9 +4,9 @@ using static PoloniexWrapper.Data.Requests.ReqType;
 
 namespace PoloniexWrapper.Data.Requests
 {
-    public class BalanceRequest: BaseRequest
+    public class BalancesRequest: BaseRequest
     {
-        public BalanceRequest(string apiKey):base(apiKey)
+        public BalancesRequest(string apiKey):base(apiKey)
         {
             arguments = new Dictionary<string, string>
             {
