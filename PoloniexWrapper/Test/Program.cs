@@ -3,7 +3,8 @@ using PoloniexWrapper.Data;
 using System.Linq;
 
 using static System.Console;
-using static PoloniexWrapper.Data.Responses.Ticker;
+using static PoloniexWrapper.Data.PairID;
+using static PoloniexWrapper.Data.CurrID;
 
 namespace Test
 {
@@ -11,16 +12,16 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            var poloClientPub  = new PoloClient();
-            var poloClientPriv = new PoloClient("apiKey");
+            //var poloClientPub  = new PoloClient();
 
-            GetTickerData(poloClientPub, PairID.usdc_str);
-            GetDalyVolume(poloClientPub, PairID.btc_eth);
+            //GetTickerData(poloClientPub, usdc_str);
+            //GetDalyVolume(poloClientPub, btc_eth);
+            //GetBalances(poloClientPriv, sc);
         }
 
         private static void GetTickerData(PoloClient client, string tickerID)
         {
-            var ticker = client.ReturnTickerAsync().Result.FirstOrDefault((tckr => tckr.Key == tickerID)).Value;
+            var ticker = client.ReturnTickerAsync().Result.FirstOrDefault(tckr => tckr.Key == tickerID).Value;
 
             WriteLine("LastPrice --> " + ticker.LastPrice);
             WriteLine("LowestAsk --> " + ticker.LowestAsk);
@@ -38,6 +39,13 @@ namespace Test
             WriteLine(dv.baseName + " -- " + dv.based);
             WriteLine(dv.quotedName + " -- " + dv.quoted);
             WriteLine("--------------------------------------------");
+        }
+
+        private static void GetBalances(PoloClient client, string tickerID)
+        {
+            var b = client.ReturnBalances().Result.FirstOrDefault(c => c.Key == tickerID);
+
+            WriteLine("Ballance " + b.Key + " = " + b.Value);
         }
     }
 }
