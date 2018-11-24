@@ -34,10 +34,10 @@ namespace PoloniexWrapper
         {
             var response = await httpClient.GetAsync(request.Url).ConfigureAwait(false);
 
+            var json = await response.Content.ReadAsStringAsync();
+
             response.EnsureSuccessStatusCode();         // throw if web request failed
             //todo: creae Exception handler
-
-            var json = await response.Content.ReadAsStringAsync();
 
             return await Task.Run(() => JsonConvert.DeserializeObject<T>(json));
         }
@@ -74,6 +74,8 @@ namespace PoloniexWrapper
         public async Task<Dictionary<string, CompleteBalance>> ReturComleteBalancesAsync() => await JsonPOSTAsync<Dictionary<string, CompleteBalance>>(new CompleteBalancesRequest(apiSec));
 
         public async Task<Dictionary<string, string>> ReturnDepositAdressesAsync() => await JsonPOSTAsync<Dictionary<string, string>>(new DepositAdressesRequest(apiSec));
+
+        public async Task<NewAdress> GenerateNewAddress(string currID) => await JsonPOSTAsync<NewAdress>(new NewAddressRequest(apiSec, currID));
 
         #endregion
 
