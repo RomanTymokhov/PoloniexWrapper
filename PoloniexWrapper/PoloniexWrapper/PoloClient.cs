@@ -66,7 +66,6 @@ namespace PoloniexWrapper
 
     #endregion
 
-        //
 
     #region Private Methods
 
