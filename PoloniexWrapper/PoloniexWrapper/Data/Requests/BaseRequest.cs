@@ -8,7 +8,7 @@ using static PoloniexWrapper.Data.Requests.ReqType;
 
 namespace PoloniexWrapper.Data.Requests
 {
-    public enum ReqType { pub, trade}
+    public enum ReqType {pub, trade}
 
     public abstract class BaseRequest
     {
