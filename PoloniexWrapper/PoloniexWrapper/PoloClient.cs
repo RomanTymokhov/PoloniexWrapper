@@ -1,4 +1,4 @@
-﻿using static PoloniexWrapper.Helper.Enums.Account;
+﻿using static PoloniexWrapper.Helper.Enums.PoloAccount;
 using static PoloniexWrapper.Helper.Enums;
 using PoloniexWrapper.Helper;
 using PoloniexWrapper.Data.Requests;
@@ -87,7 +87,7 @@ namespace PoloniexWrapper
         public async Task<DepositsWithdrawals> ReturnDepositsWithdrawalsAsync(DateTime start, DateTime end) =>
                 await JsonPOSTAsync<DepositsWithdrawals>(new DepositsWithdrawalsRequest(apiSec, start, end));
 
-        public async Task<AvailableAccountBalances> ReturnAvailableAccountBalancesAsync(Account account = all) =>
+        public async Task<AvailableAccountBalances> ReturnAvailableAccountBalancesAsync(PoloAccount account = all) =>
                 await JsonPOSTAsync<AvailableAccountBalances>(new AvailableAccountBalancesRequest(apiSec, account));
 
     #endregion
