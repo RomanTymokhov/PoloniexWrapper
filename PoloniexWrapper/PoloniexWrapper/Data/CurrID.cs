@@ -9,6 +9,7 @@ namespace PoloniexWrapper.Data
         public const string btc = "BTC";
         public const string ltc = "LTC";
         public const string eth = "ETH";
+        public const string etc = "ETC";
         public const string xrp = "XRP";
         public const string eos = "EOS";
         public const string xem = "XEM";
