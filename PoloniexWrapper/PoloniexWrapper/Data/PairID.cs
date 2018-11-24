@@ -6,6 +6,8 @@ namespace PoloniexWrapper.Data
 {
     public static class PairID
     {
+        public const string all = "all";
+
         public const string btc_xrp = "BTC_XRP";
         public const string btc_xem = "BTC_XEM";
         public const string btc_eth = "BTC_ETH";
