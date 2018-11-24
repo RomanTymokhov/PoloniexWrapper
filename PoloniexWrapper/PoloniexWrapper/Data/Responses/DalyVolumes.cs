@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-using System.Text;
 using System.Globalization;
+using Newtonsoft.Json;
 
 namespace PoloniexWrapper.Data.Responses
 {
     public class DalyVolumes
     {
         /// <summary>
-        /// Здесь будут добавляься новые пары для использования
+        /// New pairs will be added here to use.
         /// </summary>
+        
         public List<DalyVolume> VolumeList = new List<DalyVolume>(); 
 
         [JsonProperty("BTC_XRP")]
