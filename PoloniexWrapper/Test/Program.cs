@@ -12,11 +12,12 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            //var poloClientPub  = new PoloClient();
+            //var poloClientPub = new PoloClient();
 
             //GetTickerData(poloClientPub, usdc_str);
             //GetDalyVolume(poloClientPub, btc_eth);
             //GetBalances(poloClientPriv, sc);
+            //GetCompleteBalances(poloClientPriv, xem);
         }
 
         private static void GetTickerData(PoloClient client, string tickerID)
@@ -41,11 +42,21 @@ namespace Test
             WriteLine("--------------------------------------------");
         }
 
-        private static void GetBalances(PoloClient client, string tickerID)
+        private static void GetBalances(PoloClient client, string currID)
         {
-            var b = client.ReturnBalances().Result.FirstOrDefault(c => c.Key == tickerID);
+            var b = client.ReturnBalancesAsync().Result.FirstOrDefault(c => c.Key == currID);
 
             WriteLine("Ballance " + b.Key + " = " + b.Value);
+            WriteLine("--------------------------------------------");
+        }
+        private static void GetCompleteBalances(PoloClient client, string currId)
+        {
+            var b = client.ReturComleteBalancesAsync().Result.FirstOrDefault(k => k.Key == currId);
+
+            WriteLine("Avalible --> " + b.Value.Availabel);
+            WriteLine("OnOrders --> " + b.Value.OnOrders);
+            WriteLine("BtcValue --> " + b.Value.BtcValue);
+            WriteLine("--------------------------------------------");
         }
     }
 }
