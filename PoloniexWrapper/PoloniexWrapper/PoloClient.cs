@@ -12,6 +12,7 @@ namespace PoloniexWrapper
 {
     public class PoloClient : IDisposable
     {
+        private readonly string apiKey;
         private readonly HttpClient httpClient;
 
         private const string baseAddress = "https://poloniex.com";
@@ -25,6 +26,7 @@ namespace PoloniexWrapper
         {
             httpClient = new HttpClient { BaseAddress = new Uri(baseAddress) };
             httpClient.DefaultRequestHeaders.Add("Key", apiKey);
+            this.apiKey = apiKey;
         }
 
         protected async Task<T> JsonGETAsync<T>(BaseRequest request)
@@ -44,7 +46,8 @@ namespace PoloniexWrapper
             httpClient.DefaultRequestHeaders.Add("Sign", request.Sign);
 
             var response = await httpClient.PostAsync(request.Url,
-                new StringContent(JsonConvert.SerializeObject(request.arguments), Encoding.UTF8, "application/x-www-form-urlencoded")).ConfigureAwait(false);
+                new StringContent(JsonConvert.SerializeObject(request.arguments), 
+                    Encoding.UTF8, "application/x-www-form-urlencoded")).ConfigureAwait(false);
 
             response.EnsureSuccessStatusCode();         // throw if web request failed
             //todo: creae Exception handler
@@ -64,11 +67,7 @@ namespace PoloniexWrapper
 
     #region Private Methods
 
-        public async Task<Dictionary<string, string>> ReturnBalances()/* => await JsonPOSTAsync <Dictionary<string, string>> (new BalanceRequest());*/
-        {
-            var r = new BalanceRequest();
-            return await JsonPOSTAsync <Dictionary<string, string>> (r);
-        }
+        public async Task<Dictionary<string, string>> ReturnBalances() => await JsonPOSTAsync<Dictionary<string, string>>(new BalanceRequest(apiKey));
 
     #endregion
 
