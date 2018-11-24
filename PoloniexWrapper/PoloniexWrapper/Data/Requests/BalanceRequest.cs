@@ -10,19 +10,13 @@ namespace PoloniexWrapper.Data.Requests
     {
         public BalanceRequest():base()
         {
-            getArgs = new Dictionary<string, string>
+            requestArgs = new Dictionary<string, string>
             {
-                ["command"] = "returnBalances"
-            };
-
-            Url = Build(get).Result;
-
-            postArgs = new Dictionary<string, string>
-            {
+                ["command"] = "returnBalances",
                 ["tonce"] = GetTonce()
             };
 
-            //POSTdata = 
+            GenerateRequest(trade);
         }
     }
 }
