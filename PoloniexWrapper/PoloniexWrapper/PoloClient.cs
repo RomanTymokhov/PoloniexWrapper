@@ -44,7 +44,7 @@ namespace PoloniexWrapper
             httpClient.DefaultRequestHeaders.Add("Sign", request.Sign);
 
             var response = await httpClient.PostAsync(request.Url,
-                new StringContent(request.ToString(), Encoding.UTF8, "application/x-www-form-urlencoded")).ConfigureAwait(false);
+                new StringContent(JsonConvert.SerializeObject(request.arguments), Encoding.UTF8, "application/x-www-form-urlencoded")).ConfigureAwait(false);
 
             response.EnsureSuccessStatusCode();         // throw if web request failed
             //todo: creae Exception handler
