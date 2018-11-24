@@ -8,7 +8,7 @@ namespace PoloniexWrapper.Data.Requests
 {
     public class BalanceRequest: BaseRequest
     {
-        public BalanceRequest():base()
+        public BalanceRequest(string apiKey):base(apiKey)
         {
             arguments = new Dictionary<string, string>
             {
