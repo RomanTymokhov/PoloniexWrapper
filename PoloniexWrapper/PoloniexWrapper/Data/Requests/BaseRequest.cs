@@ -2,7 +2,7 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Security.Cryptography;
-using PoloniexWrapper.Extensions;
+using PoloniexWrapper.Helper;
 
 using static PoloniexWrapper.Data.Requests.ReqType;
 

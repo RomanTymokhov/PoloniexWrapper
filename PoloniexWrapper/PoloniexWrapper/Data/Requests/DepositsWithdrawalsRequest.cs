@@ -1,6 +1,6 @@
-﻿using PoloniexWrapper.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using PoloniexWrapper.Helper;
 
 using static PoloniexWrapper.Data.Requests.ReqType;
 
