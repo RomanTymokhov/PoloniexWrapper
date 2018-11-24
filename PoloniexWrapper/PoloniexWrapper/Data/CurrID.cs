@@ -14,6 +14,7 @@ namespace PoloniexWrapper.Data
         public const string xem = "XEM";
         public const string sc = "SC";
         public const string str = "STR";
+        public const string cvc = "CVC";
         public const string usdc = "USDC";
         public const string usdt = "USDT";
     }
