@@ -18,6 +18,7 @@ namespace Test
             //GetDalyVolume(poloClientPub, btc_eth);
             //GetBalances(poloClientPriv, sc);
             //GetCompleteBalances(poloClientPriv, xem);
+            //GetDepositAdresses(poloClientPriv, btc);
         }
 
         private static void GetTickerData(PoloClient client, string tickerID)
@@ -56,6 +57,13 @@ namespace Test
             WriteLine("Avalible --> " + b.Value.Availabel);
             WriteLine("OnOrders --> " + b.Value.OnOrders);
             WriteLine("BtcValue --> " + b.Value.BtcValue);
+            WriteLine("--------------------------------------------");
+        }
+        private static void GetDepositAdresses(PoloClient client, string currId)
+        {
+            var a = client.ReturnDepositAdressesAsync().Result.FirstOrDefault(k => k.Key == currId);
+
+            WriteLine(a.Key + " -- " + a.Value);
             WriteLine("--------------------------------------------");
         }
     }
