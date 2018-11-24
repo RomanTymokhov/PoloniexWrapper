@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using System.Text;
 using System.Linq;
+using PoloniexWrapper.Extensions;
 
 namespace PoloniexWrapper
 {
     public class PoloClient : IDisposable
     {
-        private readonly string apiKey;
+        private readonly string apiSec;
         private readonly HttpClient httpClient;
 
         private const string baseAddress = "https://poloniex.com";
@@ -22,11 +23,11 @@ namespace PoloniexWrapper
             httpClient = new HttpClient { BaseAddress = new Uri(baseAddress) };
         }
 
-        public PoloClient(string apiKey)
+        public PoloClient(string apiKey, string apiSec)
         {
             httpClient = new HttpClient { BaseAddress = new Uri(baseAddress) };
             httpClient.DefaultRequestHeaders.Add("Key", apiKey);
-            this.apiKey = apiKey;
+            this.apiSec = apiSec;
         }
 
         protected async Task<T> JsonGETAsync<T>(BaseRequest request)
@@ -46,13 +47,13 @@ namespace PoloniexWrapper
             httpClient.DefaultRequestHeaders.Add("Sign", request.Sign);
 
             var response = await httpClient.PostAsync(request.Url,
-                new StringContent(JsonConvert.SerializeObject(request.arguments), 
+                new StringContent(request.arguments.ToKeyValueString(), 
                     Encoding.UTF8, "application/x-www-form-urlencoded")).ConfigureAwait(false);
+
+            var json = await response.Content.ReadAsStringAsync();
 
             response.EnsureSuccessStatusCode();         // throw if web request failed
             //todo: creae Exception handler
-
-            var json = await response.Content.ReadAsStringAsync();
 
             return await Task.Run(() => JsonConvert.DeserializeObject<T>(json));
         }
@@ -67,7 +68,7 @@ namespace PoloniexWrapper
 
     #region Private Methods
 
-        public async Task<Dictionary<string, string>> ReturnBalances() => await JsonPOSTAsync<Dictionary<string, string>>(new BalanceRequest(apiKey));
+        public async Task<Dictionary<string, string>> ReturnBalances() => await JsonPOSTAsync<Dictionary<string, string>>(new BalanceRequest(apiSec));
 
     #endregion
 
