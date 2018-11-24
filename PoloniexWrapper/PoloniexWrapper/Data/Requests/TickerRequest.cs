@@ -8,12 +8,12 @@ namespace PoloniexWrapper.Data.Requests
     {
         public TickerRequest() :base()
         {
-            getArgs = new Dictionary<string, string>
+            requestArgs = new Dictionary<string, string>
             {
                 ["command"] = "returnTicker"
             };
 
-            Url = Build(get).Result;
+            GenerateRequest(pub);
         }
     }
 }
