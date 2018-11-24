@@ -6,7 +6,7 @@ namespace PoloniexWrapper.Data.Requests
 {
     public class BalancesRequest: BaseRequest
     {
-        public BalancesRequest(string apiKey):base(apiKey)
+        public BalancesRequest(string apiSec):base(apiSec)
         {
             arguments = new Dictionary<string, string>
             {
