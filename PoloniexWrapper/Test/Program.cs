@@ -5,6 +5,7 @@ using System.Linq;
 using static System.Console;
 using static PoloniexWrapper.Data.PairID;
 using static PoloniexWrapper.Data.CurrID;
+using System;
 
 namespace Test
 {
@@ -20,6 +21,7 @@ namespace Test
             //GetCompleteBalances(poloClientPriv, xem);
             //GetDepositAdresses(poloClientPriv, btc);
             //GetNewAdress(poloClientPriv, etc);
+            //GetDepositsWithdravals(poloClientPriv, new DateTime(2017, 10, 1), DateTime.Now);
         }
 
         private static void GetTickerData(PoloClient client, string tickerID)
@@ -69,10 +71,40 @@ namespace Test
         }
         private static void GetNewAdress(PoloClient client, string currId)
         {
-            var na = client.GenerateNewAddress(currId).Result;
+            var na = client.GenerateNewAddressAsync(currId).Result;
 
             WriteLine("new " + currId + " adress --> " + na.Response);
             WriteLine("--------------------------------------------");
+        }
+        private static void GetDepositsWithdravals(PoloClient client, DateTime start, DateTime end)
+        {
+            var dw = client.ReturnDepositsWithdrawalsAsync(start, end).Result;
+
+            foreach (var deposit in dw.DepositList)
+            {
+                WriteLine("Adress --> " + deposit.Adress);
+                WriteLine("Amount --> " + deposit.Amount);
+                WriteLine("onfirmation --> " + deposit.Confirmations);
+                WriteLine("Currecy --> " + deposit.CurrencyID);
+                WriteLine("Status --> " + deposit.Status);
+                WriteLine("Timestamp --> " + deposit.Timestamp);
+                WriteLine("TxID --> " + deposit.TxID);
+                WriteLine("*******************");
+            }
+
+            WriteLine("--------------------------------------------");
+
+            foreach (var witdrawal in dw.WithdrawalList)
+            {
+                WriteLine("Adress --> " + witdrawal.Adress);
+                WriteLine("Amount --> " + witdrawal.Amount);
+                WriteLine("Currency --> " + witdrawal.CurrencyID);
+                WriteLine("IpAdress --> " + witdrawal.IpAdress);
+                WriteLine("Status --> " + witdrawal.Status);
+                WriteLine("Timestamp --> " + witdrawal.Timestamp);
+                WriteLine("WithdrawalID --> " + witdrawal.WithdrawalID);
+                WriteLine("******************");
+            }
         }
     }
 }
