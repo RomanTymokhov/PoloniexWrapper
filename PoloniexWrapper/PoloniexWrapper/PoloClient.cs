@@ -1,20 +1,17 @@
-﻿using Newtonsoft.Json;
-using PoloniexWrapper.Data;
-using PoloniexWrapper.Data.Requests;
+﻿using PoloniexWrapper.Data.Requests;
 using PoloniexWrapper.Data.Responses;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Linq;
 using System.Threading.Tasks;
+using System.Net.Http;
 using System.Text;
+using System.Linq;
 
 namespace PoloniexWrapper
 {
     public class PoloClient : IDisposable
     {
-        private string ApiKey { get; set; }
-
         private readonly HttpClient httpClient;
 
         private const string baseAddress = "https://poloniex.com";
@@ -24,14 +21,14 @@ namespace PoloniexWrapper
             httpClient = new HttpClient { BaseAddress = new Uri(baseAddress) };
         }
 
-        public PoloClient(string apiKey):base()
+        public PoloClient(string apiKey)
         {
-            ApiKey = apiKey;
+            httpClient = new HttpClient { BaseAddress = new Uri(baseAddress) };
+            httpClient.DefaultRequestHeaders.Add("Key", apiKey);
         }
 
         protected async Task<T> JsonGETAsync<T>(BaseRequest request)
         {
-            var str = request.ToString();
             var response = await httpClient.GetAsync(request.Url).ConfigureAwait(false);
 
             response.EnsureSuccessStatusCode();         // throw if web request failed
@@ -44,8 +41,10 @@ namespace PoloniexWrapper
 
         protected async Task<T> JsonPOSTAsync<T>(BaseRequest request)
         {
+            httpClient.DefaultRequestHeaders.Add("Sign", request.Sign);
+
             var response = await httpClient.PostAsync(request.Url,
-                new StringContent("? todo", Encoding.UTF8, "application/x-www-form-urlencoded")).ConfigureAwait(false);
+                new StringContent(request.ToString(), Encoding.UTF8, "application/x-www-form-urlencoded")).ConfigureAwait(false);
 
             response.EnsureSuccessStatusCode();         // throw if web request failed
             //todo: creae Exception handler
@@ -65,7 +64,11 @@ namespace PoloniexWrapper
 
     #region Private Methods
 
-        public async Task<Dictionary<string, string>> ReturnBalances() => await JsonPOSTAsync <Dictionary<string, string>> (new BalanceRequest());
+        public async Task<Dictionary<string, string>> ReturnBalances()/* => await JsonPOSTAsync <Dictionary<string, string>> (new BalanceRequest());*/
+        {
+            var r = new BalanceRequest();
+            return await JsonPOSTAsync <Dictionary<string, string>> (r);
+        }
 
     #endregion
 
