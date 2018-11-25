@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PoloniexWrapper.Data
 {
-    public static class CurrID
+    public static class CurrencieID
     {
         /// <summary>
         /// New currency ID will be added here to use.
