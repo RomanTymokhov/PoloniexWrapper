@@ -43,6 +43,6 @@ namespace PoloniexWrapper.Data.Responses
         public OrderType Type { get; private set; }
 
         [JsonProperty("category")]
-        public TradingAccount AccountCategory { get; private set; }
+        public string AccountCategory { get; private set; }
     }
 }
