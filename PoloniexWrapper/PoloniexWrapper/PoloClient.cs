@@ -20,10 +20,7 @@ namespace PoloniexWrapper
 
         private const string baseAddress = "https://poloniex.com";
 
-        public PoloClient()
-        {
-            httpClient = new HttpClient { BaseAddress = new Uri(baseAddress) };
-        }
+        public PoloClient() => httpClient = new HttpClient { BaseAddress = new Uri(baseAddress) };
 
         public PoloClient(string apiKey, string apiSec)
         {
@@ -32,7 +29,7 @@ namespace PoloniexWrapper
             this.apiSec = apiSec;
         }
 
-        protected async Task<T> JsonGETAsync<T>(BaseRequest request)
+        protected async Task<T> HttpGetAsync<T>(BaseRequest request)
         {
             var response = await httpClient.GetAsync(request.Url).ConfigureAwait(false);
 
@@ -44,7 +41,7 @@ namespace PoloniexWrapper
             return await Task.Run(() => JsonConvert.DeserializeObject<T>(json));
         }
 
-        protected async Task<T> JsonPOSTAsync<T>(BaseRequest request)
+        protected async Task<T> HttpPostAsync<T>(BaseRequest request)
         {
             httpClient.DefaultRequestHeaders.Add("Sign", request.Sign);
 
@@ -63,10 +60,10 @@ namespace PoloniexWrapper
     #region Public Methods
 
         public async Task<Dictionary<string, Ticker>> ReturnTickerAsync() => 
-                await JsonGETAsync<Dictionary<string, Ticker>>(new TickerRequest());
+                await HttpGetAsync<Dictionary<string, Ticker>>(new TickerRequest());
 
         public async Task<DalyVolumes> ReturnDalyVolumesAsync() => 
-                await JsonGETAsync<DalyVolumes> (new DalyVolumeRequest());
+                await HttpGetAsync<DalyVolumes> (new DalyVolumeRequest());
 
     #endregion
 
@@ -74,36 +71,51 @@ namespace PoloniexWrapper
     #region Private Methods
 
         public async Task<Dictionary<string, string>> ReturnBalancesAsync() => 
-                await JsonPOSTAsync<Dictionary<string, string>>(new BalancesRequest(apiSec));
+                await HttpPostAsync<Dictionary<string, string>>(new BalancesRequest(apiSec));
 
         public async Task<Dictionary<string, CompleteBalance>> ReturComleteBalancesAsync() =>
-                await JsonPOSTAsync<Dictionary<string, CompleteBalance>>(new CompleteBalancesRequest(apiSec));
+                await HttpPostAsync<Dictionary<string, CompleteBalance>>(new CompleteBalancesRequest(apiSec));
 
         public async Task<Dictionary<string, string>> ReturnDepositAdressesAsync() =>
-                await JsonPOSTAsync<Dictionary<string, string>>(new DepositAdressesRequest(apiSec));
+                await HttpPostAsync<Dictionary<string, string>>(new DepositAdressesRequest(apiSec));
 
         public async Task<NewAdress> GenerateNewAddressAsync(string currID) => 
-                await JsonPOSTAsync<NewAdress>(new NewAddressRequest(apiSec, currID));
+                await HttpPostAsync<NewAdress>(new NewAddressRequest(apiSec, currID));
 
         public async Task<DepositsWithdrawals> ReturnDepositsWithdrawalsAsync(DateTime start, DateTime end) =>
-                await JsonPOSTAsync<DepositsWithdrawals>(new DepositsWithdrawalsRequest(apiSec, start, end));
+                await HttpPostAsync<DepositsWithdrawals>(new DepositsWithdrawalsRequest(apiSec, start, end));
 
         public async Task<AvailableAccountBalances> ReturnAvailableAccountBalancesAsync(TradingAccount account = all) =>
-                await JsonPOSTAsync<AvailableAccountBalances>(new AvailableAccountBalancesRequest(apiSec, account));
+                await HttpPostAsync<AvailableAccountBalances>(new AvailableAccountBalancesRequest(apiSec, account));
 
-        public async Task<FeeInfo> ReturnFeeInfoAsync() => await JsonPOSTAsync<FeeInfo>(new FeeInfoRequest(apiSec));
+        public async Task<FeeInfo> ReturnFeeInfoAsync() => await HttpPostAsync<FeeInfo>(new FeeInfoRequest(apiSec));
 
         /// <summary>
-        /// depending on currencyPair return a specific result
+        /// depending on "pairID" return a specific result
         /// </summary>
         /// <typeparam name="T"> Dictionary<string, List<Order>> </typeparam>
-        /// <param name="currencyPair">allPairs</param>
+        /// <param name="pairID">allPairs</param>
         /// <returns> Dictionary<string, List<Order>> </returns>
         /// <typeparam name="T"> List<Order> </typeparam>
-        /// <param name="currencyPair">concret pair</param>
+        /// <param name="pairID">concret pair</param>
         /// <returns> List<Order> </returns>
-        public async Task<T> ReturnOpenOrdersAsync<T>(string currencyPair = allPairs) =>
-                await JsonPOSTAsync<T>(new OpenOrdersRequest(apiSec, currencyPair));
+
+        public async Task<T> ReturnOpenOrdersAsync<T>(string pairID = allPairs) =>
+                await HttpPostAsync<T>(new OpenOrdersRequest(apiSec, pairID));
+
+        /// <summary>
+        /// depending on "pairID" return a specific result
+        /// </summary>
+        /// <typeparam name="T"> List<Trade> or Dictionary<string, List<Trade>> </typeparam>
+        /// <param name="apiSec"> apiSec </param>
+        /// <param name="pairID"> pairId</param>
+        /// <param name="start"> time period begin</param>
+        /// <param name="end"> time period end</param>
+        /// <param name="limit"> quontity trades (minimum = 500, maximum = 10 000) </param>
+        /// <returns></returns>
+       
+        public async Task<T> ReturnTradeHistoryAsync<T>(string apiSec, string pairID = allPairs, DateTime? start = null, DateTime? end = null, ushort limit = 500) =>
+                await HttpPostAsync<T>(new TradeHistoryRequest(apiSec, pairID, start, end, limit));
 
         #endregion
 
