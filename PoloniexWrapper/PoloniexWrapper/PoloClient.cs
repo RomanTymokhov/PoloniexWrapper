@@ -1,5 +1,6 @@
 ﻿using static PoloniexWrapper.Helper.Enums.PoloAccount;
 using static PoloniexWrapper.Helper.Enums;
+using static PoloniexWrapper.Data.PairID;
 using PoloniexWrapper.Helper;
 using PoloniexWrapper.Data.Requests;
 using PoloniexWrapper.Data.Responses;
@@ -92,7 +93,19 @@ namespace PoloniexWrapper
 
         public async Task<FeeInfo> ReturnFeeInfoAsync() => await JsonPOSTAsync<FeeInfo>(new FeeInfoRequest(apiSec));
 
-    #endregion
+        /// <summary>
+        /// depending on currencyPair return a specific result
+        /// </summary>
+        /// <typeparam name="T"> Dictionary<string, List<Order>> </typeparam>
+        /// <param name="currencyPair">allPairs</param>
+        /// <returns> Dictionary<string, List<Order>> </returns>
+        /// <typeparam name="T"> List<Order> </typeparam>
+        /// <param name="currencyPair">concret pair</param>
+        /// <returns> List<Order> </returns>
+        public async Task<T> ReturnOpenOrdersAsync<T>(string currencyPair = allPairs) =>
+                await JsonPOSTAsync<T>(new OpenOrdersRequest(apiSec, currencyPair));
+
+        #endregion
 
         public void Dispose() => httpClient.Dispose();
     }
