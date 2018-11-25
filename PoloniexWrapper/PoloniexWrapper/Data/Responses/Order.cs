@@ -9,7 +9,7 @@ namespace PoloniexWrapper.Data.Responses
     {
         [JsonProperty("orderNumber")]
         private readonly string orderNumber;
-        public uint? OrderNumber => Convert.ToUInt32(orderNumber, CultureInfo.InvariantCulture);
+        public ulong? OrderNumber => Convert.ToUInt64(orderNumber, CultureInfo.InvariantCulture);
 
         [JsonProperty("type")]
         public OrderType Type { get; private set; }
