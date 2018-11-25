@@ -8,7 +8,7 @@ namespace PoloniexWrapper.Data.Requests
 {
     public class TradeHistoryRequest : BaseRequest
     { 
-        public TradeHistoryRequest(string apiSec, string pairID, DateTime? start, DateTime? end, ushort limit) : base(apiSec)
+        public TradeHistoryRequest(string apiSec, DateTime start, DateTime end, string pairID, ushort limit) : base(apiSec)
         {
             arguments = new Dictionary<string, string>
             {
