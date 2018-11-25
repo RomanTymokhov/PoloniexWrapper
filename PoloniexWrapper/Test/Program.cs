@@ -4,10 +4,12 @@ using System.Linq;
 
 using static System.Console;
 using static PoloniexWrapper.Data.PairID;
-using static PoloniexWrapper.Data.CurrID;
+using static PoloniexWrapper.Data.CurrencieID;
 using System;
 using static PoloniexWrapper.Helper.Enums;
 using static PoloniexWrapper.Helper.Enums.PoloAccount;
+using System.Collections.Generic;
+using PoloniexWrapper.Data.Responses;
 
 namespace Test
 {
@@ -15,8 +17,7 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            //var poloClientPub = new PoloClient();ZZ3B-ABPGX2ID-LRW9CZDC-17P6C9P1", "cd31a4eb377b666c47d30b31a740417dc46d54e5966643991c297997d54e60f69bc2cdcfd06efa578993628b887225e61eac5b59327b033bd480757221b04668");
-
+            //var poloClientPub = new PoloClient();
 
             //GetTickerData(poloClientPub, usdc_str);
             //GetDalyVolume(poloClientPub, btc_eth);
@@ -27,6 +28,7 @@ namespace Test
             //GetDepositsWithdravals(poloClientPriv, new DateTime(2017, 10, 1), DateTime.Now);
             //GetAvailableAccountBalances(poloClientPriv, exchange, eth);
             //GetFeeInfo(poloClientPriv);
+            //GetOpenOrders(poloClientPriv, allPairs);
         }
 
         private static void GetTickerData(PoloClient client, string tickerID)
@@ -131,6 +133,36 @@ namespace Test
             WriteLine("TakerFee --> " + fi.TakerFee);
             WriteLine("ThirtyDayVolume --> " + fi.ThirtyDayVolume);
             WriteLine("NextTier --> " + fi.NextTier);
+        }
+        private static void GetOpenOrders(PoloClient client, string pairId)
+        {
+            if(pairId == allPairs)
+            {
+                var ol = client.ReturnOpenOrdersAsync<Dictionary<string, List<Order>>>().Result;
+
+                foreach (var item in ol)
+                {
+                    foreach (var order in item.Value)
+                    {
+
+                    WriteLine(item.Key + " -- " + item.Value.FirstOrDefault(k => k.Margin == 0).Rate + " -- "
+                                                + item.Value.FirstOrDefault(k => k.Margin == 0).Amount + " -- "
+                                                + item.Value.FirstOrDefault(k => k.Margin == 0).DateTime.ToLocalTime());
+
+                    }
+                }
+            }
+            else
+            {
+                var oo = client.ReturnOpenOrdersAsync<List<Order>>(pairId).Result;
+
+                WriteLine("Rate --> " + oo.FirstOrDefault(k => k.Margin == 0).Rate);
+                WriteLine("Amount --> " + oo.FirstOrDefault(k => k.Margin == 0).Amount);
+                WriteLine("DateTime --> " + oo.FirstOrDefault(k => k.Margin == 0).DateTime.ToLocalTime());
+                WriteLine("OrderNumber --> " + oo.FirstOrDefault(k => k.Margin == 0).OrderNumber);
+            }
+
+            
         }
     }
 }
