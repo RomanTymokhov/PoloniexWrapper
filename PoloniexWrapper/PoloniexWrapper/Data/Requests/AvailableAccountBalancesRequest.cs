@@ -7,7 +7,7 @@ namespace PoloniexWrapper.Data.Requests
 {
     public class AvailableAccountBalancesRequest : BaseRequest
     {
-        public AvailableAccountBalancesRequest(string apiSec, PoloAccount account) : base(apiSec)
+        public AvailableAccountBalancesRequest(string apiSec, TradingAccount account) : base(apiSec)
         {
             arguments = new Dictionary<string, string>
             {
