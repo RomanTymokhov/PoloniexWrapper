@@ -13,7 +13,7 @@ namespace PoloniexWrapper.Data.Requests
                 ["command"] = "return24hVolume"
             };
 
-            GenerateRequest(get);
+            GenerateRequest(GET);
         }
     }
 }
