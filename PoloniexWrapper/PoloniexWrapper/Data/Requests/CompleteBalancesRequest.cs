@@ -4,7 +4,7 @@ using static PoloniexWrapper.Helper.Enums.ReqType;
 
 namespace PoloniexWrapper.Data.Requests
 {
-    public class CompleteBalancesRequest : BaseRequest
+    public class CompleteBalancesRequest : RequestObjec
     {
         public CompleteBalancesRequest(string apiSec) : base(apiSec)
         {
