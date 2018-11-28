@@ -6,7 +6,7 @@ namespace PoloniexWrapper.Helper
 {
     public class Enums
     {
-        public enum ReqType { get, post }
+        public enum ReqType { GET, POST }
 
         public enum OrderType { buy, sell}
 
