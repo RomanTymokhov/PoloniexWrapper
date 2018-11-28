@@ -4,12 +4,11 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using PoloniexWrapper.Helper;
 
-using static PoloniexWrapper.Data.Requests.ReqType;
+using static PoloniexWrapper.Helper.Enums;
+using static PoloniexWrapper.Helper.Enums.ReqType;
 
 namespace PoloniexWrapper.Data.Requests
 {
-    public enum ReqType {pub, trade}
-
     public abstract class BaseRequest
     {
         private readonly string apiSec;
@@ -34,12 +33,15 @@ namespace PoloniexWrapper.Data.Requests
 
         internal void GenerateRequest(ReqType type)
         {
-            if (type == pub) Url = new StringBuilder(urlSegmentPublic).AppendFormat("{0}", arguments.ToKeyValueString()).ToString();
-            else
+            switch(type)
             {
-                Url = new StringBuilder(urlSegmentTrading).ToString();
-                CreateSignature();
-            }                
+                case post:
+                    {
+                        Url = new StringBuilder(urlSegmentTrading).ToString();
+                        CreateSignature();
+                    }; break;
+                default: Url = new StringBuilder(urlSegmentPublic).AppendFormat("{0}", arguments.ToKeyValueString()).ToString(); break;
+            }           
         }
 
         private void CreateSignature() 
