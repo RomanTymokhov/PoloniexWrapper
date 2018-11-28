@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using PoloniexWrapper.Helper;
 
-using static PoloniexWrapper.Data.Requests.ReqType;
+using static PoloniexWrapper.Helper.Enums.ReqType;
 
 namespace PoloniexWrapper.Data.Requests
 {
@@ -20,7 +20,7 @@ namespace PoloniexWrapper.Data.Requests
                 ["nonce"] = GetNonce()
             };
 
-            GenerateRequest(trade);
+            GenerateRequest(post);
         }
     }
 }
