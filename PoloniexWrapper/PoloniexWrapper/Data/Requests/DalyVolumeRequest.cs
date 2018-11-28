@@ -4,7 +4,7 @@ using static PoloniexWrapper.Helper.Enums.ReqType;
 
 namespace PoloniexWrapper.Data.Requests
 {
-    public class DalyVolumeRequest: RequestObjec
+    public class DalyVolumeRequest: RequestObject
     {
         public DalyVolumeRequest():base()
         {
