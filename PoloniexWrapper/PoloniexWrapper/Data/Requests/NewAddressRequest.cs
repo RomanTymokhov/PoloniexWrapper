@@ -4,7 +4,7 @@ using static PoloniexWrapper.Helper.Enums.ReqType;
 
 namespace PoloniexWrapper.Data.Requests
 {
-    public class NewAddressRequest : BaseRequest
+    public class NewAddressRequest : RequestObjec
     {
         public NewAddressRequest(string apiSec, string curr) : base(apiSec)
         {
