@@ -6,7 +6,7 @@ using static PoloniexWrapper.Helper.Enums.ReqType;
 
 namespace PoloniexWrapper.Data.Requests
 {
-    public class DepositsWithdrawalsRequest :RequestObjec
+    public class DepositsWithdrawalsRequest :RequestObject
     {
         public DepositsWithdrawalsRequest(string apiSec, DateTime startDate, DateTime endDate) : base(apiSec)
         {
