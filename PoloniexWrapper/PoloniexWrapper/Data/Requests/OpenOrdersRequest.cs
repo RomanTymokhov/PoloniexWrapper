@@ -4,7 +4,7 @@ using static PoloniexWrapper.Helper.Enums.ReqType;
 
 namespace PoloniexWrapper.Data.Requests
 {
-    public class OpenOrdersRequest : RequestObjec
+    public class OpenOrdersRequest : RequestObject
     {
         public OpenOrdersRequest(string apiSec, string pair) : base(apiSec)
         {
