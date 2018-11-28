@@ -6,7 +6,7 @@ using static PoloniexWrapper.Helper.Enums.ReqType;
 
 namespace PoloniexWrapper.Data.Requests
 {
-    public class TradeHistoryRequest : RequestObjec
+    public class TradeHistoryRequest : RequestObject
     { 
         public TradeHistoryRequest(string apiSec, DateTime start, DateTime end, string pairID, ushort limit) : base(apiSec)
         {
