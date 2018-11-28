@@ -29,9 +29,9 @@ namespace PoloniexWrapper
             this.apiSec = apiSec;
         }
 
-        protected async Task<T> HttpGetAsync<T>(BaseRequest request)
+        protected async Task<T> HttpGetAsync<T>(RequestObject requestObj)
         {
-            var response = await httpClient.GetAsync(request.Url).ConfigureAwait(false);
+            var response = await httpClient.GetAsync(requestObj.Url).ConfigureAwait(false);
 
             var json = await response.Content.ReadAsStringAsync();
 
@@ -41,12 +41,12 @@ namespace PoloniexWrapper
             return await Task.Run(() => JsonConvert.DeserializeObject<T>(json));
         }
 
-        protected async Task<T> HttpPostAsync<T>(BaseRequest request)
+        protected async Task<T> HttpPostAsync<T>(RequestObject requestObj)
         {
-            httpClient.DefaultRequestHeaders.Add("Sign", request.Sign);
+            httpClient.DefaultRequestHeaders.Add("Sign", requestObj.Sign);
 
-            var response = await httpClient.PostAsync(request.Url,
-                new StringContent(request.arguments.ToKeyValueString(), 
+            var response = await httpClient.PostAsync(requestObj.Url,
+                new StringContent(requestObj.arguments.ToKeyValueString(), 
                     Encoding.UTF8, "application/x-www-form-urlencoded")).ConfigureAwait(false);
 
             var json = await response.Content.ReadAsStringAsync();
@@ -73,7 +73,7 @@ namespace PoloniexWrapper
         public async Task<Dictionary<string, string>> ReturnBalancesAsync() => 
                 await HttpPostAsync<Dictionary<string, string>>(new BalancesRequest(apiSec));
 
-        public async Task<Dictionary<string, CompleteBalance>> ReturComleteBalancesAsync() =>
+        public async Task<Dictionary<string, CompleteBalance>> ReturnComleteBalancesAsync() =>
                 await HttpPostAsync<Dictionary<string, CompleteBalance>>(new CompleteBalancesRequest(apiSec));
 
         public async Task<Dictionary<string, string>> ReturnDepositAdressesAsync() =>
