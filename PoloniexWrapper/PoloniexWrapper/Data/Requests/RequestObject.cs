@@ -9,7 +9,7 @@ using static PoloniexWrapper.Helper.Enums.ReqType;
 
 namespace PoloniexWrapper.Data.Requests
 {
-    public abstract class RequestObjec
+    public abstract class RequestObject
     {
         private readonly string apiSec;
 
@@ -22,9 +22,9 @@ namespace PoloniexWrapper.Data.Requests
         internal string Sign { get; private set; }
 
 
-        public RequestObjec() { }
+        public RequestObject() { }
 
-        public RequestObjec(string apiSec)
+        public RequestObject(string apiSec)
         {
             this.apiSec = apiSec;
         }
