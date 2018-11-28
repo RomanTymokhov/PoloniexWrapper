@@ -5,7 +5,7 @@ using static PoloniexWrapper.Helper.Enums;
 
 namespace PoloniexWrapper.Data.Requests
 {
-    public class AvailableAccountBalancesRequest : BaseRequest
+    public class AvailableAccountBalancesRequest : RequestObjec
     {
         public AvailableAccountBalancesRequest(string apiSec, TradingAccount account) : base(apiSec)
         {
