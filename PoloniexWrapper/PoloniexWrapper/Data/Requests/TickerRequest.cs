@@ -4,7 +4,7 @@ using static PoloniexWrapper.Helper.Enums.ReqType;
 
 namespace PoloniexWrapper.Data.Requests
 {
-    public class TickerRequest: RequestObjec
+    public class TickerRequest: RequestObject
     {
         public TickerRequest() :base()
         {
