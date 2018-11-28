@@ -1,9 +1,7 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 
 namespace PoloniexWrapper.Data
 {
@@ -11,26 +9,21 @@ namespace PoloniexWrapper.Data
     {
         public string pairID;
 
-        public string baseName;
-        public decimal? based;
+        public string baseCurrencyName;
+        public decimal? baseCurrencyVolume;
 
-        public string quotedName;
-        public decimal? quoted;
+        public string quotedCurrencyName;
+        public decimal? quotedCurrencyVolume;
 
-        public DalyVolume(Dictionary<string, string> volume, string id)
+        public DalyVolume(Dictionary<string, string> dalyData, string id)
         {
             pairID = id;
 
-            baseName = volume.First().Key;
-            based = Convert.ToDecimal(volume.First().Value, CultureInfo.InvariantCulture);
+            baseCurrencyName   = dalyData.First().Key;
+            baseCurrencyVolume = Convert.ToDecimal(dalyData.First().Value, CultureInfo.InvariantCulture);
 
-            quotedName = volume.Last().Key;
-            quoted = Convert.ToDecimal(volume.Last().Value, CultureInfo.InvariantCulture);
+            quotedCurrencyName   = dalyData.Last().Key;
+            quotedCurrencyVolume = Convert.ToDecimal(dalyData.Last().Value, CultureInfo.InvariantCulture);
         }
-
-        //private void SetPairId()
-        //{
-        //    pairID = new StringBuilder(baseName).AppendFormat("_{0}", quotedName).ToString();
-        //}
     }
 }
