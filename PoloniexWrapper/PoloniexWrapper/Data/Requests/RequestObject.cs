@@ -35,7 +35,7 @@ namespace PoloniexWrapper.Data.Requests
         {
             switch(type)
             {
-                case post:
+                case POST:
                     {
                         Url = new StringBuilder(urlSegmentTrading).ToString();
                         CreateSignature();
