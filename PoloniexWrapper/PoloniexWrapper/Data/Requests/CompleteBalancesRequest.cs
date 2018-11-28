@@ -14,7 +14,7 @@ namespace PoloniexWrapper.Data.Requests
                 ["nonce"] = GetNonce()
             }; 
 
-            GenerateRequest(post);
+            GenerateRequest(POST);
         }
     }
 }
