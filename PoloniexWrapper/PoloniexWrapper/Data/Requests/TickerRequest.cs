@@ -13,7 +13,7 @@ namespace PoloniexWrapper.Data.Requests
                 ["command"] = "returnTicker"
             };
 
-            GenerateRequest(get);
+            GenerateRequest(GET);
         }
     }
 }
