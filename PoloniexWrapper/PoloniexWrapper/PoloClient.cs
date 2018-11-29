@@ -1,15 +1,10 @@
-﻿using static PoloniexWrapper.Helper.Enums.TradingAccount;
-using static PoloniexWrapper.Helper.Enums;
-using static PoloniexWrapper.Data.PairID;
+﻿using PoloniexWrapper.Data.Requests;
 using PoloniexWrapper.Helper;
-using PoloniexWrapper.Data.Requests;
-using PoloniexWrapper.Data.Responses;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Net.Http;
+using Newtonsoft.Json;
 using System.Text;
 using System;
-using Newtonsoft.Json;
 
 namespace PoloniexWrapper
 {
