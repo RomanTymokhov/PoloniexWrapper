@@ -68,5 +68,8 @@ namespace PoloniexWrapper
 
         public async Task<T> ReturnTradeHistoryAsync<T>(DateTime start, DateTime end, string pairID = allPairs, ushort limit = 500) =>
                 await HttpPostAsync<T>(new TradeHistoryRequest(apiSec, start, end, pairID, limit));
+
+        public async Task<Trade> ReturnOrderTradesAsync(ulong? orderNumber) =>
+                await HttpPostAsync<Trade>(new OrderTradesRequest(apiSec, orderNumber));
     }
 }
