@@ -1,15 +1,16 @@
 ﻿using PoloniexWrapper;
 using PoloniexWrapper.Data;
+using PoloniexWrapper.Data.Responses;
+
+using System;
 using System.Linq;
+using System.Collections.Generic;
 
 using static System.Console;
 using static PoloniexWrapper.Data.PairID;
 using static PoloniexWrapper.Data.CurrencieID;
-using System;
 using static PoloniexWrapper.Helper.Enums;
-using static PoloniexWrapper.Helper.Enums.PoloAccount;
-using System.Collections.Generic;
-using PoloniexWrapper.Data.Responses;
+using static PoloniexWrapper.Helper.Enums.TradingAccount;
 
 namespace Test
 {
@@ -17,7 +18,7 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            //var poloClientPub = new PoloClient();
+            //var poloClientPub = new PublicClient();
 
             //GetTickerData(poloClientPub, usdc_str);
             //GetDalyVolume(poloClientPub, btc_eth);
@@ -29,9 +30,10 @@ namespace Test
             //GetAvailableAccountBalances(poloClientPriv, exchange, eth);
             //GetFeeInfo(poloClientPriv);
             //GetOpenOrders(poloClientPriv, allPairs);
+            //GetTradeHistory(poloClientPriv, new DateTime(2018, 01, 30), DateTime.Now, allPairs, 1000);
         }
 
-        private static void GetTickerData(PoloClient client, string tickerID)
+        private static void GetTickerData(PublicClient client, string tickerID)
         {
             var ticker = client.ReturnTickerAsync().Result.FirstOrDefault(tckr => tckr.Key == tickerID).Value;
 
@@ -43,47 +45,47 @@ namespace Test
             WriteLine("QuoteVolume --> " + ticker.QuoteVolume);
             WriteLine("--------------------------------------------");
         }
-        private static void GetDalyVolume(PoloClient client, string tickerID)
+        private static void GetDalyVolume(PublicClient client, string tickerID)
         {
             var dv = client.ReturnDalyVolumesAsync().Result.VolumeList.FirstOrDefault(i => i.pairID == tickerID);
 
             WriteLine("VolumePair --> " + dv.pairID);
-            WriteLine(dv.baseName + " -- " + dv.based);
-            WriteLine(dv.quotedName + " -- " + dv.quoted);
+            WriteLine(dv.baseCurrencyName + " -- " + dv.baseCurrencyVolume);
+            WriteLine(dv.quotedCurrencyName + " -- " + dv.quotedCurrencyVolume);
             WriteLine("--------------------------------------------");
         }
 
-        private static void GetBalances(PoloClient client, string currID)
+        private static void GetBalances(PrivateClient client, string currID)
         {
             var b = client.ReturnBalancesAsync().Result.FirstOrDefault(c => c.Key == currID);
 
             WriteLine("Ballance " + b.Key + " = " + b.Value);
             WriteLine("--------------------------------------------");
         }
-        private static void GetCompleteBalances(PoloClient client, string currId)
+        private static void GetCompleteBalances(PrivateClient client, string currId)
         {
-            var b = client.ReturComleteBalancesAsync().Result.FirstOrDefault(k => k.Key == currId);
+            var b = client.ReturnComleteBalancesAsync().Result.FirstOrDefault(k => k.Key == currId);
 
             WriteLine("Avalible --> " + b.Value.Availabel);
             WriteLine("OnOrders --> " + b.Value.OnOrders);
             WriteLine("BtcValue --> " + b.Value.BtcValue);
             WriteLine("--------------------------------------------");
         }
-        private static void GetDepositAdresses(PoloClient client, string currId)
+        private static void GetDepositAdresses(PrivateClient client, string currId)
         {
             var a = client.ReturnDepositAdressesAsync().Result.FirstOrDefault(k => k.Key == currId);
 
             WriteLine(a.Key + " -- " + a.Value);
             WriteLine("--------------------------------------------");
         }
-        private static void GetNewAdress(PoloClient client, string currId)
+        private static void GetNewAdress(PrivateClient client, string currId)
         {
             var na = client.GenerateNewAddressAsync(currId).Result;
 
             WriteLine("new " + currId + " adress --> " + na.Response);
             WriteLine("--------------------------------------------");
         }
-        private static void GetDepositsWithdravals(PoloClient client, DateTime start, DateTime end)
+        private static void GetDepositsWithdravals(PrivateClient client, DateTime start, DateTime end)
         {
             var dw = client.ReturnDepositsWithdrawalsAsync(start, end).Result;
 
@@ -113,7 +115,7 @@ namespace Test
                 WriteLine("******************");
             }
         }
-        private static void GetAvailableAccountBalances(PoloClient client, PoloAccount acc, string currId)
+        private static void GetAvailableAccountBalances(PrivateClient client, TradingAccount acc, string currId)
         {
             var aab = client.ReturnAvailableAccountBalancesAsync(acc).Result;
 
@@ -125,7 +127,7 @@ namespace Test
 
             WriteLine(currId + " -- " + aab.Exchange.FirstOrDefault(p => p.Key == currId).Value);
         }
-        private static void GetFeeInfo(PoloClient client)
+        private static void GetFeeInfo(PrivateClient client)
         {
             var fi = client.ReturnFeeInfoAsync().Result;
 
@@ -134,7 +136,7 @@ namespace Test
             WriteLine("ThirtyDayVolume --> " + fi.ThirtyDayVolume);
             WriteLine("NextTier --> " + fi.NextTier);
         }
-        private static void GetOpenOrders(PoloClient client, string pairId)
+        private static void GetOpenOrders(PrivateClient client, string pairId)
         {
             if(pairId == allPairs)
             {
@@ -160,9 +162,27 @@ namespace Test
                 WriteLine("Amount --> " + oo.FirstOrDefault(k => k.Margin == 0).Amount);
                 WriteLine("DateTime --> " + oo.FirstOrDefault(k => k.Margin == 0).DateTime.ToLocalTime());
                 WriteLine("OrderNumber --> " + oo.FirstOrDefault(k => k.Margin == 0).OrderNumber);
-            }
+            }            
+        }
+        private static void GetTradeHistory(PrivateClient client, DateTime start, DateTime end, string pairID, ushort limit)
+        {
+            if (pairID == allPairs)
+            {
+                var dict = client.ReturnTradeHistoryAsync<Dictionary<string, List<Trade>>>(start, end).Result;
+                var tradeList = dict.FirstOrDefault(p => p.Key == btc_xrp).Value;
+                var trade = tradeList.FirstOrDefault(t => t.AccountCategory == exchange.ToString());
 
-            
+                WriteLine(" GlobalTradeID--> " + trade.GlobalTradeID);
+                WriteLine(" TradeID--> " + trade.TradeID);
+                WriteLine(" OrderNumber--> " + trade.OrderNumber);
+                WriteLine(" Type--> " + trade.Type);
+                WriteLine(" Rate--> " + trade.Rate);
+                WriteLine(" Amount--> " + trade.Amount);
+                WriteLine(" Fee--> " + trade.Fee);
+                WriteLine(" DateTime--> " + trade.DateTime);
+                WriteLine(" AccountCategory--> " + trade.AccountCategory);
+                WriteLine("--------------------------------------------");
+            }
         }
     }
 }
