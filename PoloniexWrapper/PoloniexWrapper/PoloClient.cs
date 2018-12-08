@@ -3,11 +3,8 @@ using PoloniexWrapper.Exceptions;
 using PoloniexWrapper.Helper;
 using System.Threading.Tasks;
 using System.Net.Http;
-using Newtonsoft.Json;
 using System.Text;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using PoloniexWrapper.Data.Responses;
 
 namespace PoloniexWrapper
@@ -33,7 +30,7 @@ namespace PoloniexWrapper
         {
             var response = await httpClient.GetAsync(requestObj.Url).ConfigureAwait(false);
 
-            return await Task.Run(() => GetAnswerWihCheckException<T>(response));
+            return await Task.Run(() => GetAnswerWithCheckException<T>(response));
         }
 
         protected async Task<T> HttpPostAsync<T>(RequestObject requestObj)
@@ -44,10 +41,10 @@ namespace PoloniexWrapper
                 new StringContent(requestObj.arguments.ToKeyValueString(), 
                     Encoding.UTF8, "application/x-www-form-urlencoded")).ConfigureAwait(false);
 
-            return await Task.Run(() => GetAnswerWihCheckException<T>(response));
+            return await Task.Run(() => GetAnswerWithCheckException<T>(response));
         }
 
-        private Task<T> GetAnswerWihCheckException<T>(HttpResponseMessage responseMessage)
+        private Task<T> GetAnswerWithCheckException<T>(HttpResponseMessage responseMessage)
         {
             var successResponse = new SuccessResponse(responseMessage);
 
