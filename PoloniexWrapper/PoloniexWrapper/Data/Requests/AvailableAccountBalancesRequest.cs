@@ -13,7 +13,7 @@ namespace PoloniexWrapper.Data.Requests
             {
                 ["command"] = "returnAvailableAccountBalances",
                 ["account"] = account.ToString(),
-                ["nonce"] = GetNonce()
+                ["nonce"]   = GetNonce()
             };
 
             GenerateRequest(POST);
