@@ -13,8 +13,8 @@ namespace PoloniexWrapper.Data.Requests
     {
         private readonly string apiSec;
 
-        internal const string urlSegmentPublic  = "/public?";
-        internal const string urlSegmentTrading = "/tradingApi";
+        private const string urlSegmentPublic  = "/public?";
+        private const string urlSegmentTrading = "/tradingApi";
 
         internal Dictionary<string, string> arguments;
 
@@ -29,19 +29,16 @@ namespace PoloniexWrapper.Data.Requests
             this.apiSec = apiSec;
         }
 
-        internal string GetNonce() => DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString();
+        protected string GetNonce() => DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString();
 
-        internal void GenerateRequest(ReqType type)
+        protected void GenerateRequest(ReqType type)
         {
-            switch(type)
+            if (type == POST)
             {
-                case POST:
-                    {
-                        Url = new StringBuilder(urlSegmentTrading).ToString();
-                        CreateSignature();
-                    }; break;
-                default: Url = new StringBuilder(urlSegmentPublic).AppendFormat("{0}", arguments.ToKeyValueString()).ToString(); break;
-            }           
+                Url = new StringBuilder(urlSegmentTrading).ToString();
+                CreateSignature();
+            }
+            else Url = new StringBuilder(urlSegmentPublic).AppendFormat("{0}", arguments.ToKeyValueString()).ToString();
         }
 
         private void CreateSignature() 
