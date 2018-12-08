@@ -12,7 +12,8 @@ namespace PoloniexWrapper.Data.Requests
             arguments = new Dictionary<string, string>
             {
                 ["command"]     = "returnOrderTrades",
-                ["orderNumber"] = orderNumber.ToString()
+                ["orderNumber"] = orderNumber.ToString(),
+                ["nonce"]       = GetNonce()
             };
 
             GenerateRequest(POST);
