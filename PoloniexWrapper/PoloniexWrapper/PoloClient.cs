@@ -1,10 +1,14 @@
 ﻿using PoloniexWrapper.Data.Requests;
+using PoloniexWrapper.Exceptions;
 using PoloniexWrapper.Helper;
 using System.Threading.Tasks;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Text;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using PoloniexWrapper.Data.Responses;
 
 namespace PoloniexWrapper
 {
@@ -14,7 +18,10 @@ namespace PoloniexWrapper
 
         private const string baseAddress = "https://poloniex.com";
 
-        public PoloClient() => httpClient = new HttpClient { BaseAddress = new Uri(baseAddress) };
+        public PoloClient()
+        {
+            httpClient = new HttpClient { BaseAddress = new Uri(baseAddress) };
+        }
 
         public PoloClient(string apiKey)
         {
@@ -26,12 +33,7 @@ namespace PoloniexWrapper
         {
             var response = await httpClient.GetAsync(requestObj.Url).ConfigureAwait(false);
 
-            var json = await response.Content.ReadAsStringAsync();
-
-            response.EnsureSuccessStatusCode();         // throw if web request failed
-            //todo: creae Exception handler
-
-            return await Task.Run(() => JsonConvert.DeserializeObject<T>(json));
+            return await Task.Run(() => GetAnswerWihCheckException<T>(response));
         }
 
         protected async Task<T> HttpPostAsync<T>(RequestObject requestObj)
@@ -42,12 +44,18 @@ namespace PoloniexWrapper
                 new StringContent(requestObj.arguments.ToKeyValueString(), 
                     Encoding.UTF8, "application/x-www-form-urlencoded")).ConfigureAwait(false);
 
-            var json = await response.Content.ReadAsStringAsync();
+            return await Task.Run(() => GetAnswerWihCheckException<T>(response));
+        }
 
-            response.EnsureSuccessStatusCode();         // throw if web request failed
-            //todo: create Exception handler
+        private Task<T> GetAnswerWihCheckException<T>(HttpResponseMessage responseMessage)
+        {
+            var successResponse = new SuccessResponse(responseMessage);
 
-            return await Task.Run(() => JsonConvert.DeserializeObject<T>(json));
+            if (!responseMessage.IsSuccessStatusCode)
+                throw new PoloException(successResponse.Error.ErrorMessage);
+            if (responseMessage.IsSuccessStatusCode && !successResponse.Status)
+                throw new PoloException(successResponse.Error.ErrorMessage);
+            else return successResponse.GetMessage<T>(responseMessage);
         }
 
         public void Dispose() => httpClient.Dispose();
