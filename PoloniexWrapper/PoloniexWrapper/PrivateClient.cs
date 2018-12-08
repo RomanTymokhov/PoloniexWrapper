@@ -10,7 +10,7 @@ using static PoloniexWrapper.Data.PairID;
 
 namespace PoloniexWrapper
 {
-    public class PrivateClient : PoloClient
+    public sealed class PrivateClient : PoloClient
     {
         private readonly string apiSec;
 
@@ -50,22 +50,19 @@ namespace PoloniexWrapper
         /// <typeparam name="T"> List<Order> </typeparam>
         /// <param name="pairID">concret pair</param>
         /// <returns> List<Order> </returns>
-
         public async Task<T> ReturnOpenOrdersAsync<T>(string pairID = allPairs) =>
                 await HttpPostAsync<T>(new OpenOrdersRequest(apiSec, pairID));
-
 
         /// <summary>
         /// depending on "pairID" return a specific result
         /// </summary>
-        /// <typeparam name="T"> List<Trade> or Dictionary<string, List<Trade>> </typeparam>
+        /// <typeparam name="T"> List<Trade> or Dictionary<string, List<Trade>></typeparam>
         /// <param name="apiSec"> apiSec </param>
         /// <param name="pairID"> pairId</param>
         /// <param name="start"> time period begin</param>
         /// <param name="end"> time period end</param>
-        /// <param name="limit"> quontity trades (minimum = 500, maximum = 10 000), if you do not specify a "limit", it will be limited to one day  </param>
-        /// <returns></returns>
-
+        /// <param name="limit"> quontity trades (minimum = 500, maximum = 10 000), if you do not specify a "limit", it will be limited to one day</param>
+        /// <returns>List<Trade> or Dictionary<string, List<Trade>></returns>
         public async Task<T> ReturnTradeHistoryAsync<T>(DateTime start, DateTime end, string pairID = allPairs, ushort limit = 500) =>
                 await HttpPostAsync<T>(new TradeHistoryRequest(apiSec, start, end, pairID, limit));
 
