@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using PoloniexWrapper.Helper;
 
 using static PoloniexWrapper.Helper.Enums;
-using static PoloniexWrapper.Helper.Enums.ReqType;
+using static PoloniexWrapper.Helper.Enums.RequestType;
 
 namespace PoloniexWrapper.Data.Requests
 {
@@ -31,7 +31,7 @@ namespace PoloniexWrapper.Data.Requests
 
         protected string GetNonce() => DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString();
 
-        protected void GenerateRequest(ReqType type)
+        protected void GenerateRequest(RequestType type)
         {
             if (type == POST)
             {
