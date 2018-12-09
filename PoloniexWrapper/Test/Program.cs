@@ -1,10 +1,11 @@
-﻿using PoloniexWrapper;
-using PoloniexWrapper.Data;
-using PoloniexWrapper.Data.Responses;
-
-using System;
+﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+
+using PoloniexWrapper;
+using PoloniexWrapper.Data;
+using PoloniexWrapper.Data.Responses.TradeHeirs;
+using PoloniexWrapper.Data.Responses.OrderHeirs;
 
 using static System.Console;
 using static PoloniexWrapper.Data.PairID;
@@ -18,19 +19,23 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            //var poloClientPub = new PublicClient();
+            var poloClientPub = new PublicClient();
+
+
 
             //GetTickerData(poloClientPub, usdc_str);
             //GetDalyVolume(poloClientPub, btc_eth);
             //GetBalances(poloClientPriv, sc);
             //GetCompleteBalances(poloClientPriv, xem);
-            //GetDepositAdresses(poloClientPriv, btc);
+            //GetDepositAdresses(poloClientPriv, etc);
             //GetNewAdress(poloClientPriv, etc);
             //GetDepositsWithdravals(poloClientPriv, new DateTime(2017, 10, 1), DateTime.Now);
             //GetAvailableAccountBalances(poloClientPriv, exchange, eth);
             //GetFeeInfo(poloClientPriv);
-            //GetOpenOrders(poloClientPriv, allPairs);
+            //GetOpenOrders(poloClientPriv, btc_xem);
             //GetTradeHistory(poloClientPriv, new DateTime(2018, 01, 30), DateTime.Now, allPairs, 1000);
+            GetOrderTrades(poloClientPriv, 62593394139);
+
         }
 
         private static void GetTickerData(PublicClient client, string tickerID)
@@ -89,11 +94,12 @@ namespace Test
         {
             var dw = client.ReturnDepositsWithdrawalsAsync(start, end).Result;
 
+            WriteLine("------------  DepositList  -----------");
             foreach (var deposit in dw.DepositList)
             {
                 WriteLine("Adress --> " + deposit.Adress);
                 WriteLine("Amount --> " + deposit.Amount);
-                WriteLine("onfirmation --> " + deposit.Confirmations);
+                WriteLine("Confirmation --> " + deposit.Confirmations);
                 WriteLine("Currecy --> " + deposit.CurrencyID);
                 WriteLine("Status --> " + deposit.Status);
                 WriteLine("Timestamp --> " + deposit.Timestamp);
@@ -101,8 +107,7 @@ namespace Test
                 WriteLine("*******************");
             }
 
-            WriteLine("--------------------------------------------");
-
+            WriteLine("------------  WithdrawalList  -------------");
             foreach (var witdrawal in dw.WithdrawalList)
             {
                 WriteLine("Adress --> " + witdrawal.Adress);
@@ -140,7 +145,7 @@ namespace Test
         {
             if(pairId == allPairs)
             {
-                var ol = client.ReturnOpenOrdersAsync<Dictionary<string, List<Order>>>().Result;
+                var ol = client.ReturnOpenOrdersAsync<Dictionary<string, List<OpenOrder>>>().Result;
 
                 foreach (var item in ol)
                 {
@@ -156,7 +161,7 @@ namespace Test
             }
             else
             {
-                var oo = client.ReturnOpenOrdersAsync<List<Order>>(pairId).Result;
+                var oo = client.ReturnOpenOrdersAsync<List<OpenOrder>>(pairId).Result;
 
                 WriteLine("Rate --> " + oo.FirstOrDefault(k => k.Margin == 0).Rate);
                 WriteLine("Amount --> " + oo.FirstOrDefault(k => k.Margin == 0).Amount);
@@ -181,6 +186,24 @@ namespace Test
                 WriteLine(" Fee--> " + trade.Fee);
                 WriteLine(" DateTime--> " + trade.DateTime);
                 WriteLine(" AccountCategory--> " + trade.AccountCategory);
+                WriteLine("--------------------------------------------");
+            }
+        }
+        private static void GetOrderTrades(PrivateClient client, ulong? orderNumber)
+        {
+            var o = client.ReturnOrderTradesAsync(orderNumber).Result;
+
+            foreach (var trade in o)
+            {
+                WriteLine(" GlobalTradeID--> " + trade.GlobalTradeID);
+                WriteLine(" TradeID--> " + trade.TradeID);
+                WriteLine(" CurrencyPair--> " + trade.CurrencyPair);
+                WriteLine(" Type--> " + trade.Type);
+                WriteLine(" Rate--> " + trade.Rate);
+                WriteLine(" Amount--> " + trade.Amount);
+                WriteLine(" Total--> " + trade.Total);
+                WriteLine(" Fee--> " + trade.Fee);
+                WriteLine(" DateTime--> " + trade.DateTime);
                 WriteLine("--------------------------------------------");
             }
         }
