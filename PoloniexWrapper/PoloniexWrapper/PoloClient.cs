@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System;
 using PoloniexWrapper.Data.Responses;
+using Newtonsoft.Json;
 
 namespace PoloniexWrapper
 {
@@ -30,7 +31,11 @@ namespace PoloniexWrapper
         {
             var response = await httpClient.GetAsync(requestObj.Url).ConfigureAwait(false);
 
-            return await Task.Run(() => GetAnswerWithCheckException<T>(response));
+            CheckException(response);
+
+            string json = await response.Content.ReadAsStringAsync();
+
+            return await Task.Run(() => JsonConvert.DeserializeObject<T>(json));
         }
 
         protected async Task<T> HttpPostAsync<T>(RequestObject requestObj)
@@ -41,18 +46,17 @@ namespace PoloniexWrapper
                 new StringContent(requestObj.arguments.ToKeyValueString(), 
                     Encoding.UTF8, "application/x-www-form-urlencoded")).ConfigureAwait(false);
 
-            return await Task.Run(() => GetAnswerWithCheckException<T>(response));
+            CheckException(response);
+
+            string json = await response.Content.ReadAsStringAsync();
+
+            return await Task.Run(() => JsonConvert.DeserializeObject<T>(json));
         }
 
-        private Task<T> GetAnswerWithCheckException<T>(HttpResponseMessage responseMessage)
+        private void CheckException(HttpResponseMessage responseMessage)
         {
-            var successResponse = new SuccessResponse(responseMessage);
-
             if (!responseMessage.IsSuccessStatusCode)
-                throw new PoloException(successResponse.Error.ErrorMessage);
-            if (responseMessage.IsSuccessStatusCode && !successResponse.Status)
-                throw new PoloException(successResponse.Error.ErrorMessage);
-            else return successResponse.GetMessage<T>(responseMessage);
+                throw new PoloException(JsonConvert.DeserializeObject<Error>(responseMessage.Content.ReadAsStringAsync().Result).ErrorMessage);
         }
 
         public void Dispose() => httpClient.Dispose();
