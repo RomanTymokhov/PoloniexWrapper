@@ -12,6 +12,8 @@ using static PoloniexWrapper.Data.PairID;
 using static PoloniexWrapper.Data.CurrencieID;
 using static PoloniexWrapper.Helper.Enums;
 using static PoloniexWrapper.Helper.Enums.TradingAccount;
+using PoloniexWrapper.Exceptions;
+using Newtonsoft.Json;
 
 namespace Test
 {
@@ -20,8 +22,6 @@ namespace Test
         static void Main(string[] args)
         {
             var poloClientPub = new PublicClient();
-
-
 
             //GetTickerData(poloClientPub, usdc_str);
             //GetDalyVolume(poloClientPub, btc_eth);
@@ -34,7 +34,8 @@ namespace Test
             //GetFeeInfo(poloClientPriv);
             //GetOpenOrders(poloClientPriv, btc_xem);
             //GetTradeHistory(poloClientPriv, new DateTime(2018, 01, 30), DateTime.Now, allPairs, 1000);
-            GetOrderTrades(poloClientPriv, 62593394139);
+            //GetOrderTrades(poloClientPriv, 62593394139);
+            //GetOrderStatus(poloClientPriv, 57731672650);
 
         }
 
@@ -206,6 +207,21 @@ namespace Test
                 WriteLine(" DateTime--> " + trade.DateTime);
                 WriteLine("--------------------------------------------");
             }
+        }
+        private static void GetOrderStatus(PrivateClient client, ulong? orderNumber)
+        {
+            var obj = client.ReturnOrderStatusAsync(orderNumber).Result;            
+
+                WriteLine("Orderumber --> " + obj.First().Key);
+                WriteLine("Status --> " + obj.First().Value.Status);
+                WriteLine("Type --> " + obj.First().Value.Type);
+                WriteLine("CurrencyPair --> " + obj.First().Value.CurrencyPair);
+                WriteLine("Amount --> " + obj.First().Value.Amount);
+                WriteLine("StartingAmount --> " + obj.First().Value.StartingAmount);
+                WriteLine("Rate --> " + obj.First().Value.Rate);
+                WriteLine("Total --> " + obj.First().Value.Total);
+                WriteLine("DateTime --> " + obj.First().Value.DateTime);
+                WriteLine("--------------------------------------------");
         }
     }
 }
