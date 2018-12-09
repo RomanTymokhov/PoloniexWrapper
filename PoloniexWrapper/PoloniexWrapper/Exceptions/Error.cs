@@ -4,6 +4,6 @@ namespace PoloniexWrapper.Exceptions
     public class Error
     {
         [JsonProperty("error")]
-        public string ErrorMessage { get; private set; }
+        public string ErrorMessage { get; set; }
     }
 }
