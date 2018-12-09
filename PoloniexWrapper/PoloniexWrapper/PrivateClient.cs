@@ -1,13 +1,16 @@
-﻿using PoloniexWrapper.Data.Requests;
-using PoloniexWrapper.Data.Responses;
-using PoloniexWrapper.Data.Responses.TradeHeirs;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
-using static PoloniexWrapper.Helper.Enums.TradingAccount;
-using static PoloniexWrapper.Helper.Enums;
+using PoloniexWrapper.Data.Requests;
+using PoloniexWrapper.Data.Responses;
+using PoloniexWrapper.Data.Responses.TradeHeirs;
+
 using static PoloniexWrapper.Data.PairID;
+using static PoloniexWrapper.Helper.Enums;
+using static PoloniexWrapper.Helper.Enums.TradingAccount;
+using PoloniexWrapper.Data.Responses.OrderHeirs;
+using PoloniexWrapper.Exceptions;
 
 namespace PoloniexWrapper
 {
@@ -22,7 +25,7 @@ namespace PoloniexWrapper
 
 
         public async Task<Dictionary<string, string>> ReturnBalancesAsync() =>
-                   await HttpPostAsync<Dictionary<string, string>>(new BalancesRequest(apiSec));
+                await HttpPostAsync<Dictionary<string, string>>(new BalancesRequest(apiSec));
 
         public async Task<Dictionary<string, CompleteBalance>> ReturnComleteBalancesAsync() =>
                 await HttpPostAsync<Dictionary<string, CompleteBalance>>(new CompleteBalancesRequest(apiSec));
@@ -39,7 +42,8 @@ namespace PoloniexWrapper
         public async Task<AvailableAccountBalances> ReturnAvailableAccountBalancesAsync(TradingAccount account = all) =>
                 await HttpPostAsync<AvailableAccountBalances>(new AvailableAccountBalancesRequest(apiSec, account));
 
-        public async Task<FeeInfo> ReturnFeeInfoAsync() => await HttpPostAsync<FeeInfo>(new FeeInfoRequest(apiSec));
+        public async Task<FeeInfo> ReturnFeeInfoAsync() => 
+                await HttpPostAsync<FeeInfo>(new FeeInfoRequest(apiSec));
 
 
         /// <summary>
@@ -69,5 +73,14 @@ namespace PoloniexWrapper
 
         public async Task<List<OrderTrade>> ReturnOrderTradesAsync(ulong? orderNumber) =>
                 await HttpPostAsync<List<OrderTrade>>(new OrderTradesRequest(apiSec, orderNumber));
+
+        public async Task<Dictionary<ulong?, FillOrder>> ReturnOrderStatusAsync(ulong? orderNumber)
+        {
+            var answer = await HttpPostAsync<OrderStatus>(new OrderStatusRequest(apiSec, orderNumber));
+
+            if (answer.Success == 1) return await UnpackingResponseAsync<Dictionary<ulong?, FillOrder>>(answer.Result);
+            else throw new PoloException(UnpackingResponseAsync<Error>(answer.Result).Result.ErrorMessage);
+        }
+                
     }
 }
