@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 using static PoloniexWrapper.Helper.Enums;
 
-namespace PoloniexWrapper.Data.Responses
+namespace PoloniexWrapper.Data.Responses.TradeHeirs
 {
     public class Trade
     {
