@@ -6,10 +6,12 @@ namespace PoloniexWrapper.Helper
 {
     public class Enums
     {
-        public enum ReqType { GET, POST }
+        public enum RequestType { GET, POST }
 
         public enum OrderType { buy, sell}
 
-        public enum TradingAccount { all, exchange, margin, lending }
+        public enum TradingAccount { all, exchange, marginTrade, lending, settlement }
+
+        public enum OrderStatus { }
     }
 }
