@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using System.Text;
 using System;
-using PoloniexWrapper.Data.Responses;
 using Newtonsoft.Json;
 
 namespace PoloniexWrapper
@@ -48,10 +47,16 @@ namespace PoloniexWrapper
 
             CheckException(response);
 
-            string json = await response.Content.ReadAsStringAsync();
+            return await UnpackingResponseAsync<T>(response);
+        }
 
+        protected async Task<T> UnpackingResponseAsync<T>(HttpResponseMessage responseMessage)
+        {
+            string json = await responseMessage.Content.ReadAsStringAsync();
             return await Task.Run(() => JsonConvert.DeserializeObject<T>(json));
         }
+        protected async Task<T> UnpackingResponseAsync<T>(object responseMessage) =>
+                    await Task.Run(() => JsonConvert.DeserializeObject<T>(responseMessage.ToString()));
 
         private void CheckException(HttpResponseMessage responseMessage)
         {
