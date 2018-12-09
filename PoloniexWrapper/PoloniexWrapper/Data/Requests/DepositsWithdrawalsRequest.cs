@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using PoloniexWrapper.Helper;
 
-using static PoloniexWrapper.Helper.Enums.ReqType;
+using static PoloniexWrapper.Helper.Enums.RequestType;
 
 namespace PoloniexWrapper.Data.Requests
 {
