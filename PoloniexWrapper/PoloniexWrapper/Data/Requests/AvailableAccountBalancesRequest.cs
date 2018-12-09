@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-using static PoloniexWrapper.Helper.Enums.ReqType;
+using static PoloniexWrapper.Helper.Enums.RequestType;
 using static PoloniexWrapper.Helper.Enums;
 
 namespace PoloniexWrapper.Data.Requests
