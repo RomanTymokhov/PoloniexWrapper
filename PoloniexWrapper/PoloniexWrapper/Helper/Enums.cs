@@ -11,7 +11,5 @@ namespace PoloniexWrapper.Helper
         public enum OrderType { buy, sell}
 
         public enum TradingAccount { all, exchange, marginTrade, lending, settlement }
-
-        public enum OrderStatus { }
     }
 }
