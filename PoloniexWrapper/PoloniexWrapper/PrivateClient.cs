@@ -1,5 +1,6 @@
 ﻿using PoloniexWrapper.Data.Requests;
 using PoloniexWrapper.Data.Responses;
+using PoloniexWrapper.Data.Responses.TradeHeirs;
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
@@ -44,12 +45,12 @@ namespace PoloniexWrapper
         /// <summary>
         /// depending on "pairID" return a specific result
         /// </summary>
-        /// <typeparam name="T"> Dictionary<string, List<Order>> </typeparam>
+        /// <typeparam name="T"> Dictionary<string, List<OpenOrder>> </typeparam>
         /// <param name="pairID">allPairs</param>
-        /// <returns> Dictionary<string, List<Order>> </returns>
-        /// <typeparam name="T"> List<Order> </typeparam>
+        /// <returns> Dictionary<string, List<OpenOrder>> </returns>
+        /// <typeparam name="T"> List<OpenOrder> </typeparam>
         /// <param name="pairID">concret pair</param>
-        /// <returns> List<Order> </returns>
+        /// <returns> List<OpenOrder> </returns>
         public async Task<T> ReturnOpenOrdersAsync<T>(string pairID = allPairs) =>
                 await HttpPostAsync<T>(new OpenOrdersRequest(apiSec, pairID));
 
@@ -66,7 +67,7 @@ namespace PoloniexWrapper
         public async Task<T> ReturnTradeHistoryAsync<T>(DateTime start, DateTime end, string pairID = allPairs, ushort limit = 500) =>
                 await HttpPostAsync<T>(new TradeHistoryRequest(apiSec, start, end, pairID, limit));
 
-        public async Task<Trade> ReturnOrderTradesAsync(ulong? orderNumber) =>
-                await HttpPostAsync<Trade>(new OrderTradesRequest(apiSec, orderNumber));
+        public async Task<List<OrderTrade>> ReturnOrderTradesAsync(ulong? orderNumber) =>
+                await HttpPostAsync<List<OrderTrade>>(new OrderTradesRequest(apiSec, orderNumber));
     }
 }
