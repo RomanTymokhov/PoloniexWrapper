@@ -9,6 +9,7 @@ using PoloniexWrapper.Data.Responses.TradeHeirs;
 using static PoloniexWrapper.Data.PairID;
 using static PoloniexWrapper.Helper.Enums;
 using static PoloniexWrapper.Helper.Enums.TradingAccount;
+using static PoloniexWrapper.Helper.Enums.OrderType;
 using PoloniexWrapper.Data.Responses.OrderHeirs;
 using PoloniexWrapper.Exceptions;
 
@@ -81,6 +82,17 @@ namespace PoloniexWrapper
             if (answer.Success == 1) return await UnpackingResponseAsync<Dictionary<ulong?, FillOrder>>(answer.Result);
             else throw new PoloException(UnpackingResponseAsync<Error>(answer.Result).Result.ErrorMessage);
         }
+
+        /// <summary>
+        /// Method creating orders (buy or sell)
+        /// </summary>
+        /// <param name="type">order type (buy or sell)</param>
+        /// <param name="rate"></param>
+        /// <param name="amount"></param>
+        /// <param name="pair"></param>
+        /// <returns></returns>
+        public async Task<PlaceOrder> PlaceOrderAsync(OrderType type, decimal rate, decimal amount, string pair) =>      
+                await HttpPostAsync<PlaceOrder>(new PlaceOrderRequest(apiSec, type, rate, amount, pair));               
                 
     }
 }
