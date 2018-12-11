@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using static PoloniexWrapper.Helper.Enums;
 using static PoloniexWrapper.Helper.Enums.RequestType;
+using static System.Globalization.CultureInfo;
 
 namespace PoloniexWrapper.Data.Requests
 {
@@ -11,8 +12,8 @@ namespace PoloniexWrapper.Data.Requests
             arguments = new Dictionary<string, string>
             {
                 ["command"] = type.ToString(),
-                ["rate"] = rate.ToString(),
-                ["amount"] = amount.ToString(),
+                ["rate"] = rate.ToString(GetCultureInfo("en-US")),
+                ["amount"] = amount.ToString(GetCultureInfo("en-US")),
                 ["currencyPair"] = pair,
                 ["nonce"] = GetNonce()
             };
