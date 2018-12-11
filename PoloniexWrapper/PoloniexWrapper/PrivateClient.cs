@@ -8,7 +8,6 @@ using PoloniexWrapper.Data.Responses.TradeHeirs;
 using PoloniexWrapper.Data.Responses.OrderHeirs;
 using PoloniexWrapper.Exceptions;
 
-
 using static PoloniexWrapper.Data.PairID;
 using static PoloniexWrapper.Helper.Enums;
 using static PoloniexWrapper.Helper.Enums.TradingAccount;
