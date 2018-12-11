@@ -92,7 +92,16 @@ namespace PoloniexWrapper
         /// <param name="pair"></param>
         /// <returns></returns>
         public async Task<PlaceOrder> PlaceOrderAsync(OrderType type, decimal rate, decimal amount, string pair) =>      
-                await HttpPostAsync<PlaceOrder>(new PlaceOrderRequest(apiSec, type, rate, amount, pair));               
+                await HttpPostAsync<PlaceOrder>(new PlaceOrderRequest(apiSec, type, rate, amount, pair));
+
+        public async Task<CancelOrder> CancelOrderAsync(ulong orderNumber)
+        {
+            var answer = await HttpPostAsync<CancelOrder>(new CancelOrderRequest(apiSec, orderNumber));
+
+            if (answer.Success != 0) return answer;
+            else throw new PoloException(answer.ErrorMessage);
+        }
                 
+                 
     }
 }
