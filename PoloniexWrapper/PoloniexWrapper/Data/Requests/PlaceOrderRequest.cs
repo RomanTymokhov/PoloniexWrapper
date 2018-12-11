@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+
 using static PoloniexWrapper.Helper.Enums;
 using static PoloniexWrapper.Helper.Enums.RequestType;
 using static System.Globalization.CultureInfo;
