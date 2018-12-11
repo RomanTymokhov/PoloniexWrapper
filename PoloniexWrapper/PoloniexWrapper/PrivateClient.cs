@@ -5,13 +5,13 @@ using System.Collections.Generic;
 using PoloniexWrapper.Data.Requests;
 using PoloniexWrapper.Data.Responses;
 using PoloniexWrapper.Data.Responses.TradeHeirs;
+using PoloniexWrapper.Data.Responses.OrderHeirs;
+using PoloniexWrapper.Exceptions;
+
 
 using static PoloniexWrapper.Data.PairID;
 using static PoloniexWrapper.Helper.Enums;
 using static PoloniexWrapper.Helper.Enums.TradingAccount;
-using static PoloniexWrapper.Helper.Enums.OrderType;
-using PoloniexWrapper.Data.Responses.OrderHeirs;
-using PoloniexWrapper.Exceptions;
 
 namespace PoloniexWrapper
 {
