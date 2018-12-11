@@ -32,9 +32,7 @@ namespace PoloniexWrapper
 
             CheckException(response);
 
-            string json = await response.Content.ReadAsStringAsync();
-
-            return await Task.Run(() => JsonConvert.DeserializeObject<T>(json));
+            return await UnpackingResponseAsync<T>(response);
         }
 
         protected async Task<T> HttpPostAsync<T>(RequestObject requestObj)
