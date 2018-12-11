@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Globalization;
 using Newtonsoft.Json;
+
 using static PoloniexWrapper.Helper.Enums;
 
 namespace PoloniexWrapper.Data.Responses.OrderHeirs
 {
     public class Order
     {
-        [JsonProperty("orderNumber")]
-        private readonly string orderNumber;
-        public ulong? OrderNumber => Convert.ToUInt64(orderNumber, CultureInfo.InvariantCulture);
+        [JsonProperty("tradeID")]
+        private readonly string tradeID;
+        public ulong? TradeID => Convert.ToUInt64(tradeID, CultureInfo.InvariantCulture);
 
         [JsonProperty("type")]
         public OrderType Type { get; private set; }
@@ -25,5 +26,8 @@ namespace PoloniexWrapper.Data.Responses.OrderHeirs
         [JsonProperty("total")]
         private readonly string total;
         public decimal? Total => Convert.ToDecimal(total, CultureInfo.InvariantCulture);
+
+        [JsonProperty("date")]
+        public DateTime DateTime { get; private set; }
     }
 }
