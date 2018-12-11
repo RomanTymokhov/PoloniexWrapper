@@ -12,8 +12,10 @@ using static PoloniexWrapper.Data.PairID;
 using static PoloniexWrapper.Data.CurrencieID;
 using static PoloniexWrapper.Helper.Enums;
 using static PoloniexWrapper.Helper.Enums.TradingAccount;
+using static PoloniexWrapper.Helper.Enums.OrderType;
 using PoloniexWrapper.Exceptions;
 using Newtonsoft.Json;
+using PoloniexWrapper.Data.Responses;
 
 namespace Test
 {
@@ -36,6 +38,8 @@ namespace Test
             //GetTradeHistory(poloClientPriv, new DateTime(2018, 01, 30), DateTime.Now, allPairs, 1000);
             //GetOrderTrades(poloClientPriv, 62593394139);
             //GetOrderStatus(poloClientPriv, 57731672650);
+            //OrderPlace(poloClientPriv, buy, 0.00000061m, 167.77m, btc_sc );
+            //CancelOrder(poloClientPriv, 26927752443);
 
         }
 
@@ -222,6 +226,27 @@ namespace Test
                 WriteLine("Total --> " + obj.First().Value.Total);
                 WriteLine("DateTime --> " + obj.First().Value.DateTime);
                 WriteLine("--------------------------------------------");
+        }
+        private static void OrderPlace(PrivateClient client, OrderType type, decimal rate, decimal amount, string tickerID)
+        {
+            var bo = client.PlaceOrderAsync(type, rate, amount, tickerID).Result;          
+            WriteLine("Orderumber --> " + bo.OrderNumber);
+            if (bo.ResultingTrades.Count != 0)
+            {
+                WriteLine("*********************************");
+                WriteLine("TradeID --> " + bo.ResultingTrades.First().TradeID);
+                WriteLine("Rate --> " + bo.ResultingTrades.First().Rate);
+                WriteLine("Total --> " + bo.ResultingTrades.First().Total);
+                WriteLine("Type --> " + bo.ResultingTrades.First().Type);
+                WriteLine("Amount --> " + bo.ResultingTrades.First().Amount);
+                WriteLine("DateTime --> " + bo.ResultingTrades.First().DateTime);
+            }
+        }
+        private static void CancelOrder(PrivateClient client, ulong orderNumber)
+        {
+            var co = client.CancelOrderAsync(orderNumber).Result;
+
+            WriteLine(co.Message + "!!");
         }
     }
 }
