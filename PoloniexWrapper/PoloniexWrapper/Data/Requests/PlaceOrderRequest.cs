@@ -8,7 +8,7 @@ namespace PoloniexWrapper.Data.Requests
 {
     public class PlaceOrderRequest : RequestObject
     {
-        public PlaceOrderRequest(string apiSec, OrderType type, decimal rate, decimal amount, string pair) : base(apiSec)
+        public PlaceOrderRequest(string apiSec, OrderType type, decimal rate, decimal amount, string pair, byte postOnly) : base(apiSec)
         {
             arguments = new Dictionary<string, string>
             {
@@ -18,6 +18,8 @@ namespace PoloniexWrapper.Data.Requests
                 ["currencyPair"] = pair,
                 ["nonce"] = GetNonce()
             };
+
+            if (postOnly == 1) arguments.Add("postOnly", postOnly.ToString());
 
             GenerateRequest(POST);
         }
