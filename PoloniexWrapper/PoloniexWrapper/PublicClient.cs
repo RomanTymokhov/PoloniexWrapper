@@ -11,7 +11,6 @@ namespace PoloniexWrapper
     {
         public PublicClient() : base() { }
 
-
         public async Task<Dictionary<string, Ticker>> ReturnTickerAsync() =>
                await HttpGetAsync<Dictionary<string, Ticker>>(new TickerRequest());
 
