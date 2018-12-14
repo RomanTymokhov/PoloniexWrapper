@@ -23,7 +23,6 @@ namespace PoloniexWrapper
             this.apiSec = apiSec;
         }
 
-
         public async Task<Dictionary<string, string>> ReturnBalancesAsync() =>
                 await HttpPostAsync<Dictionary<string, string>>(new BalancesRequest(apiSec));
 
@@ -90,8 +89,8 @@ namespace PoloniexWrapper
         /// <param name="amount"></param>
         /// <param name="pair"></param>
         /// <returns></returns>
-        public async Task<PlaceOrder> PlaceOrderAsync(OrderType type, decimal rate, decimal amount, string pair) =>      
-                await HttpPostAsync<PlaceOrder>(new PlaceOrderRequest(apiSec, type, rate, amount, pair));
+        public async Task<PlaceOrder> PlaceOrderAsync(OrderType type, decimal rate, decimal amount, string pair, byte postOnly = 0) =>      
+                await HttpPostAsync<PlaceOrder>(new PlaceOrderRequest(apiSec, type, rate, amount, pair, postOnly));
 
         public async Task<CancelOrder> CancelOrderAsync(ulong orderNumber)
         {
@@ -100,7 +99,13 @@ namespace PoloniexWrapper
             if (answer.Success != 0) return answer;
             else throw new PoloException(answer.ErrorMessage);
         }
-                
-                 
+
+        public async Task<MoveOrder> MoveOrderAsync(ulong orderNumber, decimal rate, decimal? amount = null, byte postOnly = 0)
+        {
+            var answer = await HttpPostAsync<MoveOrder>(new MoveOrderRequest(apiSec, orderNumber, rate, amount, postOnly));
+
+            if (answer.Success != 0) return answer;
+            else throw new PoloException(answer.ErrorMessage);
+        }                 
     }
 }
