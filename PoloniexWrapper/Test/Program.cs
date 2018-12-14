@@ -34,12 +34,14 @@ namespace Test
             //GetDepositsWithdravals(poloClientPriv, new DateTime(2017, 10, 1), DateTime.Now);
             //GetAvailableAccountBalances(poloClientPriv, exchange, eth);
             //GetFeeInfo(poloClientPriv);
-            //GetOpenOrders(poloClientPriv, btc_xem);
+            //GetOpenOrders(poloClientPriv, btc_sc);
             //GetTradeHistory(poloClientPriv, new DateTime(2018, 01, 30), DateTime.Now, allPairs, 1000);
             //GetOrderTrades(poloClientPriv, 62593394139);
             //GetOrderStatus(poloClientPriv, 57731672650);
-            //OrderPlace(poloClientPriv, buy, 0.00000061m, 167.77m, btc_sc );
+            //PlaceOrder(poloClientPriv, sell, 0.00000075m, 133.4m, btc_sc );
             //CancelOrder(poloClientPriv, 26927752443);
+            //MoveOrder(poloClientPriv, 26948570604, 0.00000067m, 149.3m);
+
 
         }
 
@@ -227,7 +229,7 @@ namespace Test
                 WriteLine("DateTime --> " + obj.First().Value.DateTime);
                 WriteLine("--------------------------------------------");
         }
-        private static void OrderPlace(PrivateClient client, OrderType type, decimal rate, decimal amount, string tickerID)
+        private static void PlaceOrder(PrivateClient client, OrderType type, decimal rate, decimal amount, string tickerID)
         {
             var bo = client.PlaceOrderAsync(type, rate, amount, tickerID).Result;          
             WriteLine("Orderumber --> " + bo.OrderNumber);
@@ -247,6 +249,14 @@ namespace Test
             var co = client.CancelOrderAsync(orderNumber).Result;
 
             WriteLine(co.Message + "!!");
+        }
+        private static void MoveOrder(PrivateClient client, ulong orderNumber, decimal rate, decimal amount)
+        {
+            var mo = client.MoveOrderAsync(orderNumber, rate, amount).Result;
+
+            WriteLine("Success  --> " + mo.Success);
+            WriteLine("OrderNum --> " + mo.OrderNumber);
+
         }
     }
 }
