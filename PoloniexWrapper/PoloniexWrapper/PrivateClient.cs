@@ -60,13 +60,13 @@ namespace PoloniexWrapper
         /// <summary>
         /// depending on "pairID" return a specific result
         /// </summary>
-        /// <typeparam name="T"> List<Trade> or Dictionary<string, List<Trade>></typeparam>
+        /// <typeparam name="T"> List<PrivateTrade> or Dictionary<string, List<PrivateTrade>></typeparam>
         /// <param name="apiSec"> apiSec </param>
         /// <param name="pairID"> pairId</param>
         /// <param name="start"> time period begin</param>
         /// <param name="end"> time period end</param>
         /// <param name="limit"> quontity trades (minimum = 500, maximum = 10 000), if you do not specify a "limit", it will be limited to one day</param>
-        /// <returns>List<Trade> or Dictionary<string, List<Trade>></returns>
+        /// <returns>List<Trade> or Dictionary<string, List<PrivateTrade>></returns>
         public async Task<T> ReturnTradeHistoryAsync<T>(DateTime start, DateTime end, string pairID = allPairs, ushort limit = 500) =>
                 await HttpPostAsync<T>(new TradeHistoryRequest(apiSec, start, end, pairID, limit));
 
@@ -106,6 +106,9 @@ namespace PoloniexWrapper
 
             if (answer.Success != 0) return answer;
             else throw new PoloException(answer.ErrorMessage);
-        }                 
+        }
+
+        public async Task<Withdraw> WithdrawAsync(string currencyId, decimal amount, string adress) =>
+                await HttpPostAsync<Withdraw>(new WithdrawRequest(apiSec, currencyId, amount, adress));
     }
 }
