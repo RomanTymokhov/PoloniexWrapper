@@ -6,7 +6,7 @@ namespace PoloniexWrapper.Data.Requests
 {
     public class OrderTradesRequest : RequestObject
     {
-        public OrderTradesRequest(string apiSec, ulong? orderNumber) : base(apiSec)
+        public OrderTradesRequest(string apiSec, ulong orderNumber) : base(apiSec)
         {
             arguments = new Dictionary<string, string>
             {
