@@ -8,7 +8,7 @@ namespace PoloniexWrapper.Data.Requests
 {
     public class DepositsWithdrawalsRequest :RequestObject
     {
-        public DepositsWithdrawalsRequest(string apiSec, DateTime startDate, DateTime endDate) : base(apiSec)
+        public DepositsWithdrawalsRequest(string apiSec, DateTime? startDate, DateTime? endDate) : base(apiSec)
         {
             arguments = new Dictionary<string, string>
             {
