@@ -8,7 +8,7 @@ namespace PoloniexWrapper.Data.Requests
 {
     public class ChartDataRequest : RequestObject
     {
-        public ChartDataRequest(string pairID, uint period, DateTime? start, DateTime? end) : base()
+        public ChartDataRequest(string pairID, uint period, DateTime start, DateTime end) : base()
         {
             arguments = new Dictionary<string, string>
             {
