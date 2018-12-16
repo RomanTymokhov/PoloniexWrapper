@@ -172,9 +172,16 @@ namespace PoloniexWrapper
         /// </summary>
         /// <param name="currencyId"></param>
         /// <param name="amount"></param>
-        /// <param name="adress"></param>
-        /// <returns></returns>
-        public async Task<Withdraw> WithdrawAsync(string currencyId, decimal amount, string adress) =>
-                await HttpPostAsync<Withdraw>(new WithdrawRequest(apiSec, currencyId, amount, adress));
+        /// <param name="adress">address of the recipient</param>
+        /// <param name="paymentId">For XMR & etc. withdrawals, you may optionally specify "paymentId"</param>
+        /// <returns>Withdraw</returns>
+        public async Task<Withdraw> WithdrawAsync(string currencyId, decimal amount, string adress, string paymentId = null)
+        {
+            var answer = await HttpPostAsync<Withdraw>(new WithdrawRequest(apiSec, currencyId, amount, adress, paymentId));
+
+            if (answer.Response != null) return answer;
+            else throw new PoloException(answer.Error);
+        }
+                
     }
 }
