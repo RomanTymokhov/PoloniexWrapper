@@ -7,7 +7,7 @@ namespace PoloniexWrapper.Data
     public static class CurrencieID
     {
         /// <summary>
-        /// New currency ID will be added here to use.
+        /// New currency ID will be added here to use
         /// </summary>
         
         public const string btc  = "BTC";
