@@ -12,6 +12,7 @@ using static PoloniexWrapper.Data.PairID;
 using static PoloniexWrapper.Data.CurrencieID;
 using static PoloniexWrapper.Helper.Enums;
 using static PoloniexWrapper.Helper.Enums.TradingAccount;
+using static PoloniexWrapper.Helper.Enums.RequestType;
 using static PoloniexWrapper.Helper.Enums.OrderType;
 using PoloniexWrapper.Exceptions;
 using Newtonsoft.Json;
@@ -25,8 +26,12 @@ namespace Test
         {
             var poloClientPub = new PublicClient();
 
+
             //GetTickerData(poloClientPub, usdc_str);
             //GetDalyVolume(poloClientPub, btc_eth);
+            //GetOrderBook(poloClientPub, usdc_usdt, 50000);
+            //GetPublicTradeHistory(poloClientPub, new DateTime(2018, 11, 18), DateTime.Now, btc_sc);
+
             //GetBalances(poloClientPriv, sc);
             //GetCompleteBalances(poloClientPriv, xem);
             //GetDepositAdresses(poloClientPriv, etc);
@@ -34,13 +39,13 @@ namespace Test
             //GetDepositsWithdravals(poloClientPriv, new DateTime(2017, 10, 1), DateTime.Now);
             //GetAvailableAccountBalances(poloClientPriv, exchange, eth);
             //GetFeeInfo(poloClientPriv);
-            //GetOpenOrders(poloClientPriv, btc_sc);
-            //GetTradeHistory(poloClientPriv, new DateTime(2018, 01, 30), DateTime.Now, allPairs, 1000);
+            //GetOpenOrders(poloClientPriv, allPairs);
+            //GetTradeHistory(poloClientPriv, new DateTime(2018, 01, 30), DateTime.Now, btc_xrp, 1000);
             //GetOrderTrades(poloClientPriv, 62593394139);
             //GetOrderStatus(poloClientPriv, 57731672650);
             //PlaceOrder(poloClientPriv, sell, 0.00000075m, 133.4m, btc_sc );
-            //CancelOrder(poloClientPriv, 26927752443);
-            //MoveOrder(poloClientPriv, 26948570604, 0.00000067m, 149.3m);
+            //CancelOrder(poloClientPriv, 26957718447);
+            //MoveOrder(poloClientPriv, 26957578587, 0.00000211m);
 
 
         }
@@ -59,13 +64,39 @@ namespace Test
         }
         private static void GetDalyVolume(PublicClient client, string tickerID)
         {
-            var dv = client.ReturnDalyVolumesAsync().Result.VolumeList.FirstOrDefault(i => i.pairID == tickerID);
+            var obj = client.ReturnDalyVolumesAsync().Result;
+            var dv = obj.VolumeList.FirstOrDefault(i => i.pairID == tickerID);
 
+            WriteLine("TotalBTC --> " + obj.TotalBTC);
             WriteLine("VolumePair --> " + dv.pairID);
             WriteLine(dv.baseCurrencyName + " -- " + dv.baseCurrencyVolume);
             WriteLine(dv.quotedCurrencyName + " -- " + dv.quotedCurrencyVolume);
             WriteLine("--------------------------------------------");
         }
+        private static void GetOrderBook(PublicClient client, string pairId, ushort deptSize)
+        {
+            var ob = client.ReturnOrderBookAsync < Dictionary<string, OrderBook>>(/*pairId*/depthSize: deptSize).Result;
+            var obj = ob.FirstOrDefault(p => p.Key == "BTC_SC").Value;
+            WriteLine("----" + obj.SequenceId);
+            //WriteLine("IsFrozen --> " + ob.IsFrozen);
+            //WriteLine("SequenceId --> " + ob.SequenceId);
+            //WriteLine("Rate -- Amount (Asks) --> " + ob.Asks.First().Rate + " -- " + ob.Asks.First().Amount);
+        }
+        private static void GetPublicTradeHistory(PublicClient client, DateTime start, DateTime end, string pairID)
+        {
+            var th = client.ReturnTradeHistoryAsync(pairID).Result;
+
+            foreach (var pt in th)
+            {
+                WriteLine("DateTime --> " + pt.DateTime);
+                WriteLine("Type --> " + pt.Type);
+                WriteLine("Rate --> " + pt.Rate);
+                WriteLine("Amount --> " + pt.Amount);
+                WriteLine("Total --> " + pt.Total);
+                WriteLine("*********************************");
+            }
+        }
+
 
         private static void GetBalances(PrivateClient client, string currID)
         {
@@ -170,18 +201,22 @@ namespace Test
             {
                 var oo = client.ReturnOpenOrdersAsync<List<OpenOrder>>(pairId).Result;
 
+                WriteLine("OrderNumber --> " + oo.FirstOrDefault(k => k.Margin == 0).OrderNumber);
+                WriteLine("Type --> " + oo.FirstOrDefault(k => k.Margin == 0).Type);
                 WriteLine("Rate --> " + oo.FirstOrDefault(k => k.Margin == 0).Rate);
                 WriteLine("Amount --> " + oo.FirstOrDefault(k => k.Margin == 0).Amount);
+                WriteLine("Total --> " + oo.FirstOrDefault(k => k.Margin == 0).Total);
+                WriteLine("StartingAmount --> " + oo.FirstOrDefault(k => k.Margin == 0).StartingAmount);
                 WriteLine("DateTime --> " + oo.FirstOrDefault(k => k.Margin == 0).DateTime.ToLocalTime());
-                WriteLine("OrderNumber --> " + oo.FirstOrDefault(k => k.Margin == 0).OrderNumber);
+                WriteLine("Margin --> " + oo.FirstOrDefault(k => k.Margin == 0).Margin);
             }            
         }
         private static void GetTradeHistory(PrivateClient client, DateTime start, DateTime end, string pairID, ushort limit)
         {
             if (pairID == allPairs)
             {
-                var dict = client.ReturnTradeHistoryAsync<Dictionary<string, List<Trade>>>(start, end).Result;
-                var tradeList = dict.FirstOrDefault(p => p.Key == btc_xrp).Value;
+                var dict = client.ReturnTradeHistoryAsync<Dictionary<string, List<PrivateTrade>>>(start, end).Result;
+                var tradeList = dict.FirstOrDefault(p => p.Key == btc_sc).Value;
                 var trade = tradeList.FirstOrDefault(t => t.AccountCategory == exchange.ToString());
 
                 WriteLine(" GlobalTradeID--> " + trade.GlobalTradeID);
@@ -194,6 +229,23 @@ namespace Test
                 WriteLine(" DateTime--> " + trade.DateTime);
                 WriteLine(" AccountCategory--> " + trade.AccountCategory);
                 WriteLine("--------------------------------------------");
+            }
+            else
+            {
+                var dict = client.ReturnTradeHistoryAsync<List<PrivateTrade>>(start, end, pairID).Result;
+                var trade = dict.FirstOrDefault(t => t.AccountCategory == exchange.ToString());
+
+                WriteLine(" GlobalTradeID--> " + trade.GlobalTradeID);
+                WriteLine(" TradeID--> " + trade.TradeID);
+                WriteLine(" OrderNumber--> " + trade.OrderNumber);
+                WriteLine(" Type--> " + trade.Type);
+                WriteLine(" Rate--> " + trade.Rate);
+                WriteLine(" Amount--> " + trade.Amount);
+                WriteLine(" Fee--> " + trade.Fee);
+                WriteLine(" DateTime--> " + trade.DateTime);
+                WriteLine(" AccountCategory--> " + trade.AccountCategory);
+                WriteLine("--------------------------------------------");
+
             }
         }
         private static void GetOrderTrades(PrivateClient client, ulong? orderNumber)
@@ -248,9 +300,9 @@ namespace Test
         {
             var co = client.CancelOrderAsync(orderNumber).Result;
 
-            WriteLine(co.Message + "!!");
+            WriteLine(co.Message + " - Amount - " + co.Amount);
         }
-        private static void MoveOrder(PrivateClient client, ulong orderNumber, decimal rate, decimal amount)
+        private static void MoveOrder(PrivateClient client, ulong orderNumber, decimal rate, decimal? amount = null)
         {
             var mo = client.MoveOrderAsync(orderNumber, rate, amount).Result;
 
