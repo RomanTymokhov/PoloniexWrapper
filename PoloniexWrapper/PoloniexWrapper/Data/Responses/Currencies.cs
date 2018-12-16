@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace PoloniexWrapper.Data.Responses
 {
-    public class Carrencies
+    public class Currencies
     {
         /// <summary>
         /// New currencie will be added here to use
