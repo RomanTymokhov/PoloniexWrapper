@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Globalization;
+using PoloniexWrapper.Exceptions;
+
+using static System.Globalization.CultureInfo;
+using static System.Globalization.NumberStyles;
 
 namespace PoloniexWrapper.Data
 {
@@ -9,13 +12,13 @@ namespace PoloniexWrapper.Data
     {
         //Monitor the response and react to the situation if the dictionary "dalyData" has more than 2 KeyValue pairs
 
-        public string pairID;
+        public readonly string pairID;
 
-        public string baseCurrencyName;
-        public decimal? baseCurrencyVolume;
+        public readonly string baseCurrencyName;
+        public readonly decimal baseCurrencyVolume;
 
-        public string quotedCurrencyName;
-        public decimal? quotedCurrencyVolume;
+        public readonly string quotedCurrencyName;
+        public readonly decimal quotedCurrencyVolume;
 
         public DalyVolume(Dictionary<string, string> dalyc, string pairID)
         {
@@ -24,12 +27,12 @@ namespace PoloniexWrapper.Data
                 this.pairID = pairID;
 
                 baseCurrencyName = dalyc.First().Key;
-                baseCurrencyVolume = Convert.ToDecimal(dalyc.First().Value, CultureInfo.InvariantCulture);
+                decimal.TryParse(dalyc.First().Value, Any, InvariantCulture, out baseCurrencyVolume);
 
                 quotedCurrencyName = dalyc.Last().Key;
-                quotedCurrencyVolume = Convert.ToDecimal(dalyc.Last().Value, CultureInfo.InvariantCulture);
+                decimal.TryParse(dalyc.Last().Value, Any, InvariantCulture, out quotedCurrencyVolume);
             }
-            else new Exception("retur 24Volume --> daly volume object not have 2 element");
+            else throw new PoloException("return 24Volume --> daly volume object not have 2 element");
         }
     }
 }
