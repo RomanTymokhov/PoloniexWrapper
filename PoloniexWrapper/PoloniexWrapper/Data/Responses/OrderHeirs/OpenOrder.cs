@@ -1,7 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-using static System.Convert;
 using static System.Globalization.CultureInfo;
 using static System.Globalization.NumberStyles;
 using static PoloniexWrapper.Helper.Enums;
