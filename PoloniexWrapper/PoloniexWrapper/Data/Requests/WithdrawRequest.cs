@@ -7,7 +7,7 @@ namespace PoloniexWrapper.Data.Requests
 {
     public class WithdrawRequest : RequestObject
     {
-        public WithdrawRequest(string apiSec, string currencyId, decimal amount, string adress) : base(apiSec)
+        public WithdrawRequest(string apiSec, string currencyId, decimal amount, string adress, string paymentId) : base(apiSec)
         {
             arguments = new Dictionary<string, string>
             {
@@ -17,6 +17,8 @@ namespace PoloniexWrapper.Data.Requests
                 ["address"] = adress,
                 ["nonce"] = GetNonce()
             };
+
+            if (paymentId != null) arguments.Add("paymentId", paymentId);
 
             GenerateRequest(POST);
         }
