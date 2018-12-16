@@ -26,12 +26,12 @@ namespace Test
         {
             var poloClientPub = new PublicClient();
 
-
             //GetTickerData(poloClientPub, usdc_str);
             //GetDalyVolume(poloClientPub, btc_eth);
             //GetOrderBook(poloClientPub, usdc_usdt, 50000);
             //GetPublicTradeHistory(poloClientPub, new DateTime(2018, 11, 18), DateTime.Now, btc_sc);
             //GetChartData(poloClientPub, btc_xrp, 86400, new DateTime(2018, 01, 30), DateTime.Now);
+            //GetCurrecies(poloClientPub);
 
             //GetBalances(poloClientPriv, sc);
             //GetCompleteBalances(poloClientPriv, xem);
@@ -110,7 +110,21 @@ namespace Test
                 WriteLine("******** Candle number --> " + (chd.Count - (i++)) + " *************");
             }
         }
+        private static void GetCurrecies(PublicClient client)
+        {
+            var cur = client.ReturnCurrenciesAsync().Result;
+            var cr = cur.CurrencieList.FirstOrDefault(p => p.CurrencieId == "XRP");
+            var info = cr.CurrencieInfo;
 
+            WriteLine("Id --> " + cr.Id);
+            WriteLine("CurrencieId --> " + cr.CurrencieId);
+            WriteLine("HumanType --> " + info.HumanType);
+            WriteLine("MinConf --> " + info.MinConf);
+            WriteLine("TxFee --> " + info.TxFee);
+            WriteLine("DepositAddress --> " + info.DepositAddress);
+            WriteLine("CurrencieName --> " + info.CurrencieName);
+            WriteLine("***********************************");
+        }
 
         private static void GetBalances(PrivateClient client, string currID)
         {
