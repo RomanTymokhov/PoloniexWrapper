@@ -57,5 +57,12 @@ namespace PoloniexWrapper
         /// <returns></returns>
         public async Task<List<Candlestick>> ReturnChartDataAsync(string pairId, uint period, DateTime start, DateTime end) =>
                 await HttpGetAsync<List<Candlestick>>(new ChartDataRequest(pairId, period, start, end));
+
+        /// <summary>
+        /// Returns information about currencies
+        /// </summary>
+        /// <returns>Currencies</returns>
+        public async Task<Currencies> ReturnCurrenciesAsync() =>
+                await HttpGetAsync<Currencies>(new CurrenciesRequest());
     }
 }
