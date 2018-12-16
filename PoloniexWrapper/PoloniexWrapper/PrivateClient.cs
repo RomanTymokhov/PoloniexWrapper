@@ -2,11 +2,11 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
+using PoloniexWrapper.Exceptions;
 using PoloniexWrapper.Data.Requests;
 using PoloniexWrapper.Data.Responses;
 using PoloniexWrapper.Data.Responses.TradeHeirs;
 using PoloniexWrapper.Data.Responses.OrderHeirs;
-using PoloniexWrapper.Exceptions;
 
 using static PoloniexWrapper.Data.PairID;
 using static PoloniexWrapper.Helper.Enums;
@@ -58,17 +58,16 @@ namespace PoloniexWrapper
                 await HttpPostAsync<T>(new OpenOrdersRequest(apiSec, pairID));
 
         /// <summary>
-        /// depending on "pairID" return a specific result
+        /// Returns your trade history for a given market, specified by the "pairID" POST parameter 
         /// </summary>
-        /// <typeparam name="T"> List<PrivateTrade> or Dictionary<string, List<PrivateTrade>></typeparam>
-        /// <param name="apiSec"> apiSec </param>
-        /// <param name="pairID"> pairId</param>
-        /// <param name="start"> time period begin</param>
-        /// <param name="end"> time period end</param>
-        /// <param name="limit"> quontity trades (minimum = 500, maximum = 10 000), if you do not specify a "limit", it will be limited to one day</param>
-        /// <returns>List<Trade> or Dictionary<string, List<PrivateTrade>></returns>
-        public async Task<T> ReturnTradeHistoryAsync<T>(DateTime start, DateTime end, string pairID = allPairs, ushort limit = 500) =>
-                await HttpPostAsync<T>(new TradeHistoryRequest(apiSec, start, end, pairID, limit));
+        /// <typeparam name="T">List<PrivateTrade> or Dictionary<string, List<PrivateTrade>></string></typeparam>
+        /// <param name="start">UNIX timestamp format</param>
+        /// <param name="end">UNIX timestamp format</param>
+        /// <param name="pairID">currencyPair ID</param>
+        /// <param name="limit">number of entries</param>
+        /// <returns></returns>
+        public async Task<T> ReturnTradeHistoryAsync<T>(DateTime? start = null, DateTime? end = null, string pairID = allPairs, ushort limit = 500) =>
+                await HttpPostAsync<T>(new TradeHistoryRequest(apiSec, pairID, start, end, limit));
 
         public async Task<List<OrderTrade>> ReturnOrderTradesAsync(ulong? orderNumber) =>
                 await HttpPostAsync<List<OrderTrade>>(new OrderTradesRequest(apiSec, orderNumber));
