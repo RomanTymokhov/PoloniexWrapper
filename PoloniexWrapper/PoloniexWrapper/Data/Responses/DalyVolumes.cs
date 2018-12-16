@@ -10,10 +10,10 @@ namespace PoloniexWrapper.Data.Responses
     public class DalyVolumes
     {
         /// <summary>
-        /// New pairs will be added here to use.
+        /// New pairs will be added here to use
         /// </summary>
         
-        public List<DalyVolume> VolumeList = new List<DalyVolume>(); 
+        public List<DalyVolume> VolumeList { get; private set; } = new List<DalyVolume>(); 
 
         [JsonProperty("BTC_XRP")]
         private Dictionary<string, string> Btc_xrp
