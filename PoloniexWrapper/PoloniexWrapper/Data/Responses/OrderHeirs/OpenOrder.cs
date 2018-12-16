@@ -1,6 +1,9 @@
 ﻿using System;
-using System.Globalization;
 using Newtonsoft.Json;
+
+using static System.Convert;
+using static System.Globalization.CultureInfo;
+using static System.Globalization.NumberStyles;
 using static PoloniexWrapper.Helper.Enums;
 
 namespace PoloniexWrapper.Data.Responses.OrderHeirs
@@ -8,33 +11,36 @@ namespace PoloniexWrapper.Data.Responses.OrderHeirs
     public class OpenOrder
     {
         [JsonProperty("orderNumber")]
-        private readonly string orderNumber;
-        public ulong? OrderNumber => Convert.ToUInt64(orderNumber, CultureInfo.InvariantCulture);
+        public ulong OrderNumber { get; private set; }
 
         [JsonProperty("type")]
         public OrderType Type { get; private set; }
 
-        [JsonProperty("rate")]
-        private readonly string rate;
-        public decimal? Rate => Convert.ToDecimal(rate, CultureInfo.InvariantCulture);
+        private readonly decimal rate;
+        public decimal Rate { get => rate; }
 
-        [JsonProperty("amount")]
-        private readonly string amount;
-        public decimal? Amount => Convert.ToDecimal(amount, CultureInfo.InvariantCulture);
+        private readonly decimal amount;
+        public decimal Amount { get => amount; }
 
-        [JsonProperty("total")]
-        private readonly string total;
-        public decimal? Total => Convert.ToDecimal(total, CultureInfo.InvariantCulture);
+        private readonly decimal total;
+        public decimal Total { get => total; }
 
-        [JsonProperty("startingAmount")]
-        private readonly string startingAmount;
-        public decimal? StartingAmount => Convert.ToDecimal(startingAmount, CultureInfo.InvariantCulture);
+        private readonly decimal startingAmount;
+        public decimal StartingAmount { get => startingAmount; }
 
         [JsonProperty("date")]
         public DateTime DateTime { get; private set; }
 
         [JsonProperty("margin")]
-        private readonly string margin;
-        public decimal? Margin => Convert.ToDecimal(margin, CultureInfo.InvariantCulture);
+        public byte Margin { get; private set; }
+
+        [JsonConstructor]
+        public OpenOrder(string rate, string amount, string total, string startingAmount)
+        {
+            decimal.TryParse(rate, Any, InvariantCulture, out this.rate);
+            decimal.TryParse(amount, Any, InvariantCulture, out this.amount);
+            decimal.TryParse(total, Any, InvariantCulture, out this.total);
+            decimal.TryParse(startingAmount, Any, InvariantCulture, out this.startingAmount);
+        }
     }
 }
