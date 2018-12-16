@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
+
+using static System.Globalization.CultureInfo;
+using static System.Globalization.NumberStyles;
 
 namespace PoloniexWrapper.Data.Responses
 {
@@ -22,30 +23,32 @@ namespace PoloniexWrapper.Data.Responses
         [JsonProperty("address")]
         public string Adress { get; private set; }
 
-        [JsonProperty("amount")]
-        private readonly string amount;
-        public decimal? Amount => Convert.ToDecimal(amount, CultureInfo.InvariantCulture);
+        private readonly decimal amount;
+        public decimal Amount { get => amount; }
 
         [JsonProperty("confirmations")]
-        private readonly string confirmations;
-        public ushort? Confirmations => Convert.ToUInt16(confirmations, CultureInfo.InvariantCulture);
+        public ushort Confirmations { get; private set; }
 
         [JsonProperty("txid")]
         public string TxID { get; private set; }
 
         [JsonProperty("timestamp")]
-        private readonly string timestamp;
-        public ulong? Timestamp => Convert.ToUInt64(timestamp, CultureInfo.InvariantCulture);
+        public ulong Timestamp { get; private set; }
 
         [JsonProperty("status")]
         public string Status { get; private set; }
+
+        [JsonConstructor]
+        public Deposit(string amount)
+        {
+            decimal.TryParse(amount, Any, InvariantCulture, out this.amount);
+        }
     }
 
     public class Withdrawal
     {
         [JsonProperty("withdrawalNumber")]
-        private readonly string witdrawalID;
-        public ulong? WithdrawalID => Convert.ToUInt64(witdrawalID, CultureInfo.InvariantCulture);
+        public ulong WithdrawalID { get; private set; }
 
         [JsonProperty("currency")]
         public string CurrencyID { get; private set; }
@@ -53,18 +56,22 @@ namespace PoloniexWrapper.Data.Responses
         [JsonProperty("address")]
         public string Adress { get; private set; }
 
-        [JsonProperty("amount")]
-        private readonly string amount;
-        public decimal? Amount => Convert.ToDecimal(amount, CultureInfo.InvariantCulture);
+        private readonly decimal amount;
+        public decimal Amount { get => amount; }
 
         [JsonProperty("timestamp")]
-        private readonly string timestamp;
-        public ulong? Timestamp => Convert.ToUInt64(timestamp, CultureInfo.InvariantCulture);
+        public ulong Timestamp { get; private set; }
 
         [JsonProperty("status")]
         public string Status { get; private set; }
 
         [JsonProperty("ipAddress")]
         public string IpAdress { get; private set; }
+
+        [JsonConstructor]
+        public Withdrawal(string amount)
+        {
+            decimal.TryParse(amount, Any, InvariantCulture, out this.amount);
+        }
     }
 }
