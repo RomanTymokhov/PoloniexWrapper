@@ -20,6 +20,5 @@ namespace PoloniexWrapper.Data.Requests
 
             GenerateRequest(POST);
         }
-
     }
 }
