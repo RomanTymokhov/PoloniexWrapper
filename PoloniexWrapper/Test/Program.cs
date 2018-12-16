@@ -31,6 +31,7 @@ namespace Test
             //GetDalyVolume(poloClientPub, btc_eth);
             //GetOrderBook(poloClientPub, usdc_usdt, 50000);
             //GetPublicTradeHistory(poloClientPub, new DateTime(2018, 11, 18), DateTime.Now, btc_sc);
+            //GetChartData(poloClientPub, btc_xrp, 86400, new DateTime(2018, 01, 30), DateTime.Now);
 
             //GetBalances(poloClientPriv, sc);
             //GetCompleteBalances(poloClientPriv, xem);
@@ -94,6 +95,19 @@ namespace Test
                 WriteLine("Amount --> " + pt.Amount);
                 WriteLine("Total --> " + pt.Total);
                 WriteLine("*********************************");
+            }
+        }
+        private static void GetChartData(PublicClient client, string pairId, uint period, DateTime start, DateTime end)
+        {
+            var chd = client.ReturnChartDataAsync(pairId, period, start, end).Result;
+            int i = 0;
+            foreach (var candle in chd)
+            {
+                WriteLine("High --> " + candle.High);
+                WriteLine("Low --> " + candle.Low);
+                WriteLine("Open --> " + candle.Open);
+                WriteLine("Close --> " + candle.Close);
+                WriteLine("******** Candle number --> " + (chd.Count - (i++)) + " *************");
             }
         }
 
@@ -248,7 +262,7 @@ namespace Test
 
             }
         }
-        private static void GetOrderTrades(PrivateClient client, ulong? orderNumber)
+        private static void GetOrderTrades(PrivateClient client, ulong orderNumber)
         {
             var o = client.ReturnOrderTradesAsync(orderNumber).Result;
 
@@ -266,7 +280,7 @@ namespace Test
                 WriteLine("--------------------------------------------");
             }
         }
-        private static void GetOrderStatus(PrivateClient client, ulong? orderNumber)
+        private static void GetOrderStatus(PrivateClient client, ulong orderNumber)
         {
             var obj = client.ReturnOrderStatusAsync(orderNumber).Result;            
 
