@@ -1,33 +1,39 @@
-﻿using System;
-using System.Globalization;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+
+using static System.Globalization.CultureInfo;
+using static System.Globalization.NumberStyles;
 
 namespace PoloniexWrapper.Data.Responses
 {
     public class Ticker
     {
-        [JsonProperty("last")]
-        private readonly string last;
-        public decimal? LastPrice => Convert.ToDecimal(last, CultureInfo.InvariantCulture);
+        private readonly decimal last;
+        public decimal LastPrice { get => last; }
+        
+        private readonly decimal lowestAsk;
+        public decimal LowestAsk { get => lowestAsk; }
+        
+        private readonly decimal highestBid;
+        public decimal HighestBid { get => highestBid; }
 
-        [JsonProperty("lowestAsk")]
-        private readonly string lowestAsk;
-        public decimal? LowestAsk => Convert.ToDecimal(lowestAsk, CultureInfo.InvariantCulture);
+        private readonly decimal percentChange;
+        public decimal PercentChange { get => percentChange; }
+        
+        private readonly decimal baseVolume;
+        public decimal BaseVolume { get => baseVolume; }
+        
+        private readonly decimal quoteVolume;
+        public decimal QuoteVolume { get => quoteVolume; }
 
-        [JsonProperty("highestBid")]
-        private readonly string highestBid;
-        public decimal? HighestBid => Convert.ToDecimal(highestBid, CultureInfo.InvariantCulture);
-
-        [JsonProperty("percentChange")]
-        private readonly string percentChange;
-        public decimal? PercentChange => Convert.ToDecimal(percentChange, CultureInfo.InvariantCulture);
-
-        [JsonProperty("baseVolume")]
-        private readonly string baseVolume;
-        public decimal? BaseVolume => Convert.ToDecimal(baseVolume, CultureInfo.InvariantCulture);
-
-        [JsonProperty("quoteVolume")]
-        private readonly string quoteVolume;
-        public decimal? QuoteVolume => Convert.ToDecimal(quoteVolume, CultureInfo.InvariantCulture);
+        [JsonConstructor]
+        public Ticker(string last, string lowestAsk, string highestBid, string percentChange, string baseVolume, string quoteVolume)
+        {
+            decimal.TryParse(last, Any, InvariantCulture, out this.last);
+            decimal.TryParse(lowestAsk, Any, InvariantCulture, out this.lowestAsk);
+            decimal.TryParse(highestBid, Any, InvariantCulture, out this.highestBid);
+            decimal.TryParse(percentChange, Any, InvariantCulture, out this.percentChange);
+            decimal.TryParse(baseVolume, Any, InvariantCulture, out this.baseVolume);
+            decimal.TryParse(quoteVolume, Any, InvariantCulture, out this.quoteVolume);
+        }
     }
 }
