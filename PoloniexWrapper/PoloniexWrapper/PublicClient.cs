@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using PoloniexWrapper.Data.Requests;
 using PoloniexWrapper.Data.Responses;
+using PoloniexWrapper.Data.Responses.TradeHeirs;
 
 using static PoloniexWrapper.Data.PairID;
 
@@ -27,6 +29,14 @@ namespace PoloniexWrapper
         public async Task<T> ReturnOrderBookAsync<T>(string pairId = allPairs, ushort? depthSize = null) =>
                 await HttpGetAsync<T>(new OrderBookRequest(pairId, depthSize));
 
-        //dfsdfsdfsdfsdf
+        /// <summary>
+        /// Returns the past 200 trades for a given market, or up to 50,000 trades between a range specified in UNIX timestamps by the "start" and "end"
+        /// </summary>
+        /// <param name="start">UNIX timestamp format</param>
+        /// <param name="end">UNIX timestamp format</param>
+        /// <param name="pairID">currencyPair ID</param>
+        /// <returns></returns>
+        public async Task<List<PublicTrade>> ReturnTradeHistoryAsync(string pairID, DateTime? start = null, DateTime? end = null) =>
+                await HttpPostAsync<List<PublicTrade>>(new TradeHistoryRequest(pairID, start, end));
     }
 }
