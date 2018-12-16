@@ -7,7 +7,7 @@ using static PoloniexWrapper.Helper.Enums;
 
 namespace PoloniexWrapper.Data.Responses.TradeHeirs
 {
-    public class Trade
+    public class PrivateTrade
     {
         [JsonProperty("globalTradeID")]
         public ulong GlobalTradeID { get; private set; }
@@ -40,7 +40,7 @@ namespace PoloniexWrapper.Data.Responses.TradeHeirs
         public string AccountCategory { get; private set; }
 
         [JsonConstructor]
-        public Trade(string rate, string amount, string total, string fee)
+        public PrivateTrade(string rate, string amount, string total, string fee)
         {
             decimal.TryParse(rate, Any, InvariantCulture, out this.rate);
             decimal.TryParse(amount, Any, InvariantCulture, out this.amount);
