@@ -10,8 +10,11 @@ namespace PoloniexWrapper.Data
         [JsonProperty("id")]
         public uint Id { get; private set; }
 
-        private readonly decimal maxDailyWithdrawal;
-        public decimal MaxDailyWithdrawal { get => maxDailyWithdrawal; }
+        [JsonProperty("name")]
+        public string CurrencieName { get; private set; }
+
+        [JsonProperty("humanType")]
+        public string HumanType { get; private set; }
 
         private readonly decimal txFee;
         public decimal TxFee { get => txFee; }
@@ -19,13 +22,21 @@ namespace PoloniexWrapper.Data
         [JsonProperty("minConf")]
         public ushort MinConf { get; private set; }
 
+        [JsonProperty("depositAddress")]
+        public string DepositAddress { get; private set; }
+
         [JsonProperty("disabled")]
         public byte Disabled { get; private set; }
 
+        [JsonProperty("delisted")]
+        public byte Delisted { get; private set; }
+
+        [JsonProperty("frozen")]
+        public byte Frozen { get; private set; }
+
         [JsonConstructor]
-        public CurrencieInfo(string maxDailyWithdrawal, string txFee)
+        public CurrencieInfo(string txFee)
         {
-            decimal.TryParse(maxDailyWithdrawal, Any, InvariantCulture, out this.maxDailyWithdrawal);
             decimal.TryParse(txFee, Any, InvariantCulture, out this.txFee);
         }
     }
