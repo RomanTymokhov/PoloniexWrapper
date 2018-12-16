@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Globalization;
 using Newtonsoft.Json;
 
+using static System.Globalization.CultureInfo;
+using static System.Globalization.NumberStyles;
 using static PoloniexWrapper.Helper.Enums;
 
 namespace PoloniexWrapper.Data.Responses.TradeHeirs
@@ -9,40 +10,42 @@ namespace PoloniexWrapper.Data.Responses.TradeHeirs
     public class Trade
     {
         [JsonProperty("globalTradeID")]
-        private readonly string globalTradeID;
-        public ulong? GlobalTradeID => Convert.ToUInt64(globalTradeID, CultureInfo.InvariantCulture);
+        public ulong GlobalTradeID { get; private set; }
 
         [JsonProperty("tradeID")]
-        private readonly string tradeID;
-        public ulong? TradeID => Convert.ToUInt64(tradeID, CultureInfo.InvariantCulture);
+        public ulong TradeID { get; private set; }
 
         [JsonProperty("date")]
         public DateTime DateTime { get; private set; }
 
-        [JsonProperty("rate")]
-        private readonly string rate;
-        public decimal? Rate => Convert.ToDecimal(rate, CultureInfo.InvariantCulture);
+        private readonly decimal rate;
+        public decimal Rate { get => rate; }
 
-        [JsonProperty("amount")]
-        private readonly string amount;
-        public decimal? Amount => Convert.ToDecimal(amount, CultureInfo.InvariantCulture);
+        private readonly decimal amount;
+        public decimal Amount { get => amount; }
 
-        [JsonProperty("total")]
-        private readonly string total;
-        public decimal? Total => Convert.ToDecimal(total, CultureInfo.InvariantCulture);
+        private readonly decimal total;
+        public decimal Total { get => total; }
 
-        [JsonProperty("fee")]
-        private readonly string fee;
-        public decimal? Fee => Convert.ToDecimal(fee, CultureInfo.InvariantCulture);
+        private readonly decimal fee;
+        public decimal Fee { get => fee; }
 
         [JsonProperty("orderNumber")]
-        private readonly string orderNumber;
-        public ulong? OrderNumber => Convert.ToUInt64(orderNumber, CultureInfo.InvariantCulture);
+        public ulong OrderNumber { get; private set; }
 
         [JsonProperty("type")]
         public OrderType Type { get; private set; }
 
         [JsonProperty("category")]
         public string AccountCategory { get; private set; }
+
+        [JsonConstructor]
+        public Trade(string rate, string amount, string total, string fee)
+        {
+            decimal.TryParse(rate, Any, InvariantCulture, out this.rate);
+            decimal.TryParse(amount, Any, InvariantCulture, out this.amount);
+            decimal.TryParse(total, Any, InvariantCulture, out this.total);
+            decimal.TryParse(fee, Any, InvariantCulture, out this.fee);
+        }
     }
 }
