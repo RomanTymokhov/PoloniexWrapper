@@ -26,6 +26,7 @@ namespace Test
         {
             var poloClientPub = new PublicClient();
 
+
             //GetTickerData(poloClientPub, usdc_str);
             //GetDalyVolume(poloClientPub, btc_eth);
             //GetOrderBook(poloClientPub, usdc_usdt, 50000);
@@ -35,7 +36,7 @@ namespace Test
 
             //GetBalances(poloClientPriv, sc);
             //GetCompleteBalances(poloClientPriv, xem);
-            //GetDepositAdresses(poloClientPriv, etc);
+            //GetDepositAdresses(poloClientPriv, str);
             //GetNewAdress(poloClientPriv, etc);
             //GetDepositsWithdravals(poloClientPriv, new DateTime(2017, 10, 1), DateTime.Now);
             //GetAvailableAccountBalances(poloClientPriv, exchange, eth);
@@ -47,7 +48,7 @@ namespace Test
             //PlaceOrder(poloClientPriv, sell, 0.00000075m, 133.4m, btc_sc );
             //CancelOrder(poloClientPriv, 26957718447);
             //MoveOrder(poloClientPriv, 26957578587, 0.00000211m);
-
+            //Withdraw(poloClientPriv, str, 0.0000001m, "GAIYQHE4K6YBTZJUMFWBH4AALTZZWQQ6HT6GTM6VK2FLQDC6TK7QR3QQ", "260825634");
 
         }
 
@@ -113,7 +114,7 @@ namespace Test
         private static void GetCurrecies(PublicClient client)
         {
             var cur = client.ReturnCurrenciesAsync().Result;
-            var cr = cur.CurrencieList.FirstOrDefault(p => p.CurrencieId == "XRP");
+            var cr = cur.CurrencieList.FirstOrDefault(p => p.CurrencieId == "STR");
             var info = cr.CurrencieInfo;
 
             WriteLine("Id --> " + cr.Id);
@@ -337,6 +338,12 @@ namespace Test
             WriteLine("Success  --> " + mo.Success);
             WriteLine("OrderNum --> " + mo.OrderNumber);
 
+        }
+        private static void Withdraw(PrivateClient client, string currId, decimal amount, string adress, string payId)
+        {
+            var ww = client.WithdrawAsync(currId, amount, adress, payId).Result;
+
+            WriteLine(ww.Response);
         }
     }
 }
