@@ -16,7 +16,7 @@ namespace PoloniexWrapper
         /// <summary>
         /// Returns the ticker for all markets
         /// </summary>
-        /// <returns>Dictionary<string, Ticker></returns>
+        /// <returns>Dictionary string, Ticker </returns>
         public async Task<Dictionary<string, Ticker>> ReturnTickerAsync() =>
                await HttpGetAsync<Dictionary<string, Ticker>>(new TickerRequest());
 
@@ -28,12 +28,12 @@ namespace PoloniexWrapper
                 await HttpGetAsync<DalyVolumes>(new DalyVolumeRequest());
 
         /// <summary>
-        /// depending on "pairID" return a specific result
+        /// Returns the order book for a given market, as well as a sequence number for use with the Push API and an indicator specifying whether the market is frozen
         /// </summary>
-        /// <typeparam name="T">OrderBook or Dictonary<string, Orderook></string></typeparam>
+        /// <typeparam name="T">OrderBook or Dictonary string, Orderook </typeparam>
         /// <param name="pairId">allPairs --> Dictionary, particular pair --> OrderBook</param>
         /// <param name="depthSize">deep of depth, default(null) = 50, max = 20k</param>
-        /// <returns>OrderBook or Dictonary<string, Orderook></returns>
+        /// <returns>OrderBook or Dictonary string, Orderook </returns>
         public async Task<T> ReturnOrderBookAsync<T>(string pairId = allPairs, ushort? depthSize = null) =>
                 await HttpGetAsync<T>(new OrderBookRequest(pairId, depthSize));
 
