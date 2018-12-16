@@ -1,6 +1,7 @@
-﻿using System;
-using System.Globalization;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+
+using static System.Globalization.CultureInfo;
+using static System.Globalization.NumberStyles;
 
 namespace PoloniexWrapper.Data.Responses
 {
@@ -9,14 +10,19 @@ namespace PoloniexWrapper.Data.Responses
         [JsonProperty("success")]
         public byte Success { get; private set; }
 
-        [JsonProperty("amount")]
-        private readonly string result;
-        public decimal Result => Convert.ToDecimal(result, CultureInfo.InvariantCulture);
+        private readonly decimal amount;
+        public decimal Amount { get => amount; }
 
         [JsonProperty("message")]
         public string Message { get; private set; }
 
         [JsonProperty("error")]
         public string ErrorMessage { get; private set; }
+
+        [JsonConstructor]
+        public CancelOrder(string amount)
+        {
+            decimal.TryParse(amount, Any, InvariantCulture, out this.amount);
+        }
     }
 }
