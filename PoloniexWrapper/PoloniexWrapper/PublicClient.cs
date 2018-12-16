@@ -55,7 +55,7 @@ namespace PoloniexWrapper
         /// <param name="start">DateTime timestamp format</param>
         /// <param name="end">DateTime timestamp format</param>
         /// <returns></returns>
-        public async Task<Chart> ReturnChartDataAsync(string pairId, uint period, DateTime start, DateTime end) =>
-                await HttpGetAsync<Chart>(new ChartDataRequest(pairId, period, start, end));
+        public async Task<List<Candlestick>> ReturnChartDataAsync(string pairId, uint period, DateTime start, DateTime end) =>
+                await HttpGetAsync<List<Candlestick>>(new ChartDataRequest(pairId, period, start, end));
     }
 }
