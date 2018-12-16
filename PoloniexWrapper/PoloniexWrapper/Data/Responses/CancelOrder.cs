@@ -7,7 +7,7 @@ namespace PoloniexWrapper.Data.Responses
     public class CancelOrder
     {
         [JsonProperty("success")]
-        public byte Success { get; set; }
+        public byte Success { get; private set; }
 
         [JsonProperty("amount")]
         private readonly string result;
