@@ -7,22 +7,22 @@ using System.Text;
 using System;
 using Newtonsoft.Json;
 
+using static System.Environment;
+
 namespace PoloniexWrapper
 {
     public abstract class PoloClient : IDisposable
     {
         private readonly HttpClient httpClient;
 
-        private const string baseAddress = "https://poloniex.com";
-
         public PoloClient()
         {
-            httpClient = new HttpClient { BaseAddress = new Uri(baseAddress) };
+            httpClient = new HttpClient { BaseAddress = new Uri("https://poloniex.com") };
         }
 
         public PoloClient(string apiKey)
         {
-            httpClient = new HttpClient { BaseAddress = new Uri(baseAddress) };
+            httpClient = new HttpClient { BaseAddress = new Uri("https://poloniex.com") };
             httpClient.DefaultRequestHeaders.Add("Key", apiKey);
         }
 
@@ -30,7 +30,7 @@ namespace PoloniexWrapper
         {
             var response = await httpClient.GetAsync(requestObj.Url).ConfigureAwait(false);
 
-            CheckException(response);
+            await EnsureSuccessStatusCodeAsync(response);
 
             return await UnpackingResponseAsync<T>(response);
         }
@@ -43,7 +43,7 @@ namespace PoloniexWrapper
                 new StringContent(requestObj.arguments.ToKeyValueString(), 
                     Encoding.UTF8, "application/x-www-form-urlencoded")).ConfigureAwait(false);
 
-            CheckException(response);
+            await EnsureSuccessStatusCodeAsync(response);
 
             return await UnpackingResponseAsync<T>(response);
         }
@@ -51,15 +51,25 @@ namespace PoloniexWrapper
         protected async Task<T> UnpackingResponseAsync<T>(HttpResponseMessage responseMessage)
         {
             string json = await responseMessage.Content.ReadAsStringAsync();
+
             return await Task.Run(() => JsonConvert.DeserializeObject<T>(json));
         }
         protected async Task<T> UnpackingResponseAsync<T>(object responseMessage) =>
                     await Task.Run(() => JsonConvert.DeserializeObject<T>(responseMessage.ToString()));
 
-        private void CheckException(HttpResponseMessage responseMessage)
+        private async Task EnsureSuccessStatusCodeAsync(HttpResponseMessage response)
         {
-            if (!responseMessage.IsSuccessStatusCode)
-                throw new PoloException(JsonConvert.DeserializeObject<Error>(responseMessage.Content.ReadAsStringAsync().Result).ErrorMessage);
+            if (!response.IsSuccessStatusCode)
+            {
+                string json = await response.Content.ReadAsStringAsync();
+
+                if (response.Content != null) response.Content.Dispose();
+
+                string message = JsonConvert.DeserializeObject<Error>(json).ErrorMessage;
+
+                throw new PoloException($"{NewLine} StatusCode:   {(ushort)response.StatusCode},  {response.StatusCode.ToString()}" +
+                                        $"{NewLine} ErrorMessage: {message}");
+            }
         }
 
         public void Dispose() => httpClient.Dispose();
