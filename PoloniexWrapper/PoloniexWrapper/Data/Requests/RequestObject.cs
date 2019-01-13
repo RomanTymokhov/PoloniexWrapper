@@ -43,10 +43,12 @@ namespace PoloniexWrapper.Data.Requests
 
         private void CreateSignature() 
         {
-            var encryptor = new HMACSHA512(Encoding.ASCII.GetBytes(apiSec));
-            var postBytes = Encoding.ASCII.GetBytes(arguments.ToKeyValueString());
+            using (var encryptor = new HMACSHA512(Encoding.ASCII.GetBytes(apiSec)))
+            {
+                byte[] postBytes = Encoding.ASCII.GetBytes(arguments.ToKeyValueString());
 
-            Sign = BitConverter.ToString(encryptor.ComputeHash(postBytes)).Replace("-", "").ToLower();
+                Sign = BitConverter.ToString(encryptor.ComputeHash(postBytes)).Replace("-", string.Empty).ToLower();
+            }
         }
     }
 }
