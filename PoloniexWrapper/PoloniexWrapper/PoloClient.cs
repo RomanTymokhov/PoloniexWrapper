@@ -15,16 +15,8 @@ namespace PoloniexWrapper
     {
         private readonly HttpClient httpClient;
 
-        public PoloClient()
-        {
-            httpClient = new HttpClient { BaseAddress = new Uri("https://poloniex.com") };
-        }
-
-        public PoloClient(string apiKey)
-        {
-            httpClient = new HttpClient { BaseAddress = new Uri("https://poloniex.com") };
-            httpClient.DefaultRequestHeaders.Add("Key", apiKey);
-        }
+        public PoloClient() => httpClient = new HttpClient { BaseAddress = new Uri("https://poloniex.com") };
+        public PoloClient(string apiKey) : this() => httpClient.DefaultRequestHeaders.Add("Key", apiKey);
 
         protected async Task<T> HttpGetAsync<T>(RequestObject requestObj)
         {
