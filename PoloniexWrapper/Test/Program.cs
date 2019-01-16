@@ -26,7 +26,6 @@ namespace Test
         {
             var poloClientPub = new PublicClient();
 
-
             //GetTickerData(poloClientPub, usdc_str);
             //GetDalyVolume(poloClientPub, btc_eth);
             //GetOrderBook(poloClientPub, usdc_usdt, 50000);
@@ -35,7 +34,7 @@ namespace Test
             //GetCurrecies(poloClientPub);
 
             //GetBalances(poloClientPriv, sc);
-            //GetCompleteBalances(poloClientPriv, xem);
+            GetCompleteBalances(poloClientPriv, xem);
             //GetDepositAdresses(poloClientPriv, str);
             //GetNewAdress(poloClientPriv, etc);
             //GetDepositsWithdravals(poloClientPriv, new DateTime(2017, 10, 1), DateTime.Now);
@@ -145,7 +144,8 @@ namespace Test
         }
         private static void GetDepositAdresses(PrivateClient client, string currId)
         {
-            var a = client.ReturnDepositAdressesAsync().Result.FirstOrDefault(k => k.Key == currId);
+            var add = client.ReturnDepositAdressesAsync().Result;
+            var a = add.FirstOrDefault(k => k.Key == currId);
 
             WriteLine(a.Key + " -- " + a.Value);
             WriteLine("--------------------------------------------");
