@@ -67,6 +67,22 @@ namespace PoloniexWrapper
             else return null;
         }
 
+        protected async Task<PoloResponse> Generate<T>(RequestObject requestObj)
+        {
+            var response = await HttpGetAsync(requestObj);
+            var error = await CheckStatusCodeOk(response);
+
+            if (error == null)
+            {
+                var answer = await UnpackingResponseAsync<T>(response);
+                return new PoloResponse { Success = true, Answer = answer, Error = null };
+            }
+            else
+            {
+                return new PoloResponse { Success = false, Answer = null, Error = error };
+            }
+        }
+
         public void Dispose() => httpClient.Dispose();
     }
 }
