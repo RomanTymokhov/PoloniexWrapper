@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+
 namespace PoloniexWrapper.Exceptions
 {
     public class Error
