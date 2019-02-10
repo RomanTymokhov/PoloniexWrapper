@@ -133,10 +133,12 @@ namespace PoloniexWrapper
         /// <param name="rate"></param>
         /// <param name="amount"></param>
         /// <param name="pair"></param>
+        /// <param name="fillOrKill">optionally - Set to "1" if this order should either fill in its entirety or be completely aborted</param>
+        /// <param name="immediateOrCancel">optionally - Set to "1" if this order can be partially or completely filled, but any portion of the order that cannot be filled immediately will be canceled</param>
         /// <param name="postOnly">optionally post-only order will only be placed if no portion of it fills immediately; this guarantees you will never pay the taker fee on any part of the order that fills</param>
         /// <returns>PlaceOrder</returns>
-        public async Task<PlaceOrder> PlaceOrderAsync(OrderType type, decimal rate, decimal amount, string pair, byte postOnly = 0) =>      
-                await HttpPostAsync<PlaceOrder>(new PlaceOrderRequest(apiSec, type, rate, amount, pair, postOnly));
+        public async Task<PlaceOrder> PlaceOrderAsync(OrderType type, decimal rate, decimal amount, string pair, byte fillOrKill = 0, byte immediateOrCancel = 0, byte postOnly = 0) =>      
+                await HttpPostAsync<PlaceOrder>(new PlaceOrderRequest(apiSec, type, rate, amount, pair, fillOrKill, immediateOrCancel, postOnly));
 
         /// <summary>
         /// Cancels an order you have placed in a given market
