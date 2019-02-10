@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace PoloniexWrapper.Exceptions
+namespace PoloniexWrapper.Data.Responses
 {
     public class Error
     {
