@@ -58,11 +58,11 @@ namespace PoloniexWrapper
         public async Task<ResponseObject> ReturnChartDataAsync(string pairId, uint period, DateTime start, DateTime end) =>
                 await GenerateAnswer<List<Candlestick>>(new ChartDataRequest(pairId, period, start, end));
 
-        ///// <summary>
-        ///// Returns information about currencies
-        ///// </summary>
-        ///// <returns>Currencies</returns>
-        //public async Task<Currencies> ReturnCurrenciesAsync() =>
-        //        await HttpGetAsync<Currencies>(new CurrenciesRequest());
+        /// <summary>
+        /// Returns information about currencies
+        /// </summary>
+        /// <returns>Currencies</returns>
+        public async Task<ResponseObject> ReturnCurrenciesAsync() =>
+                await GenerateAnswer<Currencies>(new CurrenciesRequest());
     }
 }
