@@ -9,6 +9,12 @@ namespace PoloniexWrapper.Data.Responses.TradeHeirs
 {
     public class PublicTrade
     {
+        [JsonProperty("globalTradeID")]
+        public ulong GlobalTradeID { get; private set; }
+
+        [JsonProperty("tradeID")]
+        public ulong TradeID { get; private set; }
+
         [JsonProperty("date")]
         public DateTime DateTime { get; private set; }
 
