@@ -2,7 +2,7 @@
 
 namespace PoloniexWrapper.Data.Responses
 {
-    public class PoloResponse
+    public class ResponseObject
     {
         [JsonProperty("success")]
         public bool Success { get; set; }
