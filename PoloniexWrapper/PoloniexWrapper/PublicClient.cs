@@ -17,7 +17,7 @@ namespace PoloniexWrapper
         /// Returns the ticker for all markets
         /// </summary>
         /// <returns>PoloResponse.Answer -> Dictionary string, Ticker </returns>
-        public async Task<PoloResponse> ReturnTickerAsync() =>
+        public async Task<ResponseObject> ReturnTickerAsync() =>
             await GenerateAnswer<Dictionary<string, Ticker>>(new TickerRequest());
 
 
@@ -25,7 +25,7 @@ namespace PoloniexWrapper
         /// Returns the 24-hour volume for all markets, plus totals for primary currencies
         /// </summary>
         /// <returns>PoloResponse.Answer -> DalyVolumes</returns>
-        public async Task<PoloResponse> ReturnDalyVolumesAsync() =>
+        public async Task<ResponseObject> ReturnDalyVolumesAsync() =>
             await GenerateAnswer<DalyVolumes>(new DalyVolumeRequest());
 
 
@@ -35,19 +35,19 @@ namespace PoloniexWrapper
         /// <typeparam name="T">OrderBook or Dictonary string, Orderook </typeparam>
         /// <param name="pairId">allPairs --> Dictionary, particular pair --> OrderBook</param>
         /// <param name="depthSize">deep of depth, default(null) = 50, max = 20k</param>
-        /// <returns>OrderBook or Dictonary string, Orderook </returns>
-        public async Task<PoloResponse> ReturnOrderBookAsync<T>(string pairId = allPairs, ushort? depthSize = null) =>
+        /// <returns>PoloResponse.Answer -> OrderBook or Dictonary string, Orderook </returns>
+        public async Task<ResponseObject> ReturnOrderBookAsync<T>(string pairId = allPairs, ushort? depthSize = null) =>
                 await GenerateAnswer<T>(new OrderBookRequest(pairId, depthSize));
 
-        ///// <summary>
-        ///// Returns the past 200 trades for a given market, or up to 50,000 trades between a range specified in DateTime timestamps by the "start" and "end"
-        ///// </summary>
-        ///// <param name="start">DateTime timestamp format</param>
-        ///// <param name="end">DateTime timestamp format</param>
-        ///// <param name="pairID">currencyPair ID</param>
-        ///// <returns></returns>
-        //public async Task<List<PublicTrade>> ReturnTradeHistoryAsync(string pairID, DateTime? start = null, DateTime? end = null) =>
-        //        await HttpGetAsync<List<PublicTrade>>(new TradeHistoryRequest(pairID, start, end));
+        /// <summary>
+        /// Returns the past 200 trades for a given market, or up to 50,000 trades between a range specified in DateTime timestamps by the "start" and "end"
+        /// </summary>
+        /// <param name="start">DateTime timestamp format</param>
+        /// <param name="end">DateTime timestamp format</param>
+        /// <param name="pairID">currencyPair ID</param>
+        /// <returns>PoloResponse.Answer -> List PublicTrade </returns>
+        public async Task<ResponseObject> ReturnTradeHistoryAsync(string pairID, DateTime? start = null, DateTime? end = null) =>
+                await GenerateAnswer<List<PublicTrade>>(new TradeHistoryRequest(pairID, start, end));
 
         ///// <summary>
         ///// Returns candlestick chart data
