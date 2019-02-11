@@ -15,8 +15,8 @@ namespace PoloniexWrapper.Data
         public Currencie(CurrencieInfo currencieInfo, string currencieId)
         {
             Id = currencieInfo.Id;
-            CurrencieInfo = currencieInfo;
             CurrencieId = currencieId;
+            CurrencieInfo = currencieInfo;
         }
     }
 }
