@@ -67,7 +67,7 @@ namespace PoloniexWrapper
             else return null;
         }
 
-        protected async Task<PoloResponse> Generate<T>(RequestObject requestObj)
+        protected async Task<PoloResponse> GenerateAnswer<T>(RequestObject requestObj)
         {
             var response = await HttpGetAsync(requestObj);
             var error = await CheckStatusCodeOk(response);
