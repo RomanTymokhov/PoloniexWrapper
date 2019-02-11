@@ -34,6 +34,9 @@ namespace PoloniexWrapper.Data
         [JsonProperty("frozen")]
         public byte Frozen { get; private set; }
 
+        [JsonProperty("isGeofenced")]
+        public bool IsGeofenced { get; private set; }
+
         [JsonConstructor]
         public CurrencieInfo(string txFee)
         {
