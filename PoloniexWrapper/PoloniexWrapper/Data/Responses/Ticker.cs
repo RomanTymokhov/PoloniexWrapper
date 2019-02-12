@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-
 using static System.Globalization.CultureInfo;
 using static System.Globalization.NumberStyles;
 
