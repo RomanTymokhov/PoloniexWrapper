@@ -1,86 +1,43 @@
 ﻿using PoloniexWrapper.Data.Requests;
 using PoloniexWrapper.Data.Responses;
-using PoloniexWrapper.Exceptions;
 using PoloniexWrapper.Helper;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.Text;
 using System;
-using Newtonsoft.Json;
-
-using static System.Environment;
 
 namespace PoloniexWrapper
 {
     public abstract class PoloClient : IDisposable
     {
         private readonly HttpClient httpClient;
-        private readonly bool IsDevelopmentMode = true;
 
-        public PoloClient(bool devMode)
+        public PoloClient()
         {
-            IsDevelopmentMode = devMode;
             httpClient = new HttpClient { BaseAddress = new Uri("https://poloniex.com") };
         }
-        public PoloClient(bool devMode, string apiKey) : this(devMode)
+
+        public PoloClient(string apiKey) : this()
         {
             httpClient.DefaultRequestHeaders.Add("Key", apiKey);
         }
 
-        protected async Task<HttpResponseMessage> HttpGetAsync(RequestObject requestObj)
+        protected async Task<ResponseObject> HttpGetAsync<T>(RequestObject requestObj)
         {
-            return await httpClient.GetAsync(requestObj.Url).ConfigureAwait(false);
+            var response = await httpClient.GetAsync(requestObj.Url).ConfigureAwait(false);
+
+            return response.Unpack<T>();
         }
 
-        protected async Task<HttpResponseMessage> HttpPostAsync(RequestObject requestObj)
+        protected async Task<ResponseObject> HttpPostAsync<T>(RequestObject requestObj)
         {
             httpClient.DefaultRequestHeaders.Add("Sign", requestObj.Sign);
 
-            return await httpClient.PostAsync(requestObj.Url,
+            var response = await httpClient.PostAsync(requestObj.Url,
                 new StringContent(requestObj.arguments.ToKeyValueString(), 
                     Encoding.UTF8, "application/x-www-form-urlencoded")).ConfigureAwait(false);
-        }
 
-        protected async Task<T> UnpackingResponseAsync<T>(HttpResponseMessage responseMessage)
-        {
-            string json = await responseMessage.Content.ReadAsStringAsync();
-
-            return await Task.Run(() => JsonConvert.DeserializeObject<T>(json));
-        }
-        protected async Task<T> UnpackingResponseAsync<T>(object responseMessage) =>
-                    await Task.Run(() => JsonConvert.DeserializeObject<T>(responseMessage.ToString()));
-
-        protected async  Task<Error> CheckStatusCodeOk(HttpResponseMessage response)
-        {
-            if (!response.IsSuccessStatusCode)
-            {
-                string json = await response.Content.ReadAsStringAsync();
-                var error = JsonConvert.DeserializeObject<Error>(json);
-                if (response.Content != null) response.Content.Dispose();
-                if (!IsDevelopmentMode) return error;
-                else
-                {
-                    throw new PoloException($"{NewLine} StatusCode:   {(ushort)response.StatusCode},  {response.StatusCode.ToString()}" +
-                                            $"{NewLine} ErrorMessage: {error.ErrorMessage}");
-                }
-            }
-            else return null;
-        }
-
-        protected async Task<ResponseObject> GenerateAnswer<T>(RequestObject requestObj)
-        {
-            var response = await HttpGetAsync(requestObj);
-            var error = await CheckStatusCodeOk(response);
-
-            if (error == null)
-            {
-                var answer = await UnpackingResponseAsync<T>(response);
-                return new ResponseObject { Success = true, Answer = answer, Error = null };
-            }
-            else
-            {
-                return new ResponseObject { Success = false, Answer = null, Error = error };
-            }
+            return response.Unpack<T>();
         }
 
         public void Dispose() => httpClient.Dispose();
