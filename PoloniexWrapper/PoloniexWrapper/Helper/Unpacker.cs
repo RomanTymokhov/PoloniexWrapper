@@ -38,7 +38,6 @@ namespace PoloniexWrapper.Helper
 
         private bool IsError(out Error error)
         {
-
             if (JsonIsEmpty(out var emptyError)) { error = emptyError; return true; }
             else
             {
