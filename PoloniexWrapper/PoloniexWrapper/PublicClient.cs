@@ -61,7 +61,7 @@ namespace PoloniexWrapper
         /// <summary>
         /// Returns information about currencies
         /// </summary>
-        /// <returns>Currencies</returns>
+        /// <returns>PoloResponse.Answer -> Currencies</returns>
         public async Task<ResponseObject> ReturnCurrenciesAsync() =>
                 await HttpGetAsync<Currencies>(new CurrenciesRequest());
     }
