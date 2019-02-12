@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using PoloniexWrapper.Data.Responses;
 using static PoloniexWrapper.Data.Responses.Error;
 
@@ -15,7 +16,7 @@ namespace PoloniexWrapper.Helper
         {
             json = response.Content.ReadAsStringAsync().Result;
             isSuccessStatusCode = response.IsSuccessStatusCode;
-            
+
             httpStatus.code = (ushort)response.StatusCode;
             httpStatus.msg = response.StatusCode.ToString();
             response.Dispose();
@@ -25,26 +26,52 @@ namespace PoloniexWrapper.Helper
         {
             if (isSuccessStatusCode)
             {
-                if (IsError(out var error)) return new ResponseObject { Error = error };
-                else return new ResponseObject { Answer = JsonConvert.DeserializeObject<T>(json)};
+                if (!IsError(out var error))
+                {
+                    var obj = JsonConvert.DeserializeObject<T>(json);
+                    return new ResponseObject { Answer = obj };
+                }
+                else return new ResponseObject { Error = error };
             }
             else return new ResponseObject { Error = new Error(httpStatus) };
         }
 
         private bool IsError(out Error error)
         {
-            var apiError = JsonConvert.DeserializeObject<ApiError>(json);
 
-            if (apiError.Message != null)
+            if (JsonIsEmpty(out var emptyError)) { error = emptyError; return true; }
+            else
             {
-                error = new Error(httpStatus, errMsg: apiError.Message);
+                if (JsonIsObject(out var jObj) && jObj.ContainsKey("error"))
+                {
+                    error = new Error(httpStatus, errMsg: jObj.Property("error").Value.ToString());
+                    return true;
+                }
+                else { error = null; return false; }
+            }
+        }
+
+        private bool JsonIsEmpty(out Error error)
+        {
+            if (json == string.Empty || json == null)
+            { error = new Error(httpStatus, errMsg: "Polo Json Object is empty"); return true; }
+            else{ error = null; return false; }
+        }
+
+        private bool JsonIsObject(out JObject obj)
+        {            
+            var jError = JToken.Parse(json);
+            if (jError is JObject)
+            {
+                obj = jError as JObject;
                 return true;
             }
             else
             {
-                error = null;
+                obj = null;
                 return false;
             }
         }
+
     }
 }
