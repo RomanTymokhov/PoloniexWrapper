@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 
 using static System.Globalization.CultureInfo;
@@ -9,8 +9,8 @@ namespace PoloniexWrapper.Data.Responses
 {
     public class OrderBook
     {
-        public List<DepthItem> Asks = new List<DepthItem>();
-        public List<DepthItem> Bids = new List<DepthItem>();
+        public List<BookItem> Asks = new List<BookItem>();
+        public List<BookItem> Bids = new List<BookItem>();
 
         [JsonProperty("asks")]
         private List<List<string>> ComingAsks
@@ -19,7 +19,7 @@ namespace PoloniexWrapper.Data.Responses
             {
                 foreach (var item in value)
                 {
-                    if(item != null) Asks.Add(new DepthItem(item));
+                    if(item != null) Asks.Add(new BookItem(item));
                 }
             }
         }
@@ -31,7 +31,7 @@ namespace PoloniexWrapper.Data.Responses
             {
                 foreach (var item in value)
                 {
-                    if (item != null) Bids.Add(new DepthItem(item));
+                    if (item != null) Bids.Add(new BookItem(item));
                 }
             }
         }
@@ -43,12 +43,12 @@ namespace PoloniexWrapper.Data.Responses
         public ulong SequenceId { get; private set; } //for use with the Push API
     }
 
-    public class DepthItem
+    public class BookItem
     {
         public readonly decimal rate;
         public readonly decimal amount;
 
-        public DepthItem(List<string> lst)
+        public BookItem(List<string> lst)
         {
             decimal.TryParse(lst.First(), Any, InvariantCulture, out rate);
             decimal.TryParse(lst.Last(), Any, InvariantCulture, out amount);
