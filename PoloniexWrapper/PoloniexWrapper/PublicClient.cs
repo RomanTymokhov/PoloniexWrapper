@@ -11,21 +11,21 @@ namespace PoloniexWrapper
 {
     public class PublicClient : PoloClient
     {
-        public PublicClient(bool devMode) : base(devMode) { }
+        public PublicClient() : base() { }
 
         /// <summary>
         /// Returns the ticker for all markets
         /// </summary>
         /// <returns>PoloResponse.Answer -> Dictionary string, Ticker </returns>
         public async Task<ResponseObject> ReturnTickerAsync() =>
-            await GenerateAnswer<Dictionary<string, Ticker>>(new TickerRequest());
+            await HttpGetAsync<Dictionary<string, Ticker>>(new TickerRequest());
 
         /// <summary>
         /// Returns the 24-hour volume for all markets, plus totals for primary currencies
         /// </summary>
         /// <returns>PoloResponse.Answer -> DalyVolumes</returns>
         public async Task<ResponseObject> ReturnDalyVolumesAsync() =>
-            await GenerateAnswer<DalyVolumes>(new DalyVolumeRequest());
+            await HttpGetAsync<DalyVolumes>(new DalyVolumeRequest());
 
         /// <summary>
         /// Returns the order book for a given market, as well as a sequence number for use with the Push API and an indicator specifying whether the market is frozen
@@ -35,7 +35,7 @@ namespace PoloniexWrapper
         /// <param name="depthSize">deep of depth, default(null) = 50, max = 20k</param>
         /// <returns>PoloResponse.Answer -> OrderBook or Dictonary string, Orderook </returns>
         public async Task<ResponseObject> ReturnOrderBookAsync<T>(string pairId = allPairs, ushort? depthSize = null) =>
-                await GenerateAnswer<T>(new OrderBookRequest(pairId, depthSize));
+                await HttpGetAsync<T>(new OrderBookRequest(pairId, depthSize));
 
         /// <summary>
         /// Returns the past 200 trades for a given market, or up to 50,000 trades between a range specified in DateTime timestamps by the "start" and "end"
@@ -45,7 +45,7 @@ namespace PoloniexWrapper
         /// <param name="pairID">currencyPair ID</param>
         /// <returns>PoloResponse.Answer -> List PublicTrade </returns>
         public async Task<ResponseObject> ReturnTradeHistoryAsync(string pairID, DateTime? start = null, DateTime? end = null) =>
-                await GenerateAnswer<List<PublicTrade>>(new TradeHistoryRequest(pairID, start, end));
+                await HttpGetAsync<List<PublicTrade>>(new TradeHistoryRequest(pairID, start, end));
 
         /// <summary>
         /// Returns candlestick chart data
@@ -56,13 +56,13 @@ namespace PoloniexWrapper
         /// <param name="end">DateTime timestamp format</param>
         /// <returns>PoloResponse.Answer -> List Candlestick</returns>
         public async Task<ResponseObject> ReturnChartDataAsync(string pairId, uint period, DateTime start, DateTime end) =>
-                await GenerateAnswer<List<Candlestick>>(new ChartDataRequest(pairId, period, start, end));
+                await HttpGetAsync<List<Candlestick>>(new ChartDataRequest(pairId, period, start, end));
 
         /// <summary>
         /// Returns information about currencies
         /// </summary>
         /// <returns>Currencies</returns>
         public async Task<ResponseObject> ReturnCurrenciesAsync() =>
-                await GenerateAnswer<Currencies>(new CurrenciesRequest());
+                await HttpGetAsync<Currencies>(new CurrenciesRequest());
     }
 }
