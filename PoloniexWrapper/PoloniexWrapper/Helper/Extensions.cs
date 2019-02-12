@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
+using System.Linq;
+using System.Collections.Generic;
+using PoloniexWrapper.Data.Responses;
 
 namespace PoloniexWrapper.Helper
 {
@@ -12,5 +13,10 @@ namespace PoloniexWrapper.Helper
 
         public static string ToUnixtime(this DateTime? dateTime) => ((int)((DateTime)dateTime - new DateTime(1970, 1, 1)).TotalSeconds).ToString();
         public static string ToUnixtime(this DateTime dateTime) => ((int)(dateTime - new DateTime(1970, 1, 1)).TotalSeconds).ToString();
+
+        public static ResponseObject Unpack<T>(this System.Net.Http.HttpResponseMessage response)
+        {
+            return new Unpacker(response).Unpack<T>();
+        }
     }
 }
