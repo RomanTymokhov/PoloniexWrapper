@@ -29,7 +29,8 @@ namespace PoloniexWrapper.Helper
                 if (!IsError(out var error))
                 {
                     var obj = JsonConvert.DeserializeObject<T>(json);
-                    return new ResponseObject { Answer = obj };
+                    if (obj is ResponseObject) return obj as ResponseObject;
+                    else return new ResponseObject { Answer = obj };
                 }
                 else return new ResponseObject { Error = error };
             }
