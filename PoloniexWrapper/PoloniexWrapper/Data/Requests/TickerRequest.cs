@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-using static PoloniexWrapper.Helper.Enums.RequestType;
+﻿using static PoloniexWrapper.Helper.Enums.RequestType;
 
 namespace PoloniexWrapper.Data.Requests
 {
@@ -8,10 +6,7 @@ namespace PoloniexWrapper.Data.Requests
     {
         public TickerRequest() :base()
         {
-            arguments = new Dictionary<string, string>
-            {
-                ["command"] = "returnTicker"
-            };
+            arguments["command"] = "returnTicker";         
 
             GenerateRequest(GET);
         }
