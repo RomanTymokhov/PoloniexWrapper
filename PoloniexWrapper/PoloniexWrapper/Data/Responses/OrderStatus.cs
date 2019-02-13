@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
-using PoloniexWrapper.Data.Responses.OrderHeirs;
+﻿using Newtonsoft.Json;
 
 namespace PoloniexWrapper.Data.Responses
 {
