@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using PoloniexWrapper.Helper;
 
 using static PoloniexWrapper.Helper.Enums.RequestType;
@@ -10,31 +9,25 @@ namespace PoloniexWrapper.Data.Requests
     { 
         public TradeHistoryRequest(string pairID, DateTime? start, DateTime? end) : base()
         {
-            arguments = new Dictionary<string, string>
-            {
-                ["command"] = "returnTradeHistory",
-                ["currencyPair"] = pairID,
-                ["nonce"] = GetNonce()
-            };
+            arguments["command"] = "returnTradeHistory";
+            arguments["currencyPair"] = pairID;
+            arguments["nonce"] = GetNonce();
 
-            if (start != null) arguments.Add("start", start.ToUnixtime());
-            if (end != null) arguments.Add("end", end.ToUnixtime());
+            if (start != null) arguments["start"] = start.ToUnixtime();
+            if (end != null) arguments["end"] = end.ToUnixtime();
 
             GenerateRequest(GET);
         }
 
         public TradeHistoryRequest(string apiSec, string pairID, DateTime? start, DateTime? end, ushort? limit) : base(apiSec)
         {
-            arguments = new Dictionary<string, string>
-            {
-                ["command"] = "returnTradeHistory",
-                ["currencyPair"] = pairID,
-                ["nonce"] = GetNonce()
-            };
+            arguments["command"] = "returnTradeHistory";
+            arguments["currencyPair"] = pairID;
+            arguments["nonce"] = GetNonce();
 
-            if (start != null) arguments.Add("start", start.ToUnixtime());
-            if (end != null) arguments.Add("end", end.ToUnixtime());
-            if (limit != null) arguments.Add("limit", limit.ToString());
+            if (start != null) arguments["start"] = start.ToUnixtime();
+            if (end != null) arguments["end"] = end.ToUnixtime();
+            if (limit != null) arguments["limit"] = limit.ToString();
 
             GenerateRequest(POST);
         }
