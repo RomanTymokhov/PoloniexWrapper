@@ -8,6 +8,6 @@ namespace PoloniexWrapper.Data.Responses
         public string Success { get; private set; }
 
         [JsonProperty("response")]
-        public string Response { get; private set; }
+        public string ApiResponse { get; private set; }
     }
 }
