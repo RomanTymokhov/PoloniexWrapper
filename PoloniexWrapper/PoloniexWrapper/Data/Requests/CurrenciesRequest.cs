@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-using static PoloniexWrapper.Helper.Enums.RequestType;
+﻿using static PoloniexWrapper.Helper.Enums.RequestType;
 
 namespace PoloniexWrapper.Data.Requests
 {
@@ -8,11 +6,8 @@ namespace PoloniexWrapper.Data.Requests
     {
         public CurrenciesRequest() : base()
         {
-            arguments = new Dictionary<string, string>
-            {
-                ["command"] = "returnCurrencies",
-                ["nonce"] = GetNonce()
-            };
+            arguments["command"] = "returnCurrencies";
+            arguments["nonce"] = GetNonce();           
 
             GenerateRequest(GET);
         }
