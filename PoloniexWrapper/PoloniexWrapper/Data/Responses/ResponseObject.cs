@@ -34,6 +34,8 @@ namespace PoloniexWrapper.Data.Responses
             public string msg;
         }
 
+        public Error() { }
+
         public Error(HttpStatus status, string errMsg = null)
         {
             var sb = new StringBuilder("Poloniex API Error: ");
