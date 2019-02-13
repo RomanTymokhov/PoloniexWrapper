@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-using static PoloniexWrapper.Helper.Enums.RequestType;
+﻿using static PoloniexWrapper.Helper.Enums.RequestType;
 using static System.Globalization.CultureInfo;
 
 namespace PoloniexWrapper.Data.Requests
@@ -9,16 +7,13 @@ namespace PoloniexWrapper.Data.Requests
     {
         public MoveOrderRequest(string apiSec, ulong orderNumber, decimal rate, decimal? amount, byte postOnly) : base(apiSec)
         {
-            arguments = new Dictionary<string, string>
-            {
-                ["command"] = "moveOrder",
-                ["orderNumber"] = orderNumber.ToString(),
-                ["rate"] = rate.ToString(GetCultureInfo("en-US")),
-                ["nonce"] = GetNonce()
-            };
+            arguments["command"] = "moveOrder";
+            arguments["orderNumber"] = orderNumber.ToString();
+            arguments["rate"] = rate.ToString(GetCultureInfo("en-US"));
+            arguments["nonce"] = GetNonce();
 
-            if (amount != null) arguments.Add("amount", ((decimal)amount).ToString(GetCultureInfo("en-US")));
-            if (postOnly == 1) arguments.Add("postOnly", postOnly.ToString());
+            if (amount != null) arguments["amount"] = ((decimal)amount).ToString(GetCultureInfo("en-US"));
+            if (postOnly == 1) arguments["postOnly"] = postOnly.ToString();
 
             GenerateRequest(POST);
         }
