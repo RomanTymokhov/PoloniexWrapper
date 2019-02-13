@@ -26,7 +26,7 @@ namespace PoloniexWrapper.Data.Responses
     public class Error
     {
         [JsonProperty("error")]
-        public string ErrorMessage { get; set; }
+        public string Message { get; set; }
 
         public struct HttpStatus
         {
@@ -40,7 +40,7 @@ namespace PoloniexWrapper.Data.Responses
 
             if (status.code != 200) sb.AppendFormat("{0} - {1}", status.code, status.msg);
             if (status.code == 200) sb.AppendFormat("{0} - {1}", status.code, errMsg);
-            ErrorMessage = sb.ToString();
+            Message = sb.ToString();
         }
     }
 }
