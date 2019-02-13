@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using static PoloniexWrapper.Helper.Enums.RequestType;
+﻿using static PoloniexWrapper.Helper.Enums.RequestType;
 
 namespace PoloniexWrapper.Data.Requests
 {
@@ -7,14 +6,11 @@ namespace PoloniexWrapper.Data.Requests
     {
         public OrderBookRequest(string pairId, ushort? depth) : base()
         {
-            arguments = new Dictionary<string, string>
-            {
-                ["command"] = "returnOrderBook",
-                ["currencyPair"] = pairId,
-                ["nonce"] = GetNonce()
-            };
+            arguments["command"] = "returnOrderBook";
+            arguments["currencyPair"] = pairId;
+            arguments["nonce"] = GetNonce();
 
-            if (depth != null) arguments.Add("depth", depth.ToString());
+            if (depth != null) arguments["depth"] = depth.ToString();
 
             GenerateRequest(GET);
         }
