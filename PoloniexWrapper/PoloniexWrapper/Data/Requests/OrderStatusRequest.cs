@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-using static PoloniexWrapper.Helper.Enums.RequestType;
+﻿using static PoloniexWrapper.Helper.Enums.RequestType;
 
 namespace PoloniexWrapper.Data.Requests
 {
@@ -8,12 +6,9 @@ namespace PoloniexWrapper.Data.Requests
     {
         public OrderStatusRequest(string apiSec, ulong orderNumber) : base(apiSec)
         {
-            arguments = new Dictionary<string, string>
-            {
-                ["command"] = "returnOrderStatus",
-                ["orderNumber"] = orderNumber.ToString(),
-                ["nonce"] = GetNonce()
-            };
+            arguments["command"] = "returnOrderStatus";
+            arguments["orderNumber"] = orderNumber.ToString();
+            arguments["nonce"] = GetNonce();
 
             GenerateRequest(POST);
         }
