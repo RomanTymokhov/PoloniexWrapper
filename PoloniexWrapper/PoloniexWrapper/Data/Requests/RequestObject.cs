@@ -22,12 +22,14 @@ namespace PoloniexWrapper.Data.Requests
         internal string Sign { get; private set; }
 
 
-        public RequestObject() { }
+        public RequestObject()
+        {
+            arguments = new Dictionary<string, string>();
+        }
 
-        public RequestObject(string apiSec)
+        public RequestObject(string apiSec) : this()
         {
             this.apiSec = apiSec;
-            arguments = new Dictionary<string, string>();
         }
 
         protected string GetNonce() => DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString();
