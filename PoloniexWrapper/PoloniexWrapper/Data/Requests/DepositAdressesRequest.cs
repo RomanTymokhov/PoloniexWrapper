@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-using static PoloniexWrapper.Helper.Enums.RequestType;
+﻿using static PoloniexWrapper.Helper.Enums.RequestType;
 
 namespace PoloniexWrapper.Data.Requests
 {
@@ -8,11 +6,8 @@ namespace PoloniexWrapper.Data.Requests
     {
         public DepositAdressesRequest(string apiSec) : base(apiSec)
         {
-            arguments = new Dictionary<string, string>
-            {
-                ["command"] = "returnDepositAddresses",
-                ["nonce"] = GetNonce()
-            };
+            arguments["command"] = "returnDepositAddresses";
+            arguments["nonce"] = GetNonce();            
 
             GenerateRequest(POST);
         }
