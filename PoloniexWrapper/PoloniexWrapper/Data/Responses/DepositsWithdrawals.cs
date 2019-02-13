@@ -21,10 +21,10 @@ namespace PoloniexWrapper.Data.Responses
         public string CurrencyID { get; private set; }
 
         [JsonProperty("address")]
-        public string Adress { get; private set; }
+        public string Address { get; private set; }
 
         private readonly decimal amount;
-        public decimal Amount { get => amount; }
+        public decimal Amount => amount;
 
         [JsonProperty("confirmations")]
         public ushort Confirmations { get; private set; }
@@ -54,10 +54,13 @@ namespace PoloniexWrapper.Data.Responses
         public string CurrencyID { get; private set; }
 
         [JsonProperty("address")]
-        public string Adress { get; private set; }
+        public string OutputAddress { get; private set; }
 
         private readonly decimal amount;
-        public decimal Amount { get => amount; }
+        public decimal Amount => amount;
+
+        private readonly decimal fee;
+        public decimal Fee => fee;
 
         [JsonProperty("timestamp")]
         public ulong Timestamp { get; private set; }
@@ -69,9 +72,10 @@ namespace PoloniexWrapper.Data.Responses
         public string IpAdress { get; private set; }
 
         [JsonConstructor]
-        public Withdrawal(string amount)
+        public Withdrawal(string amount, string fee)
         {
             decimal.TryParse(amount, Any, InvariantCulture, out this.amount);
+            decimal.TryParse(fee, Any, InvariantCulture, out this.fee);
         }
     }
 }
