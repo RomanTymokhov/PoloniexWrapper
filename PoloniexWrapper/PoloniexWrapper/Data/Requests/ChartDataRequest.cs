@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using PoloniexWrapper.Helper;
 
 using static PoloniexWrapper.Helper.Enums.RequestType;
@@ -10,15 +9,12 @@ namespace PoloniexWrapper.Data.Requests
     {
         public ChartDataRequest(string pairID, uint period, DateTime start, DateTime end) : base()
         {
-            arguments = new Dictionary<string, string>
-            {
-                ["command"] = "returnChartData",
-                ["currencyPair"] = pairID,
-                ["period"] = period.ToString(),
-                ["start"] = start.ToUnixtime(),
-                ["end"] = end.ToUnixtime(),
-                ["nonce"] = GetNonce()
-            };
+            arguments["command"] = "returnChartData";
+            arguments["currencyPair"] = pairID;
+            arguments["period"] = period.ToString();
+            arguments["start"] = start.ToUnixtime();
+            arguments["end"] = end.ToUnixtime();
+            arguments["nonce"] = GetNonce();            
 
             GenerateRequest(GET);
         }
