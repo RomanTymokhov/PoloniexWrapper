@@ -22,16 +22,16 @@ namespace PoloniexWrapper.Data.Responses.TradeHeirs
         public OrderType Type { get; private set; }
 
         private readonly decimal rate;
-        public decimal Rate { get => rate; }
+        public decimal Rate => rate;
 
         private readonly decimal amount;
-        public decimal Amount { get => amount; }
+        public decimal Amount => amount;
 
         private readonly decimal total;
-        public decimal Total { get => total; }
+        public decimal Total => total;
 
         private readonly decimal fee;
-        public decimal Fee { get => fee; }
+        public decimal Fee => fee;
 
         [JsonProperty("date")]
         public DateTime DateTime { get; private set; }
