@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-using static PoloniexWrapper.Helper.Enums.RequestType;
+﻿using static PoloniexWrapper.Helper.Enums.RequestType;
 using static System.Globalization.CultureInfo;
 
 namespace PoloniexWrapper.Data.Requests
@@ -9,16 +7,13 @@ namespace PoloniexWrapper.Data.Requests
     {
         public WithdrawRequest(string apiSec, string currencyId, decimal amount, string adress, string paymentId) : base(apiSec)
         {
-            arguments = new Dictionary<string, string>
-            {
-                ["command"] = "withdraw",
-                ["currency"] = currencyId,
-                ["amount"] = amount.ToString(GetCultureInfo("en-US")),
-                ["address"] = adress,
-                ["nonce"] = GetNonce()
-            };
+            arguments["command"] = "withdraw";
+            arguments["currency"] = currencyId;
+            arguments["amount"] = amount.ToString(GetCultureInfo("en-US"));
+            arguments["address"] = adress;
+            arguments["nonce"] = GetNonce();
 
-            if (paymentId != null) arguments.Add("paymentId", paymentId);
+            if (paymentId != null) arguments["paymentId"] = paymentId;
 
             GenerateRequest(POST);
         }
