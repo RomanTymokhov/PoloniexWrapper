@@ -27,6 +27,7 @@ namespace PoloniexWrapper.Data.Requests
         public RequestObject(string apiSec)
         {
             this.apiSec = apiSec;
+            arguments = new Dictionary<string, string>();
         }
 
         protected string GetNonce() => DateTimeOffset.Now.ToUnixTimeMilliseconds().ToString();
