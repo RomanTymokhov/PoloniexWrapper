@@ -39,9 +39,9 @@ namespace PoloniexWrapper.Data.Responses
         public Error(HttpStatus status, string errMsg = null)
         {
             var sb = new StringBuilder("Poloniex API Error: ");
-
-            if (status.code != 200) sb.AppendFormat("{0} - {1}", status.code, status.msg);
-            if (status.code == 200) sb.AppendFormat("{0} - {1}", status.code, errMsg);
+ 
+            if (status.code == 200 || status.code == 422) sb.AppendFormat("{0} - {1}", status.code, errMsg);
+            else sb.AppendFormat("{0} - {1}", status.code, status.msg);
             Message = sb.ToString();
         }
     }

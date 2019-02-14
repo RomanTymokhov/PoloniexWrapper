@@ -11,11 +11,13 @@ namespace PoloniexWrapper.Helper
         private readonly string json;
         private readonly HttpStatus httpStatus;
         private readonly bool isSuccessStatusCode;
+        private readonly bool isUnprocessableStatusCode = false;
 
         public Unpacker(HttpResponseMessage response)
         {
             json = response.Content.ReadAsStringAsync().Result;
             isSuccessStatusCode = response.IsSuccessStatusCode;
+            if ((ushort)response.StatusCode == 422) isUnprocessableStatusCode = true;
 
             httpStatus.code = (ushort)response.StatusCode;
             httpStatus.msg = response.StatusCode.ToString();
@@ -24,7 +26,7 @@ namespace PoloniexWrapper.Helper
 
         public ResponseObject Unpack<T>()
         {
-            if (isSuccessStatusCode)
+            if (isSuccessStatusCode || isUnprocessableStatusCode)
             {
                 if (!IsError(out var error))
                 {
@@ -44,7 +46,8 @@ namespace PoloniexWrapper.Helper
             {
                 if (JsonIsObject(out var jObj) && jObj.ContainsKey("error"))
                 {
-                    error = new Error(httpStatus, errMsg: jObj.Property("error").Value.ToString());
+                    string m = jObj.Property("error").Value.ToString();
+                    error = new Error(httpStatus, errMsg: m);
                     return true;
                 }
                 else { error = null; return false; }
