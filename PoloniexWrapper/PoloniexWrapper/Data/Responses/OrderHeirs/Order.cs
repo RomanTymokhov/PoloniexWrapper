@@ -16,13 +16,13 @@ namespace PoloniexWrapper.Data.Responses.OrderHeirs
         public OrderType Type { get; private set; }
 
         private readonly decimal rate;
-        public decimal Rate { get => rate; }
+        public decimal Rate => rate;
 
         private readonly decimal amount;
-        public decimal Amount { get => amount; }
+        public decimal Amount => amount;
 
         private readonly decimal total;
-        public decimal Total { get => total; }
+        public decimal Total => total;
 
         [JsonProperty("date")]
         public DateTime DateTime { get; private set; }
