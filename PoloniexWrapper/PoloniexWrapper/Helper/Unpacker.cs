@@ -63,10 +63,10 @@ namespace PoloniexWrapper.Helper
 
         private bool JsonIsObject(out JObject obj)
         {            
-            var jError = JToken.Parse(json);
-            if (jError is JObject)
+            var jObj = JToken.Parse(json);
+            if (jObj is JObject)
             {
-                obj = jError as JObject;
+                obj = jObj as JObject;
                 return true;
             }
             else
