@@ -5,21 +5,21 @@ namespace PoloniexWrapper.Data.Responses
 {
     public class ResponseObject
     {
-        [JsonProperty("success")]
-        public bool Success { get; set; } = true;
+        [JsonProperty("isSuccess")]
+        public bool IsSuccess { get; set; } = true;
 
         [JsonProperty("answer")]
         public object Answer { get; set; }
 
         private Error error;
-        [JsonProperty("error")]
+        [JsonProperty("isError")]
         public Error Error
         {
             get => error;
             set
             {
                 error = value;
-                if (value != null) Success = false;
+                if (value != null) IsSuccess = false;
             }
         }
     }
