@@ -1,28 +1,14 @@
 ﻿using Newtonsoft.Json;
-
-using static System.Globalization.CultureInfo;
-using static System.Globalization.NumberStyles;
+using PoloniexWrapper.Data.Responses.OrderHeirs;
 
 namespace PoloniexWrapper.Data.Responses
 {
-    public class CancelOrder
+    public class CancelOrder : ResponseObject
     {
-        [JsonProperty("success")]
-        public byte Success { get; private set; }
-
-        private readonly decimal amount;
-        public decimal Amount { get => amount; }
-
-        [JsonProperty("message")]
-        public string Message { get; private set; }
-
-        [JsonProperty("error")]
-        public string ErrorMessage { get; private set; }
-
         [JsonConstructor]
-        public CancelOrder(string amount)
+        public CancelOrder(string message, string amount)
         {
-            decimal.TryParse(amount, Any, InvariantCulture, out this.amount);
+            Answer = new CanceledOrder(amount, message);
         }
     }
 }
