@@ -5,7 +5,7 @@ namespace PoloniexWrapper.Data.Requests
 {
     public class MoveOrderRequest : RequestObject
     {
-        public MoveOrderRequest(string apiSec, ulong orderNumber, decimal rate, decimal? amount, byte postOnly) : base(apiSec)
+        public MoveOrderRequest(string apiSec, ulong orderNumber, decimal rate, decimal? amount, byte postOnly, byte immediateOrCancel) : base(apiSec)
         {
             arguments["command"] = "moveOrder";
             arguments["orderNumber"] = orderNumber.ToString();
@@ -13,6 +13,7 @@ namespace PoloniexWrapper.Data.Requests
             arguments["nonce"] = GetNonce();
 
             if (amount != null) arguments["amount"] = ((decimal)amount).ToString(GetCultureInfo("en-US"));
+            if (immediateOrCancel == 1) arguments["immediateOrCancel"] = immediateOrCancel.ToString();
             if (postOnly == 1) arguments["postOnly"] = postOnly.ToString();
 
             GenerateRequest(POST);
