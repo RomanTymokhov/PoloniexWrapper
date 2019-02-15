@@ -1,21 +1,20 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
 using PoloniexWrapper.Data.Responses.OrderHeirs;
 
 namespace PoloniexWrapper.Data.Responses
 {
-    public class MoveOrder
+    public class MoveOrder : ResponseObject
     {
-        [JsonProperty("success")]
-        public byte Success { get; private set; }
-
-        [JsonProperty("orderNumber")]
-        public ulong OrderNumber { get; private set; }
-
-        [JsonProperty("resultingTrades")]
-        public Dictionary<string, List<Order>> ResultingTrades { get; set; }
-
-        [JsonProperty("error")]
-        public string ErrorMessage { get; private set; }
-    }
+        [JsonConstructor]
+        public MoveOrder(string orderNumber, JObject resultingTrades)
+        {
+            Answer = new MovedOrder
+            {
+                OrderNumber = ulong.Parse(orderNumber),
+                ResultingTrades = resultingTrades.ToObject<Dictionary<string, List<Order>>>()
+            };
+        }
+    }    
 }
