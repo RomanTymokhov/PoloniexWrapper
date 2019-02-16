@@ -2,12 +2,12 @@
 
 namespace PoloniexWrapper.Data.Responses
 {
-    public class Withdraw
+    public class Withdraw : ResponseObject
     {
-        [JsonProperty("response")]
-        public string Response { get; private set; }
-
-        [JsonProperty("error")]
-        public string Error { get; private set; }
+        [JsonConstructor]
+        public Withdraw(string response)
+        {
+            Answer = response;
+        }
     }
 }
