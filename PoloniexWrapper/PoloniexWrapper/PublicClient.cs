@@ -35,7 +35,7 @@ namespace PoloniexWrapper
         /// <param name="depthSize">deep of depth, default(null) = 50, max = 20k</param>
         /// <returns>PoloResponse.Answer -> OrderBook or Dictonary string, Orderook </returns>
         public async Task<ResponseObject> ReturnOrderBookAsync<T>(string pairId = allPairs, ushort? depthSize = null) =>
-                await HttpGetAsync<T>(new OrderBookRequest(pairId, depthSize));
+            await HttpGetAsync<T>(new OrderBookRequest(pairId, depthSize));
 
         /// <summary>
         /// Returns the past 200 trades for a given market, or up to 50,000 trades between a range specified in DateTime timestamps by the "start" and "end"
@@ -45,7 +45,7 @@ namespace PoloniexWrapper
         /// <param name="pairID">currencyPair ID</param>
         /// <returns>PoloResponse.Answer -> List PublicTrade </returns>
         public async Task<ResponseObject> ReturnTradeHistoryAsync(string pairID, DateTime? start = null, DateTime? end = null) =>
-                await HttpGetAsync<List<PublicTrade>>(new TradeHistoryRequest(pairID, start, end));
+            await HttpGetAsync<List<PublicTrade>>(new TradeHistoryRequest(pairID, start, end));
 
         /// <summary>
         /// Returns candlestick chart data
@@ -56,13 +56,13 @@ namespace PoloniexWrapper
         /// <param name="end">DateTime timestamp format</param>
         /// <returns>PoloResponse.Answer -> List Candlestick</returns>
         public async Task<ResponseObject> ReturnChartDataAsync(string pairId, uint period, DateTime start, DateTime end) =>
-                await HttpGetAsync<List<Candlestick>>(new ChartDataRequest(pairId, period, start, end));
+            await HttpGetAsync<List<Candlestick>>(new ChartDataRequest(pairId, period, start, end));
 
         /// <summary>
         /// Returns information about currencies
         /// </summary>
         /// <returns>PoloResponse.Answer -> Currencies</returns>
         public async Task<ResponseObject> ReturnCurrenciesAsync() =>
-                await HttpGetAsync<Currencies>(new CurrenciesRequest());
+            await HttpGetAsync<Currencies>(new CurrenciesRequest());
     }
 }
