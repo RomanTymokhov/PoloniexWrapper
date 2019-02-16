@@ -26,30 +26,30 @@ namespace PoloniexWrapper
         /// <summary>
         /// Returns all of your available balances
         /// </summary>
-        /// <returns>Dictionary</returns>
-        public async Task<Dictionary<string, string>> ReturnBalancesAsync() =>
-                await HttpPostAsync<Dictionary<string, string>>(new BalancesRequest(apiSec));
+        /// <returns>PoloResponse.Answer -> Dictionary</returns>
+        public async Task<ResponseObject> ReturnBalancesAsync() =>
+            await HttpPostAsync<Dictionary<string, string>>(new BalancesRequest(apiSec));
 
         /// <summary>
         /// Returns all of your balances, including available balance, balance on orders, and the estimated BTC value of your balance
         /// </summary>
-        /// <returns>Dictionary</returns>
-        public async Task<Dictionary<string, CompleteBalance>> ReturnComleteBalancesAsync() =>
-                await HttpPostAsync<Dictionary<string, CompleteBalance>>(new CompleteBalancesRequest(apiSec));
+        /// <returns>PoloResponse.Answer -> Dictionary (string, CompleteBalance)</returns>
+        public async Task<ResponseObject> ReturnComleteBalancesAsync() =>
+            await HttpPostAsync<Dictionary<string, CompleteBalance>>(new CompleteBalancesRequest(apiSec));
 
         /// <summary>
         /// Returns all of your deposit addresses
         /// </summary>
-        /// <returns>Dictionary</returns>
-        public async Task<Dictionary<string, string>> ReturnDepositAdressesAsync() =>
+        /// <returns>PoloResponse.Answer -> Dictionary (string, string) </returns>
+        public async Task<ResponseObject> ReturnDepositAdressesAsync() =>
                 await HttpPostAsync<Dictionary<string, string>>(new DepositAdressesRequest(apiSec));
 
         /// <summary>
         /// Generates a new deposit address for the currency specified by the "currency" POST parameter
         /// </summary>
         /// <param name="currID">currency</param>
-        /// <returns>NewAdress</returns>
-        public async Task<NewAdress> GenerateNewAddressAsync(string currID) =>
+        /// <returns>PoloResponse.Answer -> NewAdress</returns>
+        public async Task<ResponseObject> GenerateNewAddressAsync(string currID) =>
                 await HttpPostAsync<NewAdress>(new NewAddressRequest(apiSec, currID));
 
         /// <summary>
@@ -57,24 +57,24 @@ namespace PoloniexWrapper
         /// </summary>
         /// <param name="start">DateTime timestamp format</param>
         /// <param name="end">DateTime timestamp format</param>
-        /// <returns>DepositsWithdrawals</returns>
-        public async Task<DepositsWithdrawals> ReturnDepositsWithdrawalsAsync(DateTime start, DateTime end) =>
+        /// <returns>PoloResponse.Answer -> DepositsWithdrawals</returns>
+        public async Task<ResponseObject> ReturnDepositsWithdrawalsAsync(DateTime start, DateTime end) =>
                 await HttpPostAsync<DepositsWithdrawals>(new DepositsWithdrawalsRequest(apiSec, start, end));
 
         /// <summary>
         /// Returns your balances sorted by account
         /// </summary>
         /// <param name="account">optionally specify the "account" POST parameter if you wish to fetch only the balances of one account</param>
-        /// <returns>AvailableAccountBalances</returns>
-        public async Task<AvailableAccountBalances> ReturnAvailableAccountBalancesAsync(TradingAccount account = all) =>
+        /// <returns>PoloResponse.Answer -> AvailableAccountBalances</returns>
+        public async Task<ResponseObject> ReturnAvailableAccountBalancesAsync(TradingAccount account = all) =>
                 await HttpPostAsync<AvailableAccountBalances>(new AvailableAccountBalancesRequest(apiSec, account));
 
         /// <summary>
         /// If you are enrolled in the maker-taker fee schedule, returns your current trading fees and trailing 30-day volume in BTC
         /// This information is updated once every 24 hours
         /// </summary>
-        /// <returns>FeeInfo</returns>
-        public async Task<FeeInfo> ReturnFeeInfoAsync() => 
+        /// <returns>PoloResponse.Answer -> FeeInfo</returns>
+        public async Task<ResponseObject> ReturnFeeInfoAsync() =>
                 await HttpPostAsync<FeeInfo>(new FeeInfoRequest(apiSec));
 
 
@@ -82,13 +82,13 @@ namespace PoloniexWrapper
         /// Returns your open orders for a given market
         /// Set "currencyPair" to "all" to return open orders for all markets
         /// </summary>
-        /// <typeparam name="T"> Dictionary string, OpenOrder</typeparam>
+        /// <typeparam name="T"> Dictionary (string, OpenOrder)</typeparam>
         /// <param name="pairID">currencyPair --> allPairs</param>
         /// <returns> Dictionary </returns>
         /// <typeparam name="T"> List OpenOrder </typeparam>
         /// <param name="pairID">currencyPair --> concret pair</param>
         /// <returns> List OpenOrder </returns>
-        public async Task<T> ReturnOpenOrdersAsync<T>(string pairID = allPairs) =>
+        public async Task<ResponseObject> ReturnOpenOrdersAsync<T>(string pairID = allPairs) =>
                 await HttpPostAsync<T>(new OpenOrdersRequest(apiSec, pairID));
 
         /// <summary>
@@ -99,8 +99,8 @@ namespace PoloniexWrapper
         /// <param name="end">DateTime timestamp format</param>
         /// <param name="pairID">currencyPair ID</param>
         /// <param name="limit">number of entries</param>
-        /// <returns>List PrivateTrade or Dictionary string, Privaterade</returns>
-        public async Task<T> ReturnTradeHistoryAsync<T>(DateTime? start = null, DateTime? end = null, string pairID = allPairs, ushort limit = 500) =>
+        /// <returns>PoloResponse.Answer -> List PrivateTrade or Dictionary string, Privaterade</returns>
+        public async Task<ResponseObject> ReturnTradeHistoryAsync<T>(DateTime? start = null, DateTime? end = null, string pairID = allPairs, ushort limit = 500) =>
                 await HttpPostAsync<T>(new TradeHistoryRequest(apiSec, pairID, start, end, limit));
 
         /// <summary>
@@ -108,8 +108,8 @@ namespace PoloniexWrapper
         /// If no trades for the order have occurred or you specify an order that does not belong to you, you will receive an error
         /// </summary>
         /// <param name="orderNumber">number of given order</param>
-        /// <returns>OrderTrade</returns>
-        public async Task<List<OrderTrade>> ReturnOrderTradesAsync(ulong orderNumber) =>
+        /// <returns>PoloResponse.Answer -> List OrderTrade</returns>
+        public async Task<ResponseObject> ReturnOrderTradesAsync(ulong orderNumber) =>
                 await HttpPostAsync<List<OrderTrade>>(new OrderTradesRequest(apiSec, orderNumber));
 
         /// <summary>
@@ -117,14 +117,9 @@ namespace PoloniexWrapper
         /// If the specified orderNumber is not open, or it is not yours, you will receive an error
         /// </summary>
         /// <param name="orderNumber">number of given order</param>
-        /// <returns>Dictionary ulong, FillOrder</returns>
-        public async Task<Dictionary<ulong, FillOrder>> ReturnOrderStatusAsync(ulong orderNumber)
-        {
-            var answer = await HttpPostAsync<OrderStatus>(new OrderStatusRequest(apiSec, orderNumber));
-
-            if (answer.Success == 1) return await UnpackingResponseAsync<Dictionary<ulong, FillOrder>>(answer.Result);
-            else throw new PoloException(UnpackingResponseAsync<Error>(answer.Result).Result.ErrorMessage);
-        }
+        /// <returns>PoloResponse.Answer -> Dictionary ulong, FillOrder</returns>
+        public async Task<ResponseObject> ReturnOrderStatusAsync(ulong orderNumber) =>
+            await HttpPostAsync<OrderStatus>(new OrderStatusRequest(apiSec, orderNumber));
 
         /// <summary>
         /// Method creating orders (buy or sell)
@@ -136,22 +131,17 @@ namespace PoloniexWrapper
         /// <param name="fillOrKill">optionally - Set to "1" if this order should either fill in its entirety or be completely aborted</param>
         /// <param name="immediateOrCancel">optionally - Set to "1" if this order can be partially or completely filled, but any portion of the order that cannot be filled immediately will be canceled</param>
         /// <param name="postOnly">optionally post-only order will only be placed if no portion of it fills immediately; this guarantees you will never pay the taker fee on any part of the order that fills</param>
-        /// <returns>PlaceOrder</returns>
-        public async Task<PlaceOrder> PlaceOrderAsync(OrderType type, decimal rate, decimal amount, string pair, byte fillOrKill = 0, byte immediateOrCancel = 0, byte postOnly = 0) =>      
-                await HttpPostAsync<PlaceOrder>(new PlaceOrderRequest(apiSec, type, rate, amount, pair, fillOrKill, immediateOrCancel, postOnly));
+        /// <returns>PoloResponse.Answer -> PlaceOrder</returns>
+        public async Task<ResponseObject> PlaceOrderAsync(OrderType type, decimal rate, decimal amount, string pair, byte fillOrKill = 0, byte immediateOrCancel = 0, byte postOnly = 0) =>
+                await HttpPostAsync<PlacedOrder>(new PlaceOrderRequest(apiSec, type, rate, amount, pair, fillOrKill, immediateOrCancel, postOnly));
 
         /// <summary>
         /// Cancels an order you have placed in a given market
         /// </summary>
         /// <param name="orderNumber">number of given order</param>
-        /// <returns>CancelOrder</returns>
-        public async Task<CancelOrder> CancelOrderAsync(ulong orderNumber)
-        {
-            var answer = await HttpPostAsync<CancelOrder>(new CancelOrderRequest(apiSec, orderNumber));
-
-            if (answer.Success != 0) return answer;
-            else throw new PoloException(answer.ErrorMessage);
-        }
+        /// <returns>PoloResponse.Answer -> CancelOrder</returns>
+        public async Task<ResponseObject> CancelOrderAsync(ulong orderNumber) =>
+            await HttpPostAsync<CancelOrder>(new CancelOrderRequest(apiSec, orderNumber));
 
         /// <summary>
         /// Cancels an order and places a new one of the same type in a single atomic transaction, meaning either both operations will succeed or both will fail
@@ -160,14 +150,10 @@ namespace PoloniexWrapper
         /// <param name="rate"></param>
         /// <param name="amount">optionally specify "amount" if you wish to change the amount of the new order</param>
         /// <param name="postOnly">optionally post-only order will only be placed if no portion of it fills immediately; this guarantees you will never pay the taker fee on any part of the order that fills</param>
-        /// <returns></returns>
-        public async Task<MoveOrder> MoveOrderAsync(ulong orderNumber, decimal rate, decimal? amount = null, byte postOnly = 0)
-        {
-            var answer = await HttpPostAsync<MoveOrder>(new MoveOrderRequest(apiSec, orderNumber, rate, amount, postOnly));
-
-            if (answer.Success != 0) return answer;
-            else throw new PoloException(answer.ErrorMessage);
-        }
+        /// <param name="immediateOrCancel">>optionally - Set to "1" if this order can be partially or completely filled, but any portion of the order that cannot be filled immediately will be canceled</param>
+        /// <returns>PoloResponse.Answer -> MoveOrder</returns>
+        public async Task<ResponseObject> MoveOrderAsync(ulong orderNumber, decimal rate, decimal? amount = null, byte postOnly = 0, byte immediateOrCancel = 0) =>
+            await HttpPostAsync<MoveOrder>(new MoveOrderRequest(apiSec, orderNumber, rate, amount, postOnly, immediateOrCancel));
 
         /// <summary>
         /// Immediately places a withdrawal for a given currency, with no email confirmation
@@ -176,14 +162,9 @@ namespace PoloniexWrapper
         /// <param name="amount"></param>
         /// <param name="adress">address of the recipient</param>
         /// <param name="paymentId">For XMR & etc. withdrawals, you may optionally specify "paymentId"</param>
-        /// <returns>Withdraw</returns>
-        public async Task<Withdraw> WithdrawAsync(string currencyId, decimal amount, string adress, string paymentId = null)
-        {
-            var answer = await HttpPostAsync<Withdraw>(new WithdrawRequest(apiSec, currencyId, amount, adress, paymentId));
+        /// <returns>PoloResponse.Answer -> Withdraw</returns>
+        public async Task<ResponseObject> WithdrawAsync(string currencyId, decimal amount, string adress, string paymentId = null) =>
+            await HttpPostAsync<Withdraw>(new WithdrawRequest(apiSec, currencyId, amount, adress, paymentId));
 
-            if (answer.Response != null) return answer;
-            else throw new PoloException(answer.Error);
-        }
-                
     }
 }
